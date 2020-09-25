@@ -58,7 +58,15 @@ public class Person {
 	@JsonIgnore
 	@ManyToMany(mappedBy="persons")
 	private Set<Project> projects = new HashSet<Project>();
-
+	
+	
+	/**
+	 * Person has associated tasks
+	 */
+	@JsonIgnore
+	@ManyToMany(mappedBy="persons")
+	private Set<Task> tasks = new HashSet<Task>();
+	
 	/**
 	 * @return the id
 	 */
@@ -127,6 +135,20 @@ public class Person {
 	 */
 	public void setProjects(Set<Project> projects) {
 		this.projects = projects;
+	}
+	
+	/**
+	 * @return the tasks
+	 */
+	public Set<Task> getTasks() {
+		return tasks;
+	}
+	
+	/**
+	 * @param tasks the tasks to set
+	 */
+	public void setTasks(Set<Task> tasks) {
+		this.tasks = tasks;
 	}
 
 	/**

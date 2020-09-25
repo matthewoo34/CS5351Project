@@ -2,6 +2,7 @@ package ch.bsgroup.scrumit.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import ch.bsgroup.scrumit.domain.BurnDown;
 import ch.bsgroup.scrumit.domain.BurnDownChart;
+import ch.bsgroup.scrumit.domain.Person;
 import ch.bsgroup.scrumit.domain.Project;
 import ch.bsgroup.scrumit.domain.Sprint;
 import ch.bsgroup.scrumit.domain.Task;
@@ -24,6 +26,7 @@ import ch.bsgroup.scrumit.pojo.SerializableBurnDownChart;
 import ch.bsgroup.scrumit.pojo.SerializableTask;
 import ch.bsgroup.scrumit.pojo.SerializableUserStory;
 import ch.bsgroup.scrumit.service.IBurnDownChartService;
+import ch.bsgroup.scrumit.service.IPersonService;
 import ch.bsgroup.scrumit.service.IProjectService;
 import ch.bsgroup.scrumit.service.ISprintService;
 import ch.bsgroup.scrumit.service.ITaskService;
@@ -37,6 +40,7 @@ public class BoardController {
 	private ISprintService sprintService;
 	private IUserStoryService userStoryService;
 	private ITaskService taskService;
+	private IPersonService personService;
 	private IBurnDownChartService burnDownChartService;
 
 	public void setProjectService(IProjectService projectService) {
@@ -57,6 +61,10 @@ public class BoardController {
 
 	public void setBurnDownChartService(IBurnDownChartService burnDownChartService) {
 		this.burnDownChartService = burnDownChartService;
+	}
+	
+	public void setPersonService(IPersonService personService) {
+		this.personService = personService;
 	}
 
 	@RequestMapping(value="{projectid}/{sprintid}/", method=RequestMethod.GET)
@@ -124,6 +132,16 @@ public class BoardController {
 		}
 		t.setUserStory(u);
 		t.setCreationDate(new Date());
+		//find related developer
+		if (t.getPersonId() != null) {
+			Person p = this.personService.findPersonById(t.getPersonId());
+			if (p!=null) {
+				Set<Person> pSet = new HashSet<Person>();
+				pSet.add(p);
+				t.setPersons(pSet);
+				t.setAssignDate(new Date());
+			}
+		}
 		Task task = this.taskService.addTask(t);
 		this.burnDownChartService.updateBurnDown(task.getDuration(), 0, sprintid);
 		return new SerializableTask(task.getId(), task.getDescription(), task.getxCoord(), task.getyCoord(), 
@@ -150,6 +168,27 @@ public class BoardController {
 			}
 			task.setStatus(t.getStatus());
 		}
+		this.taskService.updateTask(task);
+	}
+	
+	@RequestMapping(value="task/updateperson/", method=RequestMethod.POST)
+	public @ResponseBody void updateTaskPerson(@RequestBody Task t) {
+		Task task = this.taskService.findTaskById(t.getId());
+		if (task == null) {
+			throw new ResourceNotFoundException(t.getId());
+		}
+		
+		Integer personId = t.getPersonId();
+		Set<Person> pSet = new HashSet<Person>();
+		if (personId != null) {
+			Person p = this.personService.findPersonById(t.getPersonId());
+			if (p == null) {
+				throw new ResourceNotFoundException(personId);
+			}
+			pSet.add(p);
+		}
+		task.setPersons(pSet);
+		task.setAssignDate(new Date());
 		this.taskService.updateTask(task);
 	}
 
