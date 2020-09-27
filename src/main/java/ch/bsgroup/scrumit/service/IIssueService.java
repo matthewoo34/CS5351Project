@@ -13,5 +13,5 @@ public interface IIssueService {
 	public void removeIssue(Issue issue);
 	public Set<Issue> getAllIssues();
 	public Issue findIssueById(int issueId);
-	public Set<Issue> getAllIssuesByProjectId(int projjectId);
+	public Set<Issue> getAllIssuesByProjectId(int projectId);
 }
