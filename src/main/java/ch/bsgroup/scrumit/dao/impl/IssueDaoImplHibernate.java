@@ -8,97 +8,84 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import ch.bsgroup.scrumit.domain.Issue;
 import ch.bsgroup.scrumit.domain.Person;
 import ch.bsgroup.scrumit.domain.Project;
+import ch.bsgroup.scrumit.dao.IIssueDao;
 import ch.bsgroup.scrumit.dao.IPersonDao;
 import ch.bsgroup.scrumit.utils.HibernateUtil;
 
 /**
  * Person Dao Hibernate Implementation
  */
-public class PersonDaoImplHibernate implements IPersonDao {
+public class IssueDaoImplHibernate implements IIssueDao {
 	/**
-	 * Add Person
+	 * Add Issue
 	 */
-	public Person addPerson(Person p) {
+	public Issue addIssue(Issue issue) {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session sess = sessionFactory.getCurrentSession();
 
 		Transaction tx = sess.beginTransaction();
-		sess.save(p);
+		sess.save(issue);
 		sess.flush();
 		tx.commit();
 
-		return p;
+		return issue;
 	}
 
 	/**
-	 * Update Person
+	 * Update Issue
 	 */
-	public void updatePerson(Person p) {
+	public void updateIssue(Issue issue) {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session sess = sessionFactory.getCurrentSession();
 
 		Transaction tx = sess.beginTransaction();
-		sess.update(p);
+		sess.update(issue);
 		tx.commit();
 	}
 
 	/**
-	 * Delete Person
+	 * Delete Issue
 	 */
-	public void removePerson(int personId){		
+	public void removeIssue(Issue issue){		
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session sess = sessionFactory.getCurrentSession();
 
 		Transaction tx = sess.beginTransaction();
-
-		try {
-			Person p = (Person)sess.createQuery("from Person where id = "+personId).list().get(0);
-			Set<Project> projects = p.getProjects();
-			for (Project project : projects) {
-				if (project.getPersons().contains(p)) {
-					project.getPersons().remove(p);
-			        sess.saveOrUpdate(project);
-				}
-			}
-			sess.delete(p);
-		    tx.commit();
-		}
-		catch (Exception ex) {
-			System.err.println("Failed deleting Person: "+ex.getMessage());
-		}
+     	sess.delete(issue);
+		tx.commit();
 	}
 
 	/**
-	 * Get all Persons
+	 * Get all Issue
 	 */
-	public Set<Person> getAllPersons() {
+	public Set<Issue> getAllIssues() {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session sess = sessionFactory.getCurrentSession();
 
 		Transaction tx = sess.beginTransaction();
 		@SuppressWarnings("unchecked")
-		List<Person> list = sess.createQuery("from Person").list();
-		Set<Person> persons = new HashSet<Person>(list);
+		List<Issue> list = sess.createQuery("from Issue").list();
+		Set<Issue> issues = new HashSet<Issue>(list);
 		tx.commit();
 
-		return persons;
+		return issues;
 	}
 
 	/**
-	 * Find Person by ID
+	 * Find Issue by ID
 	 */
-	public Person findPersonById(int personId) {
+	public Issue findIssueById(int issueID) {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session sess = sessionFactory.getCurrentSession();
 
 		Transaction tx = sess.beginTransaction();
 		try {
-			Person person = (Person)sess.createQuery("from Person where id = "+personId).list().get(0);
-			person.getProjects();
+			Issue issue = (Issue)sess.createQuery("from Issue where id = "+issueID).list().get(0);
 			tx.commit();
-			return person;
+			return issue;
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return null;
@@ -108,17 +95,16 @@ public class PersonDaoImplHibernate implements IPersonDao {
 	/**
 	 * Get all Persons which are associated to a given Project(Id)
 	 */
-	public Set<Person> getAllPersonsByProjectId(int projectId) {
+	public Set<Issue> getAllIssuesByProjectId(int projectID) {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session sess = sessionFactory.getCurrentSession();
 
 		Transaction tx = sess.beginTransaction();
 		@SuppressWarnings("unchecked")
-		List<Person> list = sess.createQuery("select p from Person p join p.projects proj where proj.id = :id").setParameter("id", projectId).list();  
-		Set<Person> persons = new HashSet<Person>(list);
+		List<Issue> list = sess.createQuery("from Issue where projectID = "+ projectID).list();
+		Set<Issue> issues = new HashSet<Issue>(list);
 		tx.commit();
 
-		return persons;
+		return issues;
 	}
-
 }

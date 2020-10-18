@@ -1,10 +1,17 @@
 package ch.bsgroup.scrumit.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import ch.bsgroup.scrumit.domain.BurnDown;
 import ch.bsgroup.scrumit.domain.BurnDownChart;
+import ch.bsgroup.scrumit.domain.Person;
 import ch.bsgroup.scrumit.domain.Project;
 import ch.bsgroup.scrumit.domain.Sprint;
 import ch.bsgroup.scrumit.domain.Task;
@@ -24,6 +32,7 @@ import ch.bsgroup.scrumit.pojo.SerializableBurnDownChart;
 import ch.bsgroup.scrumit.pojo.SerializableTask;
 import ch.bsgroup.scrumit.pojo.SerializableUserStory;
 import ch.bsgroup.scrumit.service.IBurnDownChartService;
+import ch.bsgroup.scrumit.service.IPersonService;
 import ch.bsgroup.scrumit.service.IProjectService;
 import ch.bsgroup.scrumit.service.ISprintService;
 import ch.bsgroup.scrumit.service.ITaskService;
@@ -34,6 +43,7 @@ import ch.bsgroup.scrumit.utils.ResourceNotFoundException;
 @RequestMapping(value="/board/")
 public class BoardController {
 	private IProjectService projectService;
+	private IPersonService personService;
 	private ISprintService sprintService;
 	private IUserStoryService userStoryService;
 	private ITaskService taskService;
@@ -41,6 +51,10 @@ public class BoardController {
 
 	public void setProjectService(IProjectService projectService) {
 		this.projectService = projectService;
+	}
+	
+	public void setPersonService(IPersonService personService) {
+		this.personService = personService;
 	}
 
 	public void setSprintService(ISprintService sprintService) {
@@ -95,7 +109,8 @@ public class BoardController {
 		for (Iterator<Task> iterator = tasks.iterator(); iterator.hasNext();) {
 			Task t = iterator.next();
 			SerializableTask st = new SerializableTask(t.getId(), t.getDescription(), t.getxCoord(), 
-					t.getyCoord(), t.getStatus(), t.getDuration(), t.getCreationDate());
+					t.getyCoord(), t.getStatus(), t.getDuration(), t.getCreationDate(), t.getCommencement(),
+					t.getPosition());
 			serializedTasks.add(st);
 		}
 		return serializedTasks;
@@ -127,7 +142,8 @@ public class BoardController {
 		Task task = this.taskService.addTask(t);
 		this.burnDownChartService.updateBurnDown(task.getDuration(), 0, sprintid);
 		return new SerializableTask(task.getId(), task.getDescription(), task.getxCoord(), task.getyCoord(), 
-				task.getStatus(), task.getDuration(), task.getCreationDate());
+				task.getStatus(), task.getDuration(), task.getCreationDate(), task.getCommencement(),
+				task.getPosition());
 	}
 
 	@RequestMapping(value="task/updatecoord/{sprintid}/", method=RequestMethod.POST)

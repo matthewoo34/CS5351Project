@@ -9,11 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ch.bsgroup.scrumit.service.IIssueService;
 import ch.bsgroup.scrumit.service.IPersonService;
 import ch.bsgroup.scrumit.service.IProjectService;
 import ch.bsgroup.scrumit.utils.ResourceNotFoundException;
+import ch.bsgroup.scrumit.domain.Issue;
 import ch.bsgroup.scrumit.domain.Person;
 import ch.bsgroup.scrumit.domain.Project;
+import ch.bsgroup.scrumit.pojo.SerializableIssue;
 import ch.bsgroup.scrumit.pojo.SerializablePerson;
 import ch.bsgroup.scrumit.pojo.SerializableProject;
 
@@ -35,6 +38,7 @@ import javax.validation.Validator;
 public class ProjectPersonController {
 	private IProjectService projectService;
 	private IPersonService personService;
+	private IIssueService issueService;
 	private Validator validator;
 
 	@Autowired
@@ -49,6 +53,10 @@ public class ProjectPersonController {
 	public void setPersonService(IPersonService personService) {
 		this.personService = personService;
 	}
+	
+	public void setIssueService(IIssueService issueService) {
+		this.issueService = issueService;
+	}
 
 	@RequestMapping(method=RequestMethod.GET)
 	public String getProjectPerson(Model model) {
@@ -61,7 +69,7 @@ public class ProjectPersonController {
 		List<SerializableProject> serializedProjects = new ArrayList<SerializableProject>();
 		for (Iterator<Project> iterator = projects.iterator(); iterator.hasNext();) {
 			Project p = iterator.next();
-			SerializableProject sp = new SerializableProject(p.getId(), p.getName());
+			SerializableProject sp = new SerializableProject(p.getId(), p.getName(), p.getDuration(), p.getCost());
 			serializedProjects.add(sp);
 		}
 		return serializedProjects;
@@ -85,7 +93,8 @@ public class ProjectPersonController {
 		if (p == null) {
 			throw new ResourceNotFoundException(projectid);
 		}
-		return new SerializableProject(p.getId(), p.getName(), p.getDescription(), p.getCreationDate());
+		return new SerializableProject(p.getId(), p.getName(), p.getDescription(), p.getCreationDate(), 
+				p.getDuration(), p.getCost());
 	}
 	
 	@RequestMapping(value="person/{personid}/", method=RequestMethod.GET)
@@ -96,6 +105,20 @@ public class ProjectPersonController {
 		}
 		return new SerializablePerson(p.getId(), p.getFirstName(), p.getLastName(), p.getEmail());
 	}
+	
+	@RequestMapping(value="{projectid}/cost/", method=RequestMethod.GET)
+	public @ResponseBody List<SerializableIssue> getAllIssuesOfProjectId(@PathVariable int projectid) {
+		Set<Issue> issues = this.issueService.getAllIssuesByProjectId(projectid);
+		List<SerializableIssue> serializedIssues = new ArrayList<SerializableIssue>();
+		for (Iterator<Issue> iterator = issues.iterator(); iterator.hasNext();) {
+			Issue issue = iterator.next();
+			SerializableIssue serializableIssue = new SerializableIssue(issue.getId(), issue.getCategory(),
+					issue.getDescription(), issue.getExtraDuration(), issue.getCreationDate(), issue.getUserStoryID(), 
+					issue.getProjectID(), issue.getPersonID(), issue.getCommencement(), issue.getCost());
+			serializedIssues.add(serializableIssue);
+		}
+		return serializedIssues;
+	}
 
 	@RequestMapping(value="update/", method=RequestMethod.POST)
 	public @ResponseBody Map<String, ? extends Object> updateProject(@RequestBody Project p, HttpServletResponse response) {
@@ -103,13 +126,15 @@ public class ProjectPersonController {
 		Project project = this.projectService.findProjectById(p.getId());
 		project.setName(p.getName().trim());
 		project.setDescription(p.getDescription().trim());
+		project.setDuration(p.getDuration());
+		project.setCost(p.getCost());		
 		if (!failures.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return validationMessages(failures);
 		} else {
 			this.projectService.updateProject(project);
 			SerializableProject sp = new SerializableProject(project.getId(), project.getName(), 
-					project.getDescription(), project.getCreationDate());
+					project.getDescription(), project.getCreationDate(), project.getDuration(), project.getCost());
 			return Collections.singletonMap("project", sp);
 		}
 	}
@@ -144,6 +169,8 @@ public class ProjectPersonController {
 		p.setName(p.getName().trim());
 		p.setDescription(p.getDescription().trim());
 		p.setCreationDate(new Date());
+		p.setDuration(p.getDuration());
+		p.setCost(p.getCost());
 		Set<ConstraintViolation<Project>> failures = validator.validate(p);
 		if (!failures.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

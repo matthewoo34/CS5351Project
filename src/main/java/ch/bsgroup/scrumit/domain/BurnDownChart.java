@@ -6,10 +6,7 @@ import java.util.Date;
  * Class BurnDownChart manages the data of the Burn Down Chart 
  */
 public class BurnDownChart {
-	/**
-	 * BurnDownChart has a day as a string
-	 * 	for example " Sun 18.04.1982"
-	 */
+
 	private String day;
 
 	/**

@@ -1,6 +1,8 @@
 package ch.bsgroup.scrumit.pojo;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Class Task manages Tasks
@@ -47,12 +49,18 @@ public class SerializableTask {
 	 * Task is part of a UserStory
 	 */
 	private SerializableUserStory userStory;
+	
+	private int commencement;
+	
+	private int position;
+	
+//	private Set<Integer> personId;
 
 	/**
 	 * @desc Constructor
 	 */
 	public SerializableTask(int id, String description, int xCoord, int yCoord, int status, int duration, 
-			Date creationDate/*, SerializableUserStory userStory*/) {
+			Date creationDate, int commencement, int position/*, SerializableUserStory userStory*/) {
 		this.setId(id);
 		this.setDescription(description);
 		this.setxCoord(xCoord);
@@ -60,16 +68,21 @@ public class SerializableTask {
 		this.setStatus(status);
 		this.setDuration(duration);
 		this.setCreationDate(creationDate);
+		this.setCommencement(commencement);
+		this.setPosition(position);
 		//this.setUserStory(userStory);
 	}
 
-	public SerializableTask(int id, String description, int xCoord, int yCoord, int status, Date creationDate) {
+	public SerializableTask(int id, String description, int xCoord, int yCoord, int status, Date creationDate, 
+			int commencement, int position) {
 		this.setId(id);
 		this.setDescription(description);
 		this.setxCoord(xCoord);
 		this.setyCoord(yCoord);
 		this.setStatus(status);
 		this.setCreationDate(creationDate);
+		this.setCommencement(commencement);
+		this.setPosition(position);
 	}
 
 	/**
@@ -183,4 +196,28 @@ public class SerializableTask {
 	public void setUserStory(SerializableUserStory userStory) {
 		this.userStory = userStory;
 	}
+	
+	public int getCommencement() {
+		return commencement;
+	}
+
+	public void setCommencement(int commencement) {
+		this.commencement = commencement;
+	}
+	
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
+	}
+	
+//	public Set<Integer> getPersonId() {
+//		return personId;
+//	}
+//
+//	public void setPersonId(Set<Integer> personId) {
+//		this.personId = personId;
+//	}
 }

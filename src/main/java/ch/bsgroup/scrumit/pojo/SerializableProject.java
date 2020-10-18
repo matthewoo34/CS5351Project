@@ -40,23 +40,33 @@ public class SerializableProject {
 	 */
 	private Set<SerializableSprint> sprints = new HashSet<SerializableSprint>();
 
+	private int duration;
+	
+	private int cost;
+	
 	/**
 	 * @desc Constructor
 	 */
-	public SerializableProject(int id, String name/*, String description, Date creationDate, Set<SerializablePerson> persons, Set<SerializableSprint> sprints*/) {
+	public SerializableProject(int id, String name, int duration, int cost/*, String description, Date creationDate, Set<SerializablePerson> persons, Set<SerializableSprint> sprints*/) {
 		this.setId(id);
 		this.setName(name);
+		this.setDuration(duration);
+		this.setCost(cost);
+		
 		//this.setDescription(description);
 		//this.setCreationDate(creationDate);
 		//this.setPersons(persons);
 		//this.setSprints(sprints);
 	}
 
-	public SerializableProject(int id, String name, String description, Date creationDate/*, Set<SerializablePerson> persons, Set<SerializableSprint> sprints*/) {
+	public SerializableProject(int id, String name, String description, Date creationDate,int duration, int cost/*, Set<SerializablePerson> persons, Set<SerializableSprint> sprints*/) {
 		this.setId(id);
 		this.setName(name);
 		this.setDescription(description);
 		this.setCreationDate(creationDate);
+		this.setDuration(duration);
+		this.setCost(cost);
+		
 		//this.setPersons(persons);
 		//this.setSprints(sprints);
 	}
@@ -143,5 +153,21 @@ public class SerializableProject {
 	 */
 	public void setPersons(Set<SerializablePerson> persons) {
 		this.persons = persons;
+	}
+	
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+	
+	public int getCost() {
+		return cost;
+	}
+
+	public void setCost(int cost) {
+		this.cost = cost;
 	}
 }

@@ -55,6 +55,12 @@ public class Project {
 	@DateTimeFormat(pattern = "dd.MM.yy HH:mm:ss")
 	@Temporal(value=TemporalType.TIMESTAMP)
 	private Date creationDate;
+	
+	@NotNull
+	private int duration;
+	
+	@NotNull
+	private int cost;
 
 	/**
 	 * Project has a list of Persons - mapping owner
@@ -78,7 +84,7 @@ public class Project {
 	@OneToMany
 	@JoinColumn(name="project_id", referencedColumnName="id")
 	private Set<Sprint> sprints = new HashSet<Sprint>();
-	
+		
 	/**
 	 * @return the id
 	 */
@@ -161,5 +167,21 @@ public class Project {
 	 */
 	public void setPersons(Set<Person> persons) {
 		this.persons = persons;
+	}
+	
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+	
+	public int getCost() {
+		return cost;
+	}
+
+	public void setCost(int cost) {
+		this.cost = cost;
 	}
 }
