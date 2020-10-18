@@ -6,15 +6,20 @@
 	<bean id="sprintServiceImpl" class="ch.bsgroup.scrumit.service.impl.SprintServiceImpl" />
 	<bean id="userStoryServiceImpl" class="ch.bsgroup.scrumit.service.impl.UserStoryServiceImpl" />
 	<bean id="taskServiceImpl" class="ch.bsgroup.scrumit.service.impl.TaskServiceImpl" />
+	<bean id="issueServiceImpl" class="ch.bsgroup.scrumit.service.impl.IssueServiceImpl" />
 
 	<bean id="projectService" class="ch.bsgroup.scrumit.service.impl.ProjectServiceImpl" />
 	<bean id="personService" class="ch.bsgroup.scrumit.service.impl.PersonServiceImpl" />
+	<bean id="issueService" class="ch.bsgroup.scrumit.service.impl.IssueServiceImpl" />
 	<bean id="projectPersonController" class="ch.bsgroup.scrumit.controller.ProjectPersonController">
 		<property name="projectService">
 			<ref local="projectService"/>
 		</property>
 		<property name="personService">
 			<ref local="personService"/>
+		</property>
+		<property name="issueService">
+			<ref local="issueService"/>
 		</property>
 	</bean>
 
@@ -46,6 +51,9 @@
 		</property>
 		<property name="projectService">
 			<ref local="projectService"/>
+		</property>
+		<property name="personService">
+			<ref local="personService"/>
 		</property>
 		<property name="userStoryService">
 			<ref local="userStoryService"/>
