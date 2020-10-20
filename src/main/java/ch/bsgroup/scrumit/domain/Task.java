@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -79,6 +80,12 @@ public class Task {
 	
 	@NotNull
 	private int position;
+	
+    /**
+     * Task has assign date
+     */
+    @Temporal(value=TemporalType.TIMESTAMP)
+    private Date assignDate;
 	
 //	@OneToMany(cascade=CascadeType.ALL)
 //	private Set<Integer> PersonId = new HashSet<Integer>();
@@ -211,11 +218,57 @@ public class Task {
 		this.position = position;
 	}
 	
-	public Set<Integer> getPersonId() {
-		return PersonId;
-	}
+    /**
+     * Task has a list of Persons - mapping owner
+     */
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL)
+        @JoinTable(name = "Task_Person",
+            joinColumns = {
+                @JoinColumn(name="task_id", referencedColumnName="id")
+            },
+            inverseJoinColumns = {
+                @JoinColumn(name="person_id", referencedColumnName="id")
+            }
+        )
+    private Set<Person> persons = new HashSet<Person>();
+    
+    /**
+     * @return the persons
+     */
+    public Set<Person> getPersons() {
+        return persons;
+    }
 
-	public void setpersonId(Set<Integer> PersonId) {
-		this.PersonId = PersonId;
-	}
+    /**
+     * @param persons the persons to set
+     */
+    public void setPersons(Set<Person> persons) {
+        this.persons = persons;
+    }
+    
+    /**
+     * @return the task assign date
+     */
+    public Date getAssignDate() {
+        return assignDate;
+    }
+
+    /**
+     * @param assignDate the task assign date
+     */
+    public void setAssignDate(Date assignDate) {
+        this.assignDate = assignDate;
+    }
+	
+    @Transient
+    private Integer personId;
+    
+    public void setPersonId(Integer personId) {
+        this.personId = personId;
+    }
+    
+    public Integer getPersonId() {
+        return this.personId;
+    }
 }

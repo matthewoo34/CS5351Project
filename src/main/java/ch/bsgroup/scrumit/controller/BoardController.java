@@ -139,6 +139,16 @@ public class BoardController {
 		}
 		t.setUserStory(u);
 		t.setCreationDate(new Date());
+        //find related developer
+        if (t.getPersonId() != null) {
+            Person p = this.personService.findPersonById(t.getPersonId());
+            if (p!=null) {
+                Set<Person> pSet = new HashSet<Person>();
+                pSet.add(p);
+                t.setPersons(pSet);
+                t.setAssignDate(new Date());
+            }
+        }
 		Task task = this.taskService.addTask(t);
 		this.burnDownChartService.updateBurnDown(task.getDuration(), 0, sprintid);
 		return new SerializableTask(task.getId(), task.getDescription(), task.getxCoord(), task.getyCoord(), 
@@ -168,6 +178,27 @@ public class BoardController {
 		}
 		this.taskService.updateTask(task);
 	}
+	
+    @RequestMapping(value="task/updateperson/", method=RequestMethod.POST)
+    public @ResponseBody void updateTaskPerson(@RequestBody Task t) {
+        Task task = this.taskService.findTaskById(t.getId());
+        if (task == null) {
+            throw new ResourceNotFoundException(t.getId());
+        }
+        
+        Integer personId = t.getPersonId();
+        Set<Person> pSet = new HashSet<Person>();
+        if (personId != null) {
+            Person p = this.personService.findPersonById(t.getPersonId());
+            if (p == null) {
+                throw new ResourceNotFoundException(personId);
+            }
+            pSet.add(p);
+        }
+        task.setPersons(pSet);
+        task.setAssignDate(new Date());
+        this.taskService.updateTask(task);
+    }
 
 	@RequestMapping(value="task/updatedescription/", method=RequestMethod.POST)
 	public @ResponseBody void updateTaskDescription(@RequestBody Task t) {
