@@ -26,17 +26,17 @@ import ch.bsgroup.scrumit.domain.BurnDownChart;
 import ch.bsgroup.scrumit.domain.Person;
 import ch.bsgroup.scrumit.domain.Project;
 import ch.bsgroup.scrumit.domain.Sprint;
+import ch.bsgroup.scrumit.domain.SprintBacklog;
 import ch.bsgroup.scrumit.domain.Task;
-import ch.bsgroup.scrumit.domain.UserStory;
 import ch.bsgroup.scrumit.pojo.SerializableBurnDownChart;
+import ch.bsgroup.scrumit.pojo.SerializableSprintBacklog;
 import ch.bsgroup.scrumit.pojo.SerializableTask;
-import ch.bsgroup.scrumit.pojo.SerializableUserStory;
 import ch.bsgroup.scrumit.service.IBurnDownChartService;
 import ch.bsgroup.scrumit.service.IPersonService;
 import ch.bsgroup.scrumit.service.IProjectService;
+import ch.bsgroup.scrumit.service.ISprintBacklogService;
 import ch.bsgroup.scrumit.service.ISprintService;
 import ch.bsgroup.scrumit.service.ITaskService;
-import ch.bsgroup.scrumit.service.IUserStoryService;
 import ch.bsgroup.scrumit.utils.ResourceNotFoundException;
 
 @Controller
@@ -45,7 +45,7 @@ public class BoardController {
 	private IProjectService projectService;
 	private IPersonService personService;
 	private ISprintService sprintService;
-	private IUserStoryService userStoryService;
+	private ISprintBacklogService sprintBacklogService;
 	private ITaskService taskService;
 	private IBurnDownChartService burnDownChartService;
 
@@ -61,8 +61,8 @@ public class BoardController {
 		this.sprintService = sprintService;
 	}
 
-	public void setUserStoryService(IUserStoryService userStoryService) {
-		this.userStoryService = userStoryService;
+	public void setSprintBacklogService(ISprintBacklogService sprintBacklogService) {
+		this.sprintBacklogService = sprintBacklogService;
 	}
 
 	public void setTaskService(ITaskService taskService) {
@@ -90,21 +90,21 @@ public class BoardController {
 		return "board/board";
 	}
 
-	@RequestMapping(value="alluserstories/{sprintid}/", method=RequestMethod.GET)
-	public @ResponseBody List<SerializableUserStory> getAllUserstoriesOfSprint(@PathVariable Integer sprintid) {
-		Set<UserStory> userstories = this.userStoryService.getAllUserStorysBySprintId(sprintid);
-		List<SerializableUserStory> serializedUserstories = new ArrayList<SerializableUserStory>();
-		for (Iterator<UserStory> iterator = userstories.iterator(); iterator.hasNext();) {
-			UserStory u = iterator.next();
-			SerializableUserStory su = new SerializableUserStory(u.getId(), u.getName(), u.getxCoord(), u.getyCoord());
-			serializedUserstories.add(su);
+	@RequestMapping(value="allsprintbacklogs/{sprintid}/", method=RequestMethod.GET)
+	public @ResponseBody List<SerializableSprintBacklog> getAllSprintBacklogsOfSprint(@PathVariable Integer sprintid) {
+		Set<SprintBacklog> sprintBacklog = this.sprintBacklogService.getAllSprintBacklogsBySprintId(sprintid);
+		List<SerializableSprintBacklog> serializedSprintBacklogs = new ArrayList<SerializableSprintBacklog>();
+		for (Iterator<SprintBacklog> iterator = sprintBacklog.iterator(); iterator.hasNext();) {
+			SprintBacklog s = iterator.next();
+			SerializableSprintBacklog ss = new SerializableSprintBacklog(s.getId(), s.getAcceptanceTest(), s.getProductBacklogId());
+			serializedSprintBacklogs.add(ss);
 		}
-		return serializedUserstories;
+		return serializedSprintBacklogs;
 	}
 
-	@RequestMapping(value="alltasks/{userstoryid}/", method=RequestMethod.GET)
-	public @ResponseBody List<SerializableTask> getAllTasksOfUserstory(@PathVariable Integer userstoryid) {
-		Set<Task> tasks = this.taskService.getAllTasksByUserstoryId(userstoryid);
+	@RequestMapping(value="alltasks/{sprintbacklogid}/", method=RequestMethod.GET)
+	public @ResponseBody List<SerializableTask> getAllTasksOfSprintBacklog(@PathVariable Integer sprintbacklogid) {
+		Set<Task> tasks = this.taskService.getAllTasksBySprintBacklogId(sprintbacklogid);
 		List<SerializableTask> serializedTasks = new ArrayList<SerializableTask>();
 		for (Iterator<Task> iterator = tasks.iterator(); iterator.hasNext();) {
 			Task t = iterator.next();
@@ -116,28 +116,28 @@ public class BoardController {
 		return serializedTasks;
 	}
 
-	@RequestMapping(value="userstory/updatecoord/", method=RequestMethod.POST)
-	public @ResponseBody void updateUserstoryCoord(@RequestBody UserStory u) {
-		UserStory us = this.userStoryService.findUserStoryById(u.getId());
-		us.setxCoord(u.getxCoord());
-		us.setyCoord(u.getyCoord());
-		this.userStoryService.updateUserStory(us);
-	}
+//	@RequestMapping(value="sprintbacklog/updatecoord/", method=RequestMethod.POST)
+//	public @ResponseBody void updateUserstoryCoord(@RequestBody SprintBacklog s) {
+//		UserStory us = this.userStoryService.findUserStoryById(u.getId());
+//		us.setxCoord(u.getxCoord());
+//		us.setyCoord(u.getyCoord());
+//		this.userStoryService.updateUserStory(us);
+//	}
+//
+//	@RequestMapping(value="userstory/updatename/", method=RequestMethod.POST)
+//	public @ResponseBody void updateUserstoryName(@RequestBody UserStory u) {
+//		UserStory us = this.userStoryService.findUserStoryById(u.getId());
+//		us.setName(u.getName());
+//		this.userStoryService.updateUserStory(us);
+//	}
 
-	@RequestMapping(value="userstory/updatename/", method=RequestMethod.POST)
-	public @ResponseBody void updateUserstoryName(@RequestBody UserStory u) {
-		UserStory us = this.userStoryService.findUserStoryById(u.getId());
-		us.setName(u.getName());
-		this.userStoryService.updateUserStory(us);
-	}
-
-	@RequestMapping(value="add/task/{userstoryid}/{sprintid}/", method=RequestMethod.POST)
-	public @ResponseBody SerializableTask addTask(@PathVariable Integer userstoryid, @PathVariable int sprintid, @RequestBody Task t) {
-		UserStory u = this.userStoryService.findUserStoryById(userstoryid);
-		if (u == null) {
-			throw new ResourceNotFoundException(userstoryid);
+	@RequestMapping(value="add/task/{sprintbacklogid}/{sprintid}/", method=RequestMethod.POST)
+	public @ResponseBody SerializableTask addTask(@PathVariable Integer sprintbacklogid, @PathVariable int sprintid, @RequestBody Task t) {
+		SprintBacklog s = this.sprintBacklogService.findSprintBacklogById(sprintbacklogid);
+		if (s == null) {
+			throw new ResourceNotFoundException(sprintbacklogid);
 		}
-		t.setUserStory(u);
+		t.setSprintBacklog(s);
 		t.setCreationDate(new Date());
 		Task task = this.taskService.addTask(t);
 		this.burnDownChartService.updateBurnDown(task.getDuration(), 0, sprintid);

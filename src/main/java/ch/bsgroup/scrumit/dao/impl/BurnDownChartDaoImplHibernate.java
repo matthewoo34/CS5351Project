@@ -54,9 +54,9 @@ public class BurnDownChartDaoImplHibernate implements IBurnDownChartDao {
         					"`task_aud`.`status` AS 'STATUS', " +
         					"STARTDATE, " +
         					"ENDDATE " +
-        				"FROM `sprint_userstory` " +
-        					"INNER JOIN `userstory` ON `sprint_userstory`.`userstory_id` = `userstory`.`id` " +
-        					"INNER JOIN `task` ON `userstory`.`id` = `task`.`userstory_id` " +
+        				"FROM `sprint_sprintbacklog` " +
+        					"INNER JOIN `sprintbacklog` ON `sprint_sprintbacklog`.`sprintbacklog_id` = `sprintbacklog`.`id` " +
+        					"INNER JOIN `task` ON `sprintbacklog`.`id` = `task`.`sprintbacklog_id` " +
         					"INNER JOIN `task_aud` ON `task`.`id` = `task_aud`.`id` " +
         					"INNER JOIN `revinfo` ON `task_aud`.`REV` = `revinfo`.`REV` " +
         					"INNER JOIN ( " +
@@ -66,12 +66,12 @@ public class BurnDownChartDaoImplHibernate implements IBurnDownChartDao {
         							"MAX(`task_aud`.`REV`) AS 'MAX_REV', " +
         							"`sprint`.`startDate` AS 'STARTDATE', " +
         							"`sprint`.`endDate` AS 'ENDDATE' " +
-        						"FROM `sprint_userstory` " +
-        							"INNER JOIN `userstory` ON `sprint_userstory`.`userstory_id` = `userstory`.`id` " +
-        							"INNER JOIN `task` on `userstory`.`id` = `task`.`userstory_id` " +
+        						"FROM `sprint_sprintbacklog` " +
+        							"INNER JOIN `sprintbacklog` ON `sprint_sprintbacklog`.`sprintbacklog_id` = `sprintbacklog`.`id` " +
+        							"INNER JOIN `task` on `sprintbacklog`.`id` = `task`.`sprintbacklog_id` " +
         							"INNER JOIN `task_aud` ON `task`.`id` = `task_aud`.`id` " +
         							"INNER JOIN `revinfo` ON `task_aud`.`REV` = `revinfo`.`REV` " +
-        							"INNER JOIN `sprint` ON `sprint_userstory`.`sprint_id` = `sprint`.`id` " +
+        							"INNER JOIN `sprint` ON `sprint_sprintbacklog`.`sprint_id` = `sprint`.`id` " +
         						"WHERE " +
         							"`sprint_userstory`.`sprint_id` = "+sprintId+" " +
         						"GROUP BY ID, date" +

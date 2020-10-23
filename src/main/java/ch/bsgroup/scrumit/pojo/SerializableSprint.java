@@ -36,9 +36,9 @@ public class SerializableSprint {
 	private SerializableProject project;
 
 	/**
-	 * Sprint has UserStorys
+	 * Sprint has SprintBacklog
 	 */
-	private Set<SerializableUserStory> userStories = new HashSet<SerializableUserStory>();
+	private Set<SerializableSprintBacklog> sprintBacklog = new HashSet<SerializableSprintBacklog>();
 
 	/**
 	 * @desc Constructor
@@ -123,16 +123,16 @@ public class SerializableSprint {
 	}
 
 	/**
-	 * @return the userStories
+	 * @return the SprintBacklog
 	 */
-	public Set<SerializableUserStory> getUserStories() {
-		return userStories;
+	public Set<SerializableSprintBacklog> getSprintBacklog() {
+		return sprintBacklog;
 	}
 
 	/**
-	 * @param userStories the userStories to set
+	 * @param SprintBacklog the SprintBacklog to set
 	 */
-	public void setUserStories(Set<SerializableUserStory> userStories) {
-		this.userStories = userStories;
+	public void setSprintBacklog(Set<SerializableSprintBacklog> sprintBacklog) {
+		this.sprintBacklog = sprintBacklog;
 	}
 }
