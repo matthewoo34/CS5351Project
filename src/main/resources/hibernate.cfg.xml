@@ -32,10 +32,11 @@
 		<mapping class="ch.bsgroup.scrumit.domain.Person" />
 		<mapping class="ch.bsgroup.scrumit.domain.Project" />
 		<mapping class="ch.bsgroup.scrumit.domain.Sprint" />
-		<mapping class="ch.bsgroup.scrumit.domain.UserStory" />
+		<mapping class="ch.bsgroup.scrumit.domain.SprintBacklog" />
 		<mapping class="ch.bsgroup.scrumit.domain.Task" />
 		<mapping class="ch.bsgroup.scrumit.domain.BurnDown" />
 		<mapping class="ch.bsgroup.scrumit.domain.Issue" />
+		<mapping class="ch.bsgroup.scrumit.domain.ProductBacklog" />
 		<!-- Envers -->
 		<event type="post-insert">
 			<listener

@@ -4,7 +4,7 @@
 	<bean id="personServiceImpl" class="ch.bsgroup.scrumit.service.impl.PersonServiceImpl" />
 	<bean id="projectServiceImpl" class="ch.bsgroup.scrumit.service.impl.ProjectServiceImpl" />
 	<bean id="sprintServiceImpl" class="ch.bsgroup.scrumit.service.impl.SprintServiceImpl" />
-	<bean id="userStoryServiceImpl" class="ch.bsgroup.scrumit.service.impl.UserStoryServiceImpl" />
+	<bean id="sprintBacklogServiceImpl" class="ch.bsgroup.scrumit.service.impl.SprintBacklogServiceImpl" />
 	<bean id="taskServiceImpl" class="ch.bsgroup.scrumit.service.impl.TaskServiceImpl" />
 	<bean id="issueServiceImpl" class="ch.bsgroup.scrumit.service.impl.IssueServiceImpl" />
 </beans>
