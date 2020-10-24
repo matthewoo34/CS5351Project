@@ -7,4 +7,5 @@
 	<bean id="sprintBacklogServiceImpl" class="ch.bsgroup.scrumit.service.impl.SprintBacklogServiceImpl" />
 	<bean id="taskServiceImpl" class="ch.bsgroup.scrumit.service.impl.TaskServiceImpl" />
 	<bean id="issueServiceImpl" class="ch.bsgroup.scrumit.service.impl.IssueServiceImpl" />
+	<bean id="productBacklogServiceImpl" class="ch.bsgroup.scrumit.service.impl.ProductBacklogServiceImpl" />
 </beans>

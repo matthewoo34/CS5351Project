@@ -10,4 +10,5 @@ public interface IProductBacklogService {
 	public void removeProductBacklog(ProductBacklog p);
 	public Set<ProductBacklog> getAllProductBacklogs();
 	public ProductBacklog findProductBacklogById(int productBacklogId);
+	public Set<ProductBacklog> getAllProductBacklogsByProjectId(int projectId);
 }

@@ -4,9 +4,10 @@
 	<bean id="personServiceImpl" class="ch.bsgroup.scrumit.service.impl.PersonServiceImpl" />
 	<bean id="projectServiceImpl" class="ch.bsgroup.scrumit.service.impl.ProjectServiceImpl" />
 	<bean id="sprintServiceImpl" class="ch.bsgroup.scrumit.service.impl.SprintServiceImpl" />
-	<bean id="userStoryServiceImpl" class="ch.bsgroup.scrumit.service.impl.UserStoryServiceImpl" />
+<!-- 	<bean id="userStoryServiceImpl" class="ch.bsgroup.scrumit.service.impl.UserStoryServiceImpl" /> -->
 	<bean id="taskServiceImpl" class="ch.bsgroup.scrumit.service.impl.TaskServiceImpl" />
 	<bean id="issueServiceImpl" class="ch.bsgroup.scrumit.service.impl.IssueServiceImpl" />
+	<bean id="productBacklogServiceImpl" class="ch.bsgroup.scrumit.service.impl.ProductBacklogServiceImpl" />
 
 	<bean id="projectService" class="ch.bsgroup.scrumit.service.impl.ProjectServiceImpl" />
 	<bean id="personService" class="ch.bsgroup.scrumit.service.impl.PersonServiceImpl" />
@@ -22,18 +23,26 @@
 			<ref local="issueService"/>
 		</property>
 	</bean>
-
+	<bean id="productBacklogService" class="ch.bsgroup.scrumit.service.impl.ProductBacklogServiceImpl"></bean>
+	<bean id="projectProductBacklogController" class="ch.bsgroup.scrumit.controller.ProjectProductBacklogController">
+		<property name="projectService">
+			<ref local="projectService"/>
+		</property>
+		<property name="productBacklogService">
+			<ref local="productBacklogService"/>
+		</property>
+	</bean>
 	<bean id="sprintService" class="ch.bsgroup.scrumit.service.impl.SprintServiceImpl" />
-	<bean id="userStoryService" class="ch.bsgroup.scrumit.service.impl.UserStoryServiceImpl" />
+<!-- 	<bean id="userStoryService" class="ch.bsgroup.scrumit.service.impl.UserStoryServiceImpl" /> -->
 	<bean id="burnDownChartService" class="ch.bsgroup.scrumit.service.impl.BurnDownChartServiceImpl" />
 	<bean id="taskService" class="ch.bsgroup.scrumit.service.impl.TaskServiceImpl" />
 	<bean id="sprintUserstoryController" class="ch.bsgroup.scrumit.controller.SprintUserstoryController">
 		<property name="sprintService">
 			<ref local="sprintService"/>
 		</property>
-		<property name="userStoryService">
-			<ref local="userStoryService"/>
-		</property>
+<!-- 		<property name="userStoryService"> -->
+<!-- 			<ref local="userStoryService"/> -->
+<!-- 		</property> -->
 		<property name="projectService">
 			<ref local="projectService"/>
 		</property>
@@ -55,9 +64,9 @@
 		<property name="personService">
 			<ref local="personService"/>
 		</property>
-		<property name="userStoryService">
-			<ref local="userStoryService"/>
-		</property>
+<!-- 		<property name="userStoryService"> -->
+<!-- 			<ref local="userStoryService"/> -->
+<!-- 		</property> -->
 		<property name="taskService">
 			<ref local="taskService"/>
 		</property>
