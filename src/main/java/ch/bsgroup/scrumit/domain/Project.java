@@ -84,6 +84,13 @@ public class Project {
 	@OneToMany
 	@JoinColumn(name="project_id", referencedColumnName="id")
 	private Set<Sprint> sprints = new HashSet<Sprint>();
+	
+	
+	@DateTimeFormat(pattern = "dd.MM.yy")
+    @Temporal(value=TemporalType.TIMESTAMP)
+	private Date startDate;
+	
+	private int noOfWeekPerSprint;
 		
 	/**
 	 * @return the id
@@ -183,5 +190,21 @@ public class Project {
 
 	public void setCost(int cost) {
 		this.cost = cost;
+	}
+	
+	public Date getStartDate() {
+		return startDate;
+	}
+	
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	
+	public int getNoOfWeekPerSprint() {
+		return noOfWeekPerSprint;
+	}
+	
+	public void setNoOfWeekPerSprint(int noOfWeekPerSprint) {
+		this.noOfWeekPerSprint = noOfWeekPerSprint;
 	}
 }

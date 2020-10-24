@@ -94,7 +94,7 @@ public class ProjectPersonController {
 			throw new ResourceNotFoundException(projectid);
 		}
 		return new SerializableProject(p.getId(), p.getName(), p.getDescription(), p.getCreationDate(), 
-				p.getDuration(), p.getCost());
+				p.getDuration(), p.getCost(),p.getStartDate(),p.getNoOfWeekPerSprint());
 	}
 	
 	@RequestMapping(value="person/{personid}/", method=RequestMethod.GET)
@@ -134,7 +134,7 @@ public class ProjectPersonController {
 		} else {
 			this.projectService.updateProject(project);
 			SerializableProject sp = new SerializableProject(project.getId(), project.getName(), 
-					project.getDescription(), project.getCreationDate(), project.getDuration(), project.getCost());
+					project.getDescription(), project.getCreationDate(), project.getDuration(), project.getCost(),project.getStartDate(),project.getNoOfWeekPerSprint());
 			return Collections.singletonMap("project", sp);
 		}
 	}
@@ -171,6 +171,8 @@ public class ProjectPersonController {
 		p.setCreationDate(new Date());
 		p.setDuration(p.getDuration());
 		p.setCost(p.getCost());
+		p.setStartDate(p.getStartDate());
+		p.setNoOfWeekPerSprint(p.getNoOfWeekPerSprint());
 		Set<ConstraintViolation<Project>> failures = validator.validate(p);
 		if (!failures.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

@@ -44,6 +44,10 @@ public class SerializableProject {
 	
 	private int cost;
 	
+	private Date startDate;
+	
+	private int noOfWeekPerSprint;
+	
 	/**
 	 * @desc Constructor
 	 */
@@ -59,7 +63,8 @@ public class SerializableProject {
 		//this.setSprints(sprints);
 	}
 
-	public SerializableProject(int id, String name, String description, Date creationDate,int duration, int cost/*, Set<SerializablePerson> persons, Set<SerializableSprint> sprints*/) {
+	public SerializableProject(int id, String name, String description, Date creationDate,int duration, int cost/*, Set<SerializablePerson> persons, Set<SerializableSprint> sprints*/,
+			Date startDate,int noOfWeekPerSprint) {
 		this.setId(id);
 		this.setName(name);
 		this.setDescription(description);
@@ -69,6 +74,8 @@ public class SerializableProject {
 		
 		//this.setPersons(persons);
 		//this.setSprints(sprints);
+		this.setStartDate(startDate);
+		this.setNoOfWeekPerSprint(noOfWeekPerSprint);
 	}
 
 	/**
@@ -169,5 +176,21 @@ public class SerializableProject {
 
 	public void setCost(int cost) {
 		this.cost = cost;
+	}
+	
+	public Date getStartDate() {
+		return startDate;
+	}
+	
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	
+	public int getNoOfWeekPerSprint() {
+		return noOfWeekPerSprint;
+	}
+	
+	public void setNoOfWeekPerSprint(int noOfWeekPerSprint) {
+		this.noOfWeekPerSprint = noOfWeekPerSprint;
 	}
 }
