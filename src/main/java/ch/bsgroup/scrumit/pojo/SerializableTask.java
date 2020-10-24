@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public class SerializableTask {
 	/**
-	 * Unique Id of the UserStory to identify it
+	 * Unique Id of the SprintBacklog to identify it
 	 */
 	private int id;
 
@@ -46,9 +46,9 @@ public class SerializableTask {
 	private Date creationDate;
 
 	/**
-	 * Task is part of a UserStory
+	 * Task is part of a SprintBacklog
 	 */
-	private SerializableUserStory userStory;
+	private SerializableSprintBacklog sprintBacklog;
 	
 	private int commencement;
 	
@@ -187,18 +187,12 @@ public class SerializableTask {
 		this.creationDate = creationDate;
 	}
 
-	/**
-	 * @return the userStory
-	 */
-	public SerializableUserStory getUserStory() {
-		return userStory;
+	public SerializableSprintBacklog getSprintBacklog() {
+		return sprintBacklog;
 	}
 
-	/**
-	 * @param userStory the userStory to set
-	 */
-	public void setUserStory(SerializableUserStory userStory) {
-		this.userStory = userStory;
+	public void setSprintBacklog(SerializableSprintBacklog sprintBacklog) {
+		this.sprintBacklog = sprintBacklog;
 	}
 	
 	public int getCommencement() {
@@ -216,6 +210,7 @@ public class SerializableTask {
 	public void setPosition(int position) {
 		this.position = position;
 	}
+<<<<<<< HEAD
 	
 	public String getPersonName() {
 		return personName;
@@ -232,4 +227,6 @@ public class SerializableTask {
 	public void setAssignDate(Date assignDate) {
 		this.assignDate = assignDate;
 	}
+=======
+>>>>>>> origin/VictorYam-Branch-1
 }

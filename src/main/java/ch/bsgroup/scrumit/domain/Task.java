@@ -31,7 +31,7 @@ import org.hibernate.envers.Audited;
 @Entity
 public class Task {
 	/**
-	 * Unique Id of the UserStory to identify it
+	 * Unique Id of the SprintBacklog to identify it
 	 */
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -69,12 +69,9 @@ public class Task {
 	@Temporal(value=TemporalType.TIMESTAMP)
 	private Date creationDate;
 
-	/**
-	 * Task is part of a UserStory
-	 */
 	@ManyToOne
-	@JoinColumn(name="userstory_id", referencedColumnName="id", nullable=true, updatable=false, insertable=true)
-	private UserStory userStory;
+	@JoinColumn(name="sprintbacklog_id", referencedColumnName="id", nullable=true, updatable=false, insertable=true)
+	private SprintBacklog sprintBacklog;
 	
 	@NotNull
 	private int commencement;
@@ -82,6 +79,7 @@ public class Task {
 	@NotNull
 	private int position;
 	
+<<<<<<< HEAD
     /**
      * Task has assign date
      */
@@ -91,6 +89,8 @@ public class Task {
 //	@OneToMany(cascade=CascadeType.ALL)
 //	private Set<Integer> PersonId = new HashSet<Integer>();
 	
+=======
+>>>>>>> origin/VictorYam-Branch-1
 	/**
 	 * @return the id
 	 */
@@ -189,18 +189,13 @@ public class Task {
 		this.creationDate = creationDate;
 	}
 
-	/**
-	 * @return the userStory
-	 */
-	public UserStory getUserStory() {
-		return userStory;
+
+	public SprintBacklog getSprintBacklog() {
+		return sprintBacklog;
 	}
 
-	/**
-	 * @param userStory the userStory to set
-	 */
-	public void setUserStory(UserStory userStory) {
-		this.userStory = userStory;
+	public void setSprintBacklog(SprintBacklog sprintBacklog) {
+		this.sprintBacklog = sprintBacklog;
 	}
 	
 	public int getCommencement() {
@@ -218,6 +213,7 @@ public class Task {
 	public void setPosition(int position) {
 		this.position = position;
 	}
+<<<<<<< HEAD
 	
     /**
      * Task has a list of Persons - mapping owner
@@ -265,4 +261,6 @@ public class Task {
     public Integer getPersonId() {
 		return this.personId;	
     }
+=======
+>>>>>>> origin/VictorYam-Branch-1
 }

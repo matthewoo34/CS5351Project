@@ -16,7 +16,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import ch.bsgroup.scrumit.domain.Person;
 import ch.bsgroup.scrumit.domain.Project;
-import ch.bsgroup.scrumit.domain.UserStory;
 
 /**
  * Class Issue manages Issue 
@@ -32,7 +31,7 @@ public class SerializableIssue {
 
 	private Date creationDate;
 	
-	private int userStoryID;
+	private int sprintBacklogID;
 	
 	private int projectID;
 
@@ -43,14 +42,14 @@ public class SerializableIssue {
 	private int cost;
 
 	public SerializableIssue(int id, int category, String description, int extraDuration,  
-			Date creationDate,  int userStoryID, int projectID, int personID, int commencement,
+			Date creationDate,  int sprintBacklogID, int projectID, int personID, int commencement,
 			int cost) {
 		this.setId(id);
 		this.setCategory(category);
 		this.setDescription(description);
 		this.setExtraDuration(extraDuration);
 		this.setCreationDate(creationDate);
-		this.setUserStoryID(userStoryID);
+		this.setSprintBacklogID(sprintBacklogID);
 		this.setProjectID(projectID);
 		this.setPersonID(personID);
 		this.setCommencement(commencement);
@@ -96,12 +95,12 @@ public class SerializableIssue {
 		this.creationDate = creationDate;
 	}
 	
-	public int getUserStoryID() {
-		return userStoryID;
+	public int getSprintBacklogID() {
+		return sprintBacklogID;
 	}
 
-	public void setUserStoryID(int userStoryID) {
-		this.userStoryID = userStoryID;
+	public void setSprintBacklogID(int sprintBacklogID) {
+		this.sprintBacklogID = sprintBacklogID;
 	}
 	
 	public int getProjectID() {

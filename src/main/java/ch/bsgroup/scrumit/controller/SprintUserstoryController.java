@@ -28,22 +28,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ch.bsgroup.scrumit.domain.BurnDown;
 import ch.bsgroup.scrumit.domain.Project;
 import ch.bsgroup.scrumit.domain.Sprint;
+import ch.bsgroup.scrumit.domain.SprintBacklog;
 import ch.bsgroup.scrumit.domain.Task;
-import ch.bsgroup.scrumit.domain.UserStory;
 import ch.bsgroup.scrumit.pojo.SerializableSprint;
-import ch.bsgroup.scrumit.pojo.SerializableUserStory;
+import ch.bsgroup.scrumit.pojo.SerializableSprintBacklog;
 import ch.bsgroup.scrumit.service.IBurnDownChartService;
 import ch.bsgroup.scrumit.service.IProjectService;
+import ch.bsgroup.scrumit.service.ISprintBacklogService;
 import ch.bsgroup.scrumit.service.ISprintService;
 import ch.bsgroup.scrumit.service.ITaskService;
-import ch.bsgroup.scrumit.service.IUserStoryService;
 import ch.bsgroup.scrumit.utils.ResourceNotFoundException;
 
 @Controller
 @RequestMapping(value="/sprint/")
 public class SprintUserstoryController {
 	private ISprintService sprintService;
-	private IUserStoryService userStoryService;
+	private ISprintBacklogService sprintBacklogService;
 	private IProjectService projectService;
 	private IBurnDownChartService burnDownChartService;
 	private ITaskService taskService;
@@ -58,8 +58,8 @@ public class SprintUserstoryController {
 		this.sprintService = sprintService;
 	}
 
-	public void setUserStoryService(IUserStoryService userStoryService) {
-		this.userStoryService = userStoryService;
+	public void setSprintBacklogService(ISprintBacklogService sprintBacklogService) {
+		this.sprintBacklogService = sprintBacklogService;
 	}
 
 	public void setProjectService(IProjectService projectService) {
@@ -75,14 +75,14 @@ public class SprintUserstoryController {
 	}
 
 	@RequestMapping(value="{projectid}/", method=RequestMethod.GET)
-	public String getSprintUserstory(@PathVariable("projectid") int id, Model model) {
+	public String getSprintSprintBacklog(@PathVariable("projectid") int id, Model model) {
 		Project p = this.projectService.findProjectById(id);
 		if (p == null) {
 			throw new ResourceNotFoundException(id);
 		}
 		model.addAttribute("projectid", id);
 		model.addAttribute("projectname", p.getName());
-		return "sprint/sprint-userstory";
+		return "sprint/sprint-sprintbacklog";
 	}
 	
 	@RequestMapping(value="all/{projectid}/", method=RequestMethod.GET)
@@ -97,16 +97,16 @@ public class SprintUserstoryController {
 		return serializedSprints;
 	}
 
-	@RequestMapping(value="alluserstories/{sprintid}/", method=RequestMethod.GET)
-	public @ResponseBody List<SerializableUserStory> getAllUserstoriesOfSprint(@PathVariable int sprintid) {
-		Set<UserStory> userstories = this.userStoryService.getAllUserStorysBySprintId(sprintid);
-		List<SerializableUserStory> serializedUserstories = new ArrayList<SerializableUserStory>();
-		for (Iterator<UserStory> iterator = userstories.iterator(); iterator.hasNext();) {
-			UserStory u = iterator.next();
-			SerializableUserStory su = new SerializableUserStory(u.getId(), u.getName());
-			serializedUserstories.add(su);
+	@RequestMapping(value="allsprintbacklogs/{sprintid}/", method=RequestMethod.GET)
+	public @ResponseBody List<SerializableSprintBacklog> getAllSprintBacklogOfSprint(@PathVariable int sprintid) {
+		Set<SprintBacklog> sprintBacklogs = this.sprintBacklogService.getAllSprintBacklogsBySprintId(sprintid);
+		List<SerializableSprintBacklog> serializedSprintBacklogs = new ArrayList<SerializableSprintBacklog>();
+		for (Iterator<SprintBacklog> iterator = sprintBacklogs.iterator(); iterator.hasNext();) {
+			SprintBacklog s = iterator.next();
+			SerializableSprintBacklog ss = new SerializableSprintBacklog(s.getId());
+			serializedSprintBacklogs.add(ss);
 		}
-		return serializedUserstories;
+		return serializedSprintBacklogs;
 	}
 
 	@RequestMapping(value="sprint/{sprintid}/", method=RequestMethod.GET)
@@ -140,37 +140,31 @@ public class SprintUserstoryController {
 		}
 	}
 
-	@RequestMapping(value="userstory/{userstoryid}/", method=RequestMethod.GET)
-	public @ResponseBody SerializableUserStory getUserstory(@PathVariable int userstoryid) {
-		UserStory u = this.userStoryService.findUserStoryById(userstoryid);
-		if (u == null) {
-			throw new ResourceNotFoundException(userstoryid);
+	@RequestMapping(value="sprintbacklog/{sprintbacklogid}/", method=RequestMethod.GET)
+	public @ResponseBody SerializableSprintBacklog getSprintBacklog(@PathVariable int sprintbacklogid) {
+		SprintBacklog s = this.sprintBacklogService.findSprintBacklogById(sprintbacklogid);
+		if (s == null) {
+			throw new ResourceNotFoundException(sprintbacklogid);
 		}
-		return new SerializableUserStory(u.getId(), u.getName(), u.getPriority(), u.getCreationDate(), 
-				u.getEstimatedSize(), u.getAcceptanceTest());
+		return new SerializableSprintBacklog(s.getId(), s.getAcceptanceTest(), s.getProductBacklogId());
 	}
 	
-	@RequestMapping(value="userstory/update/", method=RequestMethod.POST)
-	public @ResponseBody Map<String, ? extends Object> updateUserstory(@RequestBody UserStory u, HttpServletResponse response) {
-		UserStory us = this.userStoryService.findUserStoryById(u.getId());
-		us.setName(u.getName().trim());
-		us.setPriority(u.getPriority());
-		us.setEstimatedSize(u.getEstimatedSize());
-		us.setAcceptanceTest(u.getAcceptanceTest().trim());
-		Set<ConstraintViolation<UserStory>> failures = validator.validate(us);
+	@RequestMapping(value="sprintbacklog/update/", method=RequestMethod.POST)
+	public @ResponseBody Map<String, ? extends Object> updateSprintBacklog(@RequestBody SprintBacklog s, HttpServletResponse response) {
+		SprintBacklog sb = this.sprintBacklogService.findSprintBacklogById(s.getId());
+		sb.setAcceptanceTest(s.getAcceptanceTest().trim());
+		sb.setProductBacklogId(s.getProductBacklogId());
+		Set<ConstraintViolation<SprintBacklog>> failures = validator.validate(sb);
 		if (!failures.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			return validationMessagesUserstory(failures);
+			return validationMessagesSprintBacklog(failures);
 		} else {
-			this.userStoryService.updateUserStory(us);
-			return Collections.singletonMap("userstory", 
-					new SerializableUserStory(
-						us.getId(), 
-						us.getName(), 
-						us.getPriority(), 
-						us.getCreationDate(), 
-						us.getEstimatedSize(), 
-						us.getAcceptanceTest()
+			this.sprintBacklogService.updateSprintBacklog(sb);
+			return Collections.singletonMap("sprintbacklog", 
+					new SerializableSprintBacklog(
+						sb.getId(), 
+						sb.getAcceptanceTest(),
+						sb.getProductBacklogId()
 					)
 			);
 		}
@@ -223,35 +217,31 @@ public class SprintUserstoryController {
 		}
 	}
 
-	@RequestMapping(value="add/userstory/{sprintid}/", method=RequestMethod.POST)
-	public @ResponseBody Map<String, ? extends Object> addUserstory(@PathVariable int sprintid, @RequestBody UserStory u, HttpServletResponse response) {
+	@RequestMapping(value="add/sprintbacklog/{sprintid}/", method=RequestMethod.POST)
+	public @ResponseBody Map<String, ? extends Object> addSprintBacklog(@PathVariable int sprintid, @RequestBody SprintBacklog s, HttpServletResponse response) {
 		Sprint sprint = this.sprintService.findSprintById(sprintid);
 		if (sprint == null) {
 			throw new ResourceNotFoundException(sprintid);
 		}
-		u.setName(u.getName().trim());
-		u.setAcceptanceTest(u.getAcceptanceTest().trim());
-		u.setCreationDate(new Date());
-		Set<ConstraintViolation<UserStory>> failures = validator.validate(u);
+		s.setAcceptanceTest(s.getAcceptanceTest().trim());
+		s.setProductBacklogId(s.getProductBacklogId());
+		Set<ConstraintViolation<SprintBacklog>> failures = validator.validate(s);
 		if (!failures.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			return validationMessagesUserstory(failures);
+			return validationMessagesSprintBacklog(failures);
 		} else {
-			UserStory newUserStory = this.userStoryService.addUserStory(u);
+			SprintBacklog newSprintBacklog = this.sprintBacklogService.addSprintBacklog(s);
 
-			Set<UserStory> userstories = this.userStoryService.getAllUserStorysBySprintId(sprintid);
-			userstories.add(newUserStory);
-			sprint.setUserStories(userstories);
+			Set<SprintBacklog> sprintBacklogs = this.sprintBacklogService.getAllSprintBacklogsBySprintId(sprintid);
+			sprintBacklogs.add(newSprintBacklog);
+			sprint.setSprintBacklog(sprintBacklogs);
 			this.sprintService.updateSprint(sprint);
 
-			return Collections.singletonMap("userstory", 
-					new SerializableUserStory(
-							newUserStory.getId(), 
-							newUserStory.getName(), 
-							newUserStory.getPriority(), 
-							newUserStory.getCreationDate(), 
-							newUserStory.getEstimatedSize(), 
-							newUserStory.getAcceptanceTest()
+			return Collections.singletonMap("sprintbacklog", 
+					new SerializableSprintBacklog(
+							newSprintBacklog.getId(), 
+							newSprintBacklog.getAcceptanceTest(),
+							newSprintBacklog.getProductBacklogId()
 					)
 			);
 		}
@@ -264,19 +254,19 @@ public class SprintUserstoryController {
 		this.burnDownChartService.removeBurnDown(sprintid);
 	}
 
-	@RequestMapping(value="userstory/remove/{userstoryid}/", method=RequestMethod.GET)
-	public @ResponseBody void removeUserstoryById(@PathVariable int userstoryid) {
-		Set<Task> tasks = this.taskService.getAllTasksByUserstoryId(userstoryid);
-		int taskDurationOfUserstory = 0;
+	@RequestMapping(value="sprintbacklog/remove/{sprintbacklogid}/", method=RequestMethod.GET)
+	public @ResponseBody void removesprintbacklogById(@PathVariable int sprintbacklogid) {
+		Set<Task> tasks = this.taskService.getAllTasksBySprintBacklogId(sprintbacklogid);
+		int taskDurationOfSprintBacklog = 0;
 		for (Iterator<Task> iterator = tasks.iterator(); iterator.hasNext();) {
 			Task t = iterator.next();
-			taskDurationOfUserstory += t.getDuration();
+			taskDurationOfSprintBacklog += t.getDuration();
 		}
-		if (taskDurationOfUserstory > 0) {
+		if (taskDurationOfSprintBacklog > 0) {
 			// Update BurnDownChart
 			
 		}
-		this.userStoryService.removeUserStory(userstoryid);
+		this.sprintBacklogService.removeSprintBacklog(sprintbacklogid);
 	}
 
 	// internal helper
@@ -287,9 +277,9 @@ public class SprintUserstoryController {
 		}
 		return failureMessages;
 	}
-	private Map<String, String> validationMessagesUserstory(Set<ConstraintViolation<UserStory>> failures) {
+	private Map<String, String> validationMessagesSprintBacklog(Set<ConstraintViolation<SprintBacklog>> failures) {
 		Map<String, String> failureMessages = new HashMap<String, String>();
-		for (ConstraintViolation<UserStory> failure : failures) {
+		for (ConstraintViolation<SprintBacklog> failure : failures) {
 			failureMessages.put(failure.getPropertyPath().toString(), failure.getMessage());
 		}
 		return failureMessages;

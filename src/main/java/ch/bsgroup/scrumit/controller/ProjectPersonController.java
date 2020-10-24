@@ -113,7 +113,7 @@ public class ProjectPersonController {
 		for (Iterator<Issue> iterator = issues.iterator(); iterator.hasNext();) {
 			Issue issue = iterator.next();
 			SerializableIssue serializableIssue = new SerializableIssue(issue.getId(), issue.getCategory(),
-					issue.getDescription(), issue.getExtraDuration(), issue.getCreationDate(), issue.getUserStoryID(), 
+					issue.getDescription(), issue.getExtraDuration(), issue.getCreationDate(), issue.getSprintBacklogID(), 
 					issue.getProjectID(), issue.getPersonID(), issue.getCommencement(), issue.getCost());
 			serializedIssues.add(serializableIssue);
 		}

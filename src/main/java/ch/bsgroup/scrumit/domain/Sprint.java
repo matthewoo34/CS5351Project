@@ -63,20 +63,17 @@ public class Sprint {
 	@JoinColumn(name="project_id", referencedColumnName="id", updatable=false)
 	private Project project;
 
-	/**
-	 * Sprint has UserStorys - mapping owner
-	 */
 	@JsonIgnore
 	@ManyToMany
-		@JoinTable(name = "Sprint_UserStory",
+		@JoinTable(name = "Sprint_SprintBacklog",
 			joinColumns = {
 				@JoinColumn(name="sprint_id", referencedColumnName="id")
 			},
 			inverseJoinColumns = {
-				@JoinColumn(name="userstory_id", referencedColumnName="id")
+				@JoinColumn(name="sprintbacklog_id", referencedColumnName="id")
 			}
 		)
-	private Set<UserStory> userStories = new HashSet<UserStory>();
+	private Set<SprintBacklog> sprintBacklog = new HashSet<SprintBacklog>();
 
 	/**
 	 * @return the id
@@ -148,17 +145,11 @@ public class Sprint {
 		this.project = project;
 	}
 
-	/**
-	 * @return the userStories
-	 */
-	public Set<UserStory> getUserStories() {
-		return userStories;
+	public Set<SprintBacklog> getSprintBacklog() {
+		return sprintBacklog;
 	}
 
-	/**
-	 * @param userStories the userStories to set
-	 */
-	public void setUserStories(Set<UserStory> userStories) {
-		this.userStories = userStories;
+	public void setSprintBacklog(Set<SprintBacklog> sprintBacklog) {
+		this.sprintBacklog = sprintBacklog;
 	}
 }

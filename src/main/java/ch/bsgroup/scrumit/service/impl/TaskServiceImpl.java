@@ -50,7 +50,7 @@ public class TaskServiceImpl implements ITaskService {
 		return taskDao.findTaskById(taskId);
 	}
 
-	public Set<Task> getAllTasksByUserstoryId(int userstoryId) {
-		return taskDao.getAllTasksByUserstoryId(userstoryId);
+	public Set<Task> getAllTasksBySprintBacklogId(int sprintBacklogId) {
+		return taskDao.getAllTasksBySprintBacklogId(sprintBacklogId);
 	}
 }

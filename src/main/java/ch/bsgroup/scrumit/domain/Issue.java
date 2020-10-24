@@ -44,7 +44,7 @@ public class Issue {
 	private Date creationDate;
 	
 	@NotNull
-	private int userStoryID;
+	private int sprintBacklogID;
 	
 	@NotNull
 	private int projectID;
@@ -76,12 +76,12 @@ public class Issue {
 	}
 
 	public Issue(int category, String description, int extraDuration,  
-			Date creationDate,  int userStoryID, int projectID, int personID, int commencement, int cost) {
+			Date creationDate,  int sprintBacklogID, int projectID, int personID, int commencement, int cost) {
 		this.setCategory(category);
 		this.setDescription(description);
 		this.setExtraDuration(extraDuration);
 		this.setCreationDate(creationDate);
-		this.setUserStoryID(userStoryID);
+		this.setSprintBacklogID(sprintBacklogID);
 		this.setProjectID(projectID);
 		this.setPersonID(personID);
 		this.setCommencement(commencement);
@@ -127,12 +127,12 @@ public class Issue {
 		this.creationDate = creationDate;
 	}
 	
-	public int getUserStoryID() {
-		return userStoryID;
+	public int getSprintBacklogID() {
+		return sprintBacklogID;
 	}
 
-	public void setUserStoryID(int userStoryID) {
-		this.userStoryID = userStoryID;
+	public void setSprintBacklogID(int sprintBacklogID) {
+		this.sprintBacklogID = sprintBacklogID;
 	}
 	
 	public int getProjectID() {

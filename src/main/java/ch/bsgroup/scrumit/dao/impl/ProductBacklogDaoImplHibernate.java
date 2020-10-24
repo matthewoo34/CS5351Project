@@ -8,101 +8,84 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import ch.bsgroup.scrumit.domain.Task;
-import ch.bsgroup.scrumit.dao.ITaskDao;
+import ch.bsgroup.scrumit.domain.Person;
+import ch.bsgroup.scrumit.domain.ProductBacklog;
+import ch.bsgroup.scrumit.domain.Project;
+import ch.bsgroup.scrumit.dao.IPersonDao;
+import ch.bsgroup.scrumit.dao.IProductBacklogDao;
 import ch.bsgroup.scrumit.utils.HibernateUtil;
 
-/**
- * Task Dao Hibernate Implementation
- */
-public class TaskDaoImplHibernate implements ITaskDao {
-	/**
-	 * Add Task
-	 */
-	public Task addTask(Task t) {
+public class ProductBacklogDaoImplHibernate implements IProductBacklogDao {
+
+	public ProductBacklog addProductBacklog(ProductBacklog p) {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session sess = sessionFactory.getCurrentSession();
 
 		Transaction tx = sess.beginTransaction();
-		sess.save(t);
+		sess.save(p);
 		sess.flush();
 		tx.commit();
 
-		return t;
+		return p;
 	}
 
-	/**
-	 * Update Task
-	 */
-	public void updateTask(Task t) {
+	public void updateProductBacklog(ProductBacklog p) {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session sess = sessionFactory.getCurrentSession();
 
 		Transaction tx = sess.beginTransaction();
-		sess.update(t);
-		sess.flush();
+		sess.update(p);
 		tx.commit();
 	}
 
-	/**
-	 * Delete Task
-	 */
-	public void removeTask(int taskId){
-		Task t = findTaskById(taskId);
-
+	public void removeProductBacklog(ProductBacklog p){		
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session sess = sessionFactory.getCurrentSession();
 
 		Transaction tx = sess.beginTransaction();
-		sess.delete(t);
-		sess.flush();
+		sess.delete(p);
 		tx.commit();
 	}
 
-	/**
-	 * Get all Tasks
-	 */
-	public Set<Task> getAllTasks() {
+	public Set<ProductBacklog> getAllProductBacklogs() {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session sess = sessionFactory.getCurrentSession();
 
 		Transaction tx = sess.beginTransaction();
 		@SuppressWarnings("unchecked")
-		List<Task> list = sess.createQuery("from Task").list();
-		Set<Task> tasks = new HashSet<Task>(list);
+		List<ProductBacklog> list = sess.createQuery("from ProductBacklog").list();
+		Set<ProductBacklog> productBacklogs = new HashSet<ProductBacklog>(list);
 		tx.commit();
 
-		return tasks;
+		return productBacklogs;
 	}
 
-	/**
-	 * Find Task by ID
-	 */
-	public Task findTaskById(int taskId) {
+	public ProductBacklog findProductBacklogById(int productBacklogId) {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session sess = sessionFactory.getCurrentSession();
 
 		Transaction tx = sess.beginTransaction();
 		try {
-			Task task = (Task)sess.createQuery("from Task where id = "+taskId).list().get(0);
+			ProductBacklog productBacklog = (ProductBacklog)sess.createQuery("from ProductBacklog where id = "+productBacklogId).list().get(0);
 			tx.commit();
-			return task;
+			return productBacklog;
 		}
 		catch (IndexOutOfBoundsException ex) {
 			return null;
 		}
 	}
 
-	public Set<Task> getAllTasksBySprintBacklogId(int sprintBacklogId) {
+	public Set<ProductBacklog> getAllProductBacklogsByProjectId(int projectId) {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session sess = sessionFactory.getCurrentSession();
 
 		Transaction tx = sess.beginTransaction();
 		@SuppressWarnings("unchecked")
-		List<Task> list = sess.createQuery("from Task where sprintbacklog_id = :id").setParameter("id", sprintBacklogId).list();
-		Set<Task> tasks = new HashSet<Task>(list);
+		List<ProductBacklog> list = sess.createQuery("select p from ProductBacklog p join p.projects proj where proj.id = :id").setParameter("id", projectId).list();  
+		Set<ProductBacklog> persons = new HashSet<ProductBacklog>(list);
 		tx.commit();
 
-		return tasks;
+		return persons;
 	}
+
 }
