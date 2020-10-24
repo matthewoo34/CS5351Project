@@ -57,10 +57,10 @@ public class UserStoryDaoImplHibernate implements IUserStoryDao {
 			UserStory u = (UserStory)sess.createQuery("from UserStory where id = "+userstoryId).list().get(0);
 			Set<Sprint> sprints = u.getSprints();
 			for (Sprint sprint : sprints) {
-				if (sprint.getUserStories().contains(u)) {
-					sprint.getUserStories().remove(u);
-			        sess.saveOrUpdate(sprint);
-				}
+//				if (sprint.getUserStories().contains(u)) {
+//					sprint.getUserStories().remove(u);
+//			        sess.saveOrUpdate(sprint);
+//				}
 			}
 			sess.delete(u);
 		    tx.commit();

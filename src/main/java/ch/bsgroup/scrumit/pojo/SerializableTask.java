@@ -210,8 +210,7 @@ public class SerializableTask {
 	public void setPosition(int position) {
 		this.position = position;
 	}
-<<<<<<< HEAD
-	
+
 	public String getPersonName() {
 		return personName;
 	}
@@ -227,6 +226,4 @@ public class SerializableTask {
 	public void setAssignDate(Date assignDate) {
 		this.assignDate = assignDate;
 	}
-=======
->>>>>>> origin/VictorYam-Branch-1
 }

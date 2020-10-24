@@ -79,7 +79,6 @@ public class Task {
 	@NotNull
 	private int position;
 	
-<<<<<<< HEAD
     /**
      * Task has assign date
      */
@@ -89,8 +88,7 @@ public class Task {
 //	@OneToMany(cascade=CascadeType.ALL)
 //	private Set<Integer> PersonId = new HashSet<Integer>();
 	
-=======
->>>>>>> origin/VictorYam-Branch-1
+
 	/**
 	 * @return the id
 	 */
@@ -213,7 +211,7 @@ public class Task {
 	public void setPosition(int position) {
 		this.position = position;
 	}
-<<<<<<< HEAD
+
 	
     /**
      * Task has a list of Persons - mapping owner
@@ -261,6 +259,4 @@ public class Task {
     public Integer getPersonId() {
 		return this.personId;	
     }
-=======
->>>>>>> origin/VictorYam-Branch-1
 }
