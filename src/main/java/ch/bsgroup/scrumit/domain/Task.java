@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -222,29 +223,22 @@ public class Task {
      * Task has a list of Persons - mapping owner
      */
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL)
-        @JoinTable(name = "Task_Person",
-            joinColumns = {
-                @JoinColumn(name="task_id", referencedColumnName="id")
-            },
-            inverseJoinColumns = {
-                @JoinColumn(name="person_id", referencedColumnName="id")
-            }
-        )
-    private Set<Person> persons = new HashSet<Person>();
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="person_id", referencedColumnName="id")
+    private Person person;
     
     /**
      * @return the persons
      */
-    public Set<Person> getPersons() {
-        return persons;
+    public Person getPerson() {
+        return person;
     }
 
     /**
      * @param persons the persons to set
      */
-    public void setPersons(Set<Person> persons) {
-        this.persons = persons;
+    public void setPerson(Person person) {
+        this.person = person;
     }
     
     /**
@@ -269,6 +263,6 @@ public class Task {
     }
     
     public Integer getPersonId() {
-        return this.personId;
+		return this.personId;	
     }
 }

@@ -108,9 +108,13 @@ public class BoardController {
 		List<SerializableTask> serializedTasks = new ArrayList<SerializableTask>();
 		for (Iterator<Task> iterator = tasks.iterator(); iterator.hasNext();) {
 			Task t = iterator.next();
+			String personName="";
+			if (t.getPerson()!=null) {
+				personName = t.getPerson().getLastName() + " " + t.getPerson().getFirstName();
+			}
 			SerializableTask st = new SerializableTask(t.getId(), t.getDescription(), t.getxCoord(), 
 					t.getyCoord(), t.getStatus(), t.getDuration(), t.getCreationDate(), t.getCommencement(),
-					t.getPosition());
+					t.getPosition(),personName,t.getAssignDate());
 			serializedTasks.add(st);
 		}
 		return serializedTasks;
@@ -143,17 +147,20 @@ public class BoardController {
         if (t.getPersonId() != null) {
             Person p = this.personService.findPersonById(t.getPersonId());
             if (p!=null) {
-                Set<Person> pSet = new HashSet<Person>();
-                pSet.add(p);
-                t.setPersons(pSet);
+                t.setPerson(p);
                 t.setAssignDate(new Date());
             }
         }
 		Task task = this.taskService.addTask(t);
+		String personName = "";
+		if (task.getPerson() != null) {
+			System.out.println("add task null person");
+			personName = task.getPerson().getLastName() + " " + task.getPerson().getFirstName();
+		}
 		this.burnDownChartService.updateBurnDown(task.getDuration(), 0, sprintid);
 		return new SerializableTask(task.getId(), task.getDescription(), task.getxCoord(), task.getyCoord(), 
 				task.getStatus(), task.getDuration(), task.getCreationDate(), task.getCommencement(),
-				task.getPosition());
+				task.getPosition(),personName,task.getAssignDate());
 	}
 
 	@RequestMapping(value="task/updatecoord/{sprintid}/", method=RequestMethod.POST)
@@ -187,16 +194,14 @@ public class BoardController {
         }
         
         Integer personId = t.getPersonId();
-        Set<Person> pSet = new HashSet<Person>();
         if (personId != null) {
-            Person p = this.personService.findPersonById(t.getPersonId());
+            Person p = this.personService.findPersonById(personId);
             if (p == null) {
                 throw new ResourceNotFoundException(personId);
             }
-            pSet.add(p);
+            task.setPerson(p);
+            task.setAssignDate(new Date());
         }
-        task.setPersons(pSet);
-        task.setAssignDate(new Date());
         this.taskService.updateTask(task);
     }
 

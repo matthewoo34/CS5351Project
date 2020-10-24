@@ -97,6 +97,7 @@ public class PersonDaoImplHibernate implements IPersonDao {
 		try {
 			Person person = (Person)sess.createQuery("from Person where id = "+personId).list().get(0);
 			person.getProjects();
+			person.getTasks();
 			tx.commit();
 			return person;
 		}
