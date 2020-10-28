@@ -42,6 +42,14 @@ public class ProjectProductBacklogController {
 		this.validator = validator;
 	}
 	
+	public void setProjectService(IProjectService projectService) {
+		this.projectService = projectService;
+	}
+	
+	public void setProductBacklogService(IProductBacklogService productBacklogService) {
+		this.productBacklogService = productBacklogService;
+	}
+	
 	@RequestMapping(value="allproductbacklog/{projectid}/", method=RequestMethod.GET)
 	public @ResponseBody List<SerializableProductBacklog> getAllProductBackLog(@PathVariable int projectid) {
 		Set<ProductBacklog> productBacklogs = this.productBacklogService.getAllProductBacklogsByProjectId(projectid);
