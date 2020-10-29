@@ -40,14 +40,17 @@ public class SerializableSprint {
 	 */
 	private Set<SerializableSprintBacklog> sprintBacklog = new HashSet<SerializableSprintBacklog>();
 
+	private int endHour;
+	
 	/**
 	 * @desc Constructor
 	 */
-	public SerializableSprint(int id, String slogan, Date startDate, Date endDate/*, SerializableProject project, Set<SerializableUserStory> userStories*/) {
+	public SerializableSprint(int id, String slogan, Date startDate, Date endDate, int endHour/*, SerializableProject project, Set<SerializableUserStory> userStories*/) {
 		this.setId(id);
 		this.setSlogan(slogan);
 		this.setStartDate(startDate);
 		this.setEndDate(endDate);
+		this.setEndHour(endHour);
 		//this.setProject(project);
 		//this.setUserStories(userStories);
 	}
@@ -134,5 +137,13 @@ public class SerializableSprint {
 	 */
 	public void setSprintBacklog(Set<SerializableSprintBacklog> sprintBacklog) {
 		this.sprintBacklog = sprintBacklog;
+	}
+	
+	public int getEndHour() {
+		return endHour;
+	}
+
+	public void setEndHour(int endHour) {
+		this.endHour = endHour;
 	}
 }
