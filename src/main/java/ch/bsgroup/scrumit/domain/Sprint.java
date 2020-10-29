@@ -54,6 +54,9 @@ public class Sprint {
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	@Temporal(value=TemporalType.TIMESTAMP)
 	private Date endDate;
+	
+	@NotNull
+	private int endHour;
 
 	/**
 	 * Sprint is joined with a Project
@@ -151,5 +154,13 @@ public class Sprint {
 
 	public void setSprintBacklog(Set<SprintBacklog> sprintBacklog) {
 		this.sprintBacklog = sprintBacklog;
+	}
+	
+	public int getEndHour() {
+		return endHour;
+	}
+	
+	public void setEndHour(int endHour) {
+		this.endHour = endHour;
 	}
 }
