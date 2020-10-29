@@ -7,7 +7,7 @@ import ch.bsgroup.scrumit.domain.ProductBacklog;
 public interface IProductBacklogService {
 	public ProductBacklog addProductBacklog(ProductBacklog p);
 	public void updateProductBacklog(ProductBacklog p);
-	public void removeProductBacklog(ProductBacklog p);
+	public void removeProductBacklog(int productbacklogid);
 	public Set<ProductBacklog> getAllProductBacklogs();
 	public ProductBacklog findProductBacklogById(int productBacklogId);
 	public Set<ProductBacklog> getAllProductBacklogsByProjectId(int projectId);

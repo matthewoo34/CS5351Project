@@ -36,8 +36,8 @@ public class ProductBacklogServiceImpl implements IProductBacklogService {
 		productBacklogDao.updateProductBacklog(p);
 	}
 
-	public void removeProductBacklog(ProductBacklog p) {
-		productBacklogDao.removeProductBacklog(p);
+	public void removeProductBacklog(int productbacklogid) {
+		productBacklogDao.removeProductBacklog(productbacklogid);
 	}
 
 	public Set<ProductBacklog> getAllProductBacklogs() {

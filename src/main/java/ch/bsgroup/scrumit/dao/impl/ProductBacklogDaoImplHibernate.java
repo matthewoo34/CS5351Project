@@ -38,13 +38,19 @@ public class ProductBacklogDaoImplHibernate implements IProductBacklogDao {
 		tx.commit();
 	}
 
-	public void removeProductBacklog(ProductBacklog p){		
+	public void removeProductBacklog(int productbacklogid){		
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session sess = sessionFactory.getCurrentSession();
-
+		
 		Transaction tx = sess.beginTransaction();
-		sess.delete(p);
-		tx.commit();
+		try {
+			ProductBacklog p = (ProductBacklog)sess.createQuery("from ProductBacklog where id = "+productbacklogid).list().get(0);
+			sess.delete(p);
+			tx.commit();
+		}
+		catch (IndexOutOfBoundsException ex) {
+			System.out.println("exception: "+ex);
+		}
 	}
 
 	public Set<ProductBacklog> getAllProductBacklogs() {

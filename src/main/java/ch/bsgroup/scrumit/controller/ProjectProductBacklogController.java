@@ -102,6 +102,11 @@ public class ProjectProductBacklogController {
 		}
 	}
 	
+	@RequestMapping(value="productbacklog/remove/{productbacklogid}/", method=RequestMethod.GET)
+	public @ResponseBody void removeProductBacklogById(@PathVariable int productbacklogid) {
+		this.productBacklogService.removeProductBacklog(productbacklogid);
+	}
+	
 	
 	private Map<String, String> validationMessagesProductBacklog(Set<ConstraintViolation<ProductBacklog>> failures) {
 		Map<String, String> failureMessages = new HashMap<String, String>();
