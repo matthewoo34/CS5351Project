@@ -91,7 +91,7 @@ public class SprintUserstoryController {
 		List<SerializableSprint> serializedSprints = new ArrayList<SerializableSprint>();
 		for (Iterator<Sprint> iterator = sprints.iterator(); iterator.hasNext();) {
 			Sprint s = iterator.next();
-			SerializableSprint ss = new SerializableSprint(s.getId(), s.getSlogan(), s.getStartDate(), s.getEndDate());
+			SerializableSprint ss = new SerializableSprint(s.getId(), s.getSlogan(), s.getStartDate(), s.getEndDate(), s.getEndHour());
 			serializedSprints.add(ss);
 		}
 		return serializedSprints;
@@ -115,7 +115,7 @@ public class SprintUserstoryController {
 		if (s == null) {
 			throw new ResourceNotFoundException(sprintid);
 		}
-		return new SerializableSprint(s.getId(), s.getSlogan(), s.getStartDate(), s.getEndDate());
+		return new SerializableSprint(s.getId(), s.getSlogan(), s.getStartDate(), s.getEndDate(), s.getEndHour());
 	}
 
 	@RequestMapping(value="update/", method=RequestMethod.POST)
@@ -135,7 +135,9 @@ public class SprintUserstoryController {
 					sprint.getId(), 
 					sprint.getSlogan(), 
 					sprint.getStartDate(), 
-					sprint.getEndDate()
+					sprint.getEndDate(),
+					sprint.getEndHour()
+				
 			));
 		}
 	}
@@ -211,7 +213,8 @@ public class SprintUserstoryController {
 							sprint.getId(), 
 							sprint.getSlogan(), 
 							sprint.getStartDate(), 
-							sprint.getEndDate()
+							sprint.getEndDate(),
+							sprint.getEndHour()
 					)
 			);
 		}
