@@ -57,6 +57,8 @@ public class SerializableTask {
 	private String personName;
 	
 	private Date assignDate;
+	
+	private Set<SerializableIssue> issues = new HashSet<SerializableIssue>();
 
 	/**
 	 * @desc Constructor
@@ -225,5 +227,13 @@ public class SerializableTask {
 	
 	public void setAssignDate(Date assignDate) {
 		this.assignDate = assignDate;
+	}
+	
+	public Set<SerializableIssue> getIssues() {
+		return issues;
+	}
+
+	public void setIssues(Set<SerializableIssue> issues) {
+		this.issues = issues;
 	}
 }
