@@ -38,19 +38,13 @@ public class ProductBacklogDaoImplHibernate implements IProductBacklogDao {
 		tx.commit();
 	}
 
-	public void removeProductBacklog(int productbacklogid){		
+	public void removeProductBacklog(ProductBacklog p){		
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session sess = sessionFactory.getCurrentSession();
-		
+
 		Transaction tx = sess.beginTransaction();
-		try {
-			ProductBacklog p = (ProductBacklog)sess.createQuery("from ProductBacklog where id = "+productbacklogid).list().get(0);
-			sess.delete(p);
-			tx.commit();
-		}
-		catch (IndexOutOfBoundsException ex) {
-			System.out.println("exception: "+ex);
-		}
+		sess.delete(p);
+		tx.commit();
 	}
 
 	public Set<ProductBacklog> getAllProductBacklogs() {
@@ -87,11 +81,11 @@ public class ProductBacklogDaoImplHibernate implements IProductBacklogDao {
 
 		Transaction tx = sess.beginTransaction();
 		@SuppressWarnings("unchecked")
-		List<ProductBacklog> list = sess.createQuery("select p from ProductBacklog p join p.projects proj where proj.id = :id").setParameter("id", projectId).list();  
-		Set<ProductBacklog> persons = new HashSet<ProductBacklog>(list);
+		List<ProductBacklog> list = sess.createQuery("from ProductBacklog where projectId = "+projectId).list();
+		Set<ProductBacklog> productBacklogs = new HashSet<ProductBacklog>(list);
 		tx.commit();
 
-		return persons;
+		return productBacklogs;
 	}
 
 }

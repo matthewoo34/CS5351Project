@@ -107,4 +107,17 @@ public class IssueDaoImplHibernate implements IIssueDao {
 
 		return issues;
 	}
+	
+	public Set<Issue> getAllIssuesByTaskId(int taskId) {
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		Session sess = sessionFactory.getCurrentSession();
+
+		Transaction tx = sess.beginTransaction();
+		@SuppressWarnings("unchecked")
+		List<Issue> list = sess.createQuery("select i from Issue i join i.tasks task where task.id = :id").setParameter("id", taskId).list(); 
+		Set<Issue> issues = new HashSet<Issue>(list);
+		tx.commit();
+
+		return issues;
+	}
 }
