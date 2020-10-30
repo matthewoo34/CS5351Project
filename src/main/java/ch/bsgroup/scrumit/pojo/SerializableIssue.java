@@ -43,7 +43,7 @@ public class SerializableIssue {
 	
 	private int cost;
 	
-	private Set<SerializableTask> tasks = new HashSet<SerializableTask>();
+	private SerializableTask task;
 
 	public SerializableIssue(int id, int category, String description, int extraDuration,  
 			Date creationDate,  int sprintBacklogID, int projectID, int personID, int commencement,
@@ -139,16 +139,11 @@ public class SerializableIssue {
 		this.cost = cost;
 	}
 	
-	public Set<SerializableTask> getTasks() {
-		return tasks;
+	public SerializableTask getTask() {
+		return task;
 	}
 
-	public void setTasks(Set<SerializableTask> tasks) {
-		this.tasks = tasks;
-	}
-
-	public void addTask(SerializableTask task) {
-		this.tasks.add(task);			// weist Person dem Projekt-Set zu
-		task.getIssues().add(this);		// weist Projekt dem Person-Set zu
+	public void setTask(SerializableTask task) {
+		this.task = task;
 	}
 }
