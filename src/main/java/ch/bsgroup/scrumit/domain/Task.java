@@ -85,8 +85,17 @@ public class Task {
     @Temporal(value=TemporalType.TIMESTAMP)
     private Date assignDate;
 	
-//	@OneToMany(cascade=CascadeType.ALL)
-//	private Set<Integer> PersonId = new HashSet<Integer>();
+	@JsonIgnore
+	@ManyToMany(cascade = CascadeType.ALL)
+		@JoinTable(name = "Task_Issue",
+			joinColumns = {
+				@JoinColumn(name="task_id", referencedColumnName="id")
+			},
+			inverseJoinColumns = {
+				@JoinColumn(name="issue_id", referencedColumnName="id")
+			}
+		)
+	private Set<Issue> issues = new HashSet<Issue>();
 	
 
 	/**
@@ -259,4 +268,12 @@ public class Task {
     public Integer getPersonId() {
 		return this.personId;	
     }
+    
+	public Set<Issue> getIssues() {
+		return issues;
+	}
+	
+	public void setIssues(Set<Issue> issues) {
+		this.issues = issues;
+	}
 }

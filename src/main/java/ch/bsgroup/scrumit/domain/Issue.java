@@ -1,18 +1,22 @@
 package ch.bsgroup.scrumit.domain;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -57,19 +61,10 @@ public class Issue {
 	
 	@NotNull
 	private int cost;
-	
-	
-//	@ManyToOne
-//	@JoinColumn(name="userstory_id", referencedColumnName="id", nullable=false, updatable=false, insertable=true)
-//	private UserStory userStory;
-//	
-//	@ManyToOne 
-//	@JoinColumn(name="project_id", referencedColumnName="id", nullable=false, updatable=false, insertable=true)
-//	private Project project;
-//
-//	@ManyToOne
-//	@JoinColumn(name="person_id", referencedColumnName="id", nullable=false, updatable=false, insertable=true)
-//	private Person person;
+		
+	@JsonIgnore
+	@ManyToMany(mappedBy="issues")
+	private Set<Task> tasks = new HashSet<Task>();
 	
 	public Issue() {
 		
@@ -165,5 +160,18 @@ public class Issue {
 
 	public void setCost(int cost) {
 		this.cost = cost;
+	}
+	
+	public Set<Task> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(Set<Task> tasks) {
+		this.tasks = tasks;
+	}
+
+	public void addTask(Task task) {
+		this.tasks.add(task);
+		task.getIssues().add(this);
 	}
 }
