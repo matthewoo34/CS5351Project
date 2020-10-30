@@ -1,16 +1,26 @@
 package ch.bsgroup.scrumit.domain;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.envers.Audited;
 
 /**
@@ -21,7 +31,7 @@ import org.hibernate.envers.Audited;
 @Entity
 public class Task {
 	/**
-	 * Unique Id of the UserStory to identify it
+	 * Unique Id of the SprintBacklog to identify it
 	 */
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -59,12 +69,34 @@ public class Task {
 	@Temporal(value=TemporalType.TIMESTAMP)
 	private Date creationDate;
 
-	/**
-	 * Task is part of a UserStory
-	 */
 	@ManyToOne
-	@JoinColumn(name="userstory_id", referencedColumnName="id", nullable=true, updatable=false, insertable=true)
-	private UserStory userStory;
+	@JoinColumn(name="sprintbacklog_id", referencedColumnName="id", nullable=true, updatable=false, insertable=true)
+	private SprintBacklog sprintBacklog;
+	
+	@NotNull
+	private int commencement;
+	
+	@NotNull
+	private int position;
+	
+    /**
+     * Task has assign date
+     */
+    @Temporal(value=TemporalType.TIMESTAMP)
+    private Date assignDate;
+	
+	@JsonIgnore
+	@ManyToMany(cascade = CascadeType.ALL)
+		@JoinTable(name = "Task_Issue",
+			joinColumns = {
+				@JoinColumn(name="task_id", referencedColumnName="id")
+			},
+			inverseJoinColumns = {
+				@JoinColumn(name="issue_id", referencedColumnName="id")
+			}
+		)
+	private Set<Issue> issues = new HashSet<Issue>();
+	
 
 	/**
 	 * @return the id
@@ -164,17 +196,84 @@ public class Task {
 		this.creationDate = creationDate;
 	}
 
-	/**
-	 * @return the userStory
-	 */
-	public UserStory getUserStory() {
-		return userStory;
+
+	public SprintBacklog getSprintBacklog() {
+		return sprintBacklog;
 	}
 
-	/**
-	 * @param userStory the userStory to set
-	 */
-	public void setUserStory(UserStory userStory) {
-		this.userStory = userStory;
+	public void setSprintBacklog(SprintBacklog sprintBacklog) {
+		this.sprintBacklog = sprintBacklog;
+	}
+	
+	public int getCommencement() {
+		return commencement;
+	}
+
+	public void setCommencement(int commencement) {
+		this.commencement = commencement;
+	}
+	
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
+	}
+
+	
+    /**
+     * Task has a list of Persons - mapping owner
+     */
+    @JsonIgnore
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="person_id", referencedColumnName="id")
+    private Person person;
+    
+    /**
+     * @return the persons
+     */
+    public Person getPerson() {
+        return person;
+    }
+
+    /**
+     * @param persons the persons to set
+     */
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+    
+    /**
+     * @return the task assign date
+     */
+    public Date getAssignDate() {
+        return assignDate;
+    }
+
+    /**
+     * @param assignDate the task assign date
+     */
+    public void setAssignDate(Date assignDate) {
+        this.assignDate = assignDate;
+    }
+	
+    @Transient
+    private Integer personId;
+    
+    public void setPersonId(Integer personId) {
+        this.personId = personId;
+    }
+    
+    public Integer getPersonId() {
+		return this.personId;	
+    }
+    
+	public Set<Issue> getIssues() {
+		return issues;
+	}
+	
+	public void setIssues(Set<Issue> issues) {
+		this.issues = issues;
 	}
 }
