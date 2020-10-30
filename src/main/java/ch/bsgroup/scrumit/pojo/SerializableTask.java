@@ -1,6 +1,8 @@
 package ch.bsgroup.scrumit.pojo;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Class Task manages Tasks
@@ -9,7 +11,7 @@ import java.util.Date;
  */
 public class SerializableTask {
 	/**
-	 * Unique Id of the UserStory to identify it
+	 * Unique Id of the SprintBacklog to identify it
 	 */
 	private int id;
 
@@ -44,15 +46,25 @@ public class SerializableTask {
 	private Date creationDate;
 
 	/**
-	 * Task is part of a UserStory
+	 * Task is part of a SprintBacklog
 	 */
-	private SerializableUserStory userStory;
+	private SerializableSprintBacklog sprintBacklog;
+	
+	private int commencement;
+	
+	private int position;
+	
+	private String personName;
+	
+	private Date assignDate;
+	
+	private Set<SerializableIssue> issues = new HashSet<SerializableIssue>();
 
 	/**
 	 * @desc Constructor
 	 */
 	public SerializableTask(int id, String description, int xCoord, int yCoord, int status, int duration, 
-			Date creationDate/*, SerializableUserStory userStory*/) {
+			Date creationDate, int commencement, int position/*, SerializableUserStory userStory*/,String personName,Date assignDate) {
 		this.setId(id);
 		this.setDescription(description);
 		this.setxCoord(xCoord);
@@ -60,16 +72,23 @@ public class SerializableTask {
 		this.setStatus(status);
 		this.setDuration(duration);
 		this.setCreationDate(creationDate);
+		this.setCommencement(commencement);
+		this.setPosition(position);
 		//this.setUserStory(userStory);
+		this.setPersonName(personName);
+		this.setAssignDate(assignDate);
 	}
 
-	public SerializableTask(int id, String description, int xCoord, int yCoord, int status, Date creationDate) {
+	public SerializableTask(int id, String description, int xCoord, int yCoord, int status, Date creationDate, 
+			int commencement, int position) {
 		this.setId(id);
 		this.setDescription(description);
 		this.setxCoord(xCoord);
 		this.setyCoord(yCoord);
 		this.setStatus(status);
 		this.setCreationDate(creationDate);
+		this.setCommencement(commencement);
+		this.setPosition(position);
 	}
 
 	/**
@@ -170,17 +189,51 @@ public class SerializableTask {
 		this.creationDate = creationDate;
 	}
 
-	/**
-	 * @return the userStory
-	 */
-	public SerializableUserStory getUserStory() {
-		return userStory;
+	public SerializableSprintBacklog getSprintBacklog() {
+		return sprintBacklog;
 	}
 
-	/**
-	 * @param userStory the userStory to set
-	 */
-	public void setUserStory(SerializableUserStory userStory) {
-		this.userStory = userStory;
+	public void setSprintBacklog(SerializableSprintBacklog sprintBacklog) {
+		this.sprintBacklog = sprintBacklog;
+	}
+	
+	public int getCommencement() {
+		return commencement;
+	}
+
+	public void setCommencement(int commencement) {
+		this.commencement = commencement;
+	}
+	
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
+	}
+
+	public String getPersonName() {
+		return personName;
+	}
+	
+	public void setPersonName(String personName) {
+		this.personName = personName;
+	}
+	
+	public Date getAssignDate() {
+		return assignDate;
+	}
+	
+	public void setAssignDate(Date assignDate) {
+		this.assignDate = assignDate;
+	}
+	
+	public Set<SerializableIssue> getIssues() {
+		return issues;
+	}
+
+	public void setIssues(Set<SerializableIssue> issues) {
+		this.issues = issues;
 	}
 }
