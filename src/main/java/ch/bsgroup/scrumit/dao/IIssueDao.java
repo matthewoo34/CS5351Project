@@ -13,4 +13,5 @@ public interface IIssueDao {
 	public Set<Issue> getAllIssues();
 	public Issue findIssueById(int issueId);
 	public Set<Issue> getAllIssuesByProjectId(int projectId);
+	public Set<Issue> getAllIssuesByTaskId(int taskId);
 }
