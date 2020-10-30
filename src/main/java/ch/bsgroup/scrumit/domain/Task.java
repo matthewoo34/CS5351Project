@@ -85,18 +85,10 @@ public class Task {
     @Temporal(value=TemporalType.TIMESTAMP)
     private Date assignDate;
 	
-	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.ALL)
-		@JoinTable(name = "Task_Issue",
-			joinColumns = {
-				@JoinColumn(name="task_id", referencedColumnName="id")
-			},
-			inverseJoinColumns = {
-				@JoinColumn(name="issue_id", referencedColumnName="id")
-			}
-		)
+    @JsonIgnore
+	@OneToMany
+	@JoinColumn(name="issue_id", referencedColumnName="id")
 	private Set<Issue> issues = new HashSet<Issue>();
-	
 
 	/**
 	 * @return the id

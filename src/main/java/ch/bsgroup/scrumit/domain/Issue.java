@@ -63,8 +63,9 @@ public class Issue {
 	private int cost;
 		
 	@JsonIgnore
-	@ManyToMany(mappedBy="issues")
-	private Set<Task> tasks = new HashSet<Task>();
+	@ManyToOne
+	@JoinColumn(name="task_id", referencedColumnName="id", updatable=false)
+	private Task task;
 	
 	public Issue() {
 		
@@ -162,16 +163,11 @@ public class Issue {
 		this.cost = cost;
 	}
 	
-	public Set<Task> getTasks() {
-		return tasks;
+	public Task getTask() {
+		return task;
 	}
 
-	public void setTasks(Set<Task> tasks) {
-		this.tasks = tasks;
-	}
-
-	public void addTask(Task task) {
-		this.tasks.add(task);
-		task.getIssues().add(this);
+	public void setTask(Task task) {
+		this.task = task;
 	}
 }
