@@ -57,4 +57,8 @@ public class IssueServiceImpl implements IIssueService {
 	public Set<Issue> getAllIssuesByProjectId(int projectId) {
 		return issueDao.getAllIssuesByProjectId(projectId);
 	}
+	
+	public Set<Issue> getAllIssuesByTaskId(int taskId) {
+		return issueDao.getAllIssuesByTaskId(taskId);
+	}
 }
