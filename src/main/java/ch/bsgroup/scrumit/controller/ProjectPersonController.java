@@ -12,18 +12,28 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ch.bsgroup.scrumit.service.IIssueService;
 import ch.bsgroup.scrumit.service.IPersonService;
 import ch.bsgroup.scrumit.service.IProjectService;
+import ch.bsgroup.scrumit.service.ISprintBacklogService;
+import ch.bsgroup.scrumit.service.ISprintService;
+import ch.bsgroup.scrumit.service.ITaskService;
 import ch.bsgroup.scrumit.utils.ResourceNotFoundException;
 import ch.bsgroup.scrumit.domain.Issue;
 import ch.bsgroup.scrumit.domain.Person;
 import ch.bsgroup.scrumit.domain.Project;
+import ch.bsgroup.scrumit.domain.Sprint;
+import ch.bsgroup.scrumit.domain.SprintBacklog;
+import ch.bsgroup.scrumit.domain.Task;
 import ch.bsgroup.scrumit.pojo.SerializableIssue;
 import ch.bsgroup.scrumit.pojo.SerializablePerson;
 import ch.bsgroup.scrumit.pojo.SerializableProject;
+import ch.bsgroup.scrumit.pojo.SerializableSprint;
+import ch.bsgroup.scrumit.pojo.SerializableSprintBacklog;
+import ch.bsgroup.scrumit.pojo.SerializableTask;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -93,8 +103,69 @@ public class ProjectPersonController {
 		if (p == null) {
 			throw new ResourceNotFoundException(projectid);
 		}
-		return new SerializableProject(p.getId(), p.getName(), p.getDescription(), p.getCreationDate(), 
+		
+		SerializableProject serializedProject = new SerializableProject(p.getId(), p.getName(), p.getDescription(), p.getCreationDate(), 
 				p.getDuration(), p.getCost(),p.getStartDate(),p.getNoOfWeekPerSprint());
+		
+		//sprint
+		Set<SerializableSprint> serializedSprints = new HashSet<SerializableSprint>();
+		serializedProject.setSprints(serializedSprints);
+
+		for (Sprint sprint:p.getSprints()) {
+			SerializableSprint serializedSprint = new SerializableSprint(sprint.getId(),sprint.getSlogan(),sprint.getStartDate(),sprint.getEndDate(),sprint.getEndHour());
+			serializedSprints.add(serializedSprint);
+			
+			//sprint backlog
+			Set<SerializableSprintBacklog> serializedBacklogs = new HashSet<SerializableSprintBacklog>();
+			serializedSprint.setSprintBacklog(serializedBacklogs);
+			for (SprintBacklog backlog:sprint.getSprintBacklog()) {
+				SerializableSprintBacklog serializedBacklog = new SerializableSprintBacklog(backlog.getId(),backlog.getAcceptanceTest(),backlog.getProductBacklogId());
+				serializedBacklogs.add(serializedBacklog);
+				
+				//task
+				Set<SerializableTask> serializedTasks = new HashSet<SerializableTask>();
+				serializedBacklog.setTasks(serializedTasks);
+				for (Task task:backlog.getTasks()) {
+					String personName="";
+					if (task.getPerson()!=null) {
+						personName = task.getPerson().getLastName() + " " + task.getPerson().getFirstName();
+					}
+					SerializableTask serializedTask = new SerializableTask(		
+					task.getId(),
+					task.getDescription(),
+					task.getxCoord(),
+					task.getyCoord(),
+					task.getStatus(),
+					task.getDuration(),
+					task.getCreationDate(),
+					task.getCommencement(),
+					task.getPosition(),
+					personName,
+					task.getAssignDate());
+					serializedTasks.add(serializedTask);
+					
+					Set<SerializableIssue> serializedIssues = new HashSet<SerializableIssue>();
+					serializedTask.setIssues(serializedIssues);
+					for (Issue issue:task.getIssues()) {
+						SerializableIssue serializedIssue = new SerializableIssue(
+						issue.getId(),
+						issue.getCategory(),
+						issue.getDescription(),
+						issue.getExtraDuration(),
+						issue.getCreationDate(),
+						issue.getSprintBacklogID(),
+						issue.getProjectID(),
+						issue.getPersonID(),
+						issue.getCommencement(),
+						issue.getCost());
+						serializedIssues.add(serializedIssue);
+					}
+					
+				}
+			}
+		}
+		
+		return serializedProject;
 	}
 	
 	@RequestMapping(value="person/{personid}/", method=RequestMethod.GET)
