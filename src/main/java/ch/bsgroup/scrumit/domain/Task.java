@@ -86,7 +86,7 @@ public class Task {
     private Date assignDate;
 	
     @JsonIgnore
-	@OneToMany
+	@OneToMany(fetch=FetchType.EAGER)
 	@JoinColumn(name="issue_id", referencedColumnName="id")
 	private Set<Issue> issues = new HashSet<Issue>();
 

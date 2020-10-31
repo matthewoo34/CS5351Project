@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GenerationType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -67,7 +68,7 @@ public class Sprint {
 	private Project project;
 
 	@JsonIgnore
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.EAGER)
 		@JoinTable(name = "Sprint_SprintBacklog",
 			joinColumns = {
 				@JoinColumn(name="sprint_id", referencedColumnName="id")

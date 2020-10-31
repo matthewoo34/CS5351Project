@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GenerationType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -81,7 +82,7 @@ public class Project {
 	 * Project has a list of Sprints - mapping owner
 	 */
 	@JsonIgnore
-	@OneToMany
+	@OneToMany(fetch=FetchType.EAGER)
 	@JoinColumn(name="project_id", referencedColumnName="id")
 	private Set<Sprint> sprints = new HashSet<Sprint>();
 	

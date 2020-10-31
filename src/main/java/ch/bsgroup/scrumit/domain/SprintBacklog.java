@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,7 +41,7 @@ public class SprintBacklog {
 	private Set<Sprint> sprints = new HashSet<Sprint>();
 
 	@JsonIgnore
-	@OneToMany
+	@OneToMany(fetch=FetchType.EAGER)
 	@JoinColumn(name="sprintbacklog_id", referencedColumnName="id", updatable=true)
 	private Set<Task> tasks = new HashSet<Task>();
 
