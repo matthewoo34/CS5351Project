@@ -8,10 +8,12 @@
 	<bean id="taskServiceImpl" class="ch.bsgroup.scrumit.service.impl.TaskServiceImpl" />
 	<bean id="issueServiceImpl" class="ch.bsgroup.scrumit.service.impl.IssueServiceImpl" />
 	<bean id="productBacklogServiceImpl" class="ch.bsgroup.scrumit.service.impl.ProductBacklogServiceImpl" />
+	<bean id="emailServiceImpl" class="ch.bsgroup.scrumit.service.impl.EmailServiceImpl"/>
 
 	<bean id="projectService" class="ch.bsgroup.scrumit.service.impl.ProjectServiceImpl" />
 	<bean id="personService" class="ch.bsgroup.scrumit.service.impl.PersonServiceImpl" />
 	<bean id="issueService" class="ch.bsgroup.scrumit.service.impl.IssueServiceImpl" />
+	<bean id="emailService" class="ch.bsgroup.scrumit.service.impl.EmailServiceImpl"/>
 	<bean id="projectPersonController" class="ch.bsgroup.scrumit.controller.ProjectPersonController">
 		<property name="projectService">
 			<ref local="projectService"/>
@@ -75,6 +77,9 @@
 		</property>
 		<property name="burnDownChartService">
 			<ref local="burnDownChartService"/>
+		</property>
+		<property name="emailService">
+			<ref local="emailService"/>
 		</property>
 	</bean>
 </beans>

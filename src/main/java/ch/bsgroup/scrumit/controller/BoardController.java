@@ -34,6 +34,7 @@ import ch.bsgroup.scrumit.pojo.SerializableIssue;
 import ch.bsgroup.scrumit.pojo.SerializableSprintBacklog;
 import ch.bsgroup.scrumit.pojo.SerializableTask;
 import ch.bsgroup.scrumit.service.IBurnDownChartService;
+import ch.bsgroup.scrumit.service.IEmailService;
 import ch.bsgroup.scrumit.service.IIssueService;
 import ch.bsgroup.scrumit.service.IPersonService;
 import ch.bsgroup.scrumit.service.IProjectService;
@@ -52,6 +53,7 @@ public class BoardController {
 	private ITaskService taskService;
 	private IIssueService issueService;
 	private IBurnDownChartService burnDownChartService;
+	private IEmailService emailService;
 
 	public void setProjectService(IProjectService projectService) {
 		this.projectService = projectService;
@@ -79,6 +81,10 @@ public class BoardController {
 
 	public void setBurnDownChartService(IBurnDownChartService burnDownChartService) {
 		this.burnDownChartService = burnDownChartService;
+	}
+	
+	public void setEmailService(IEmailService emailService) {
+		this.emailService = emailService;
 	}
 
 	@RequestMapping(value="{projectid}/{sprintid}/", method=RequestMethod.GET)
@@ -227,8 +233,23 @@ public class BoardController {
             }
             task.setPerson(p);
             task.setAssignDate(new Date());
+            this.taskService.updateTask(task);
+            this.emailService.send(p.getEmail(), "Task Assign", "New task is assigned to you, please check dashboard");
         }
-        this.taskService.updateTask(task);
+    }
+    
+    @RequestMapping(value="task/updatestatus/", method=RequestMethod.POST)
+    public @ResponseBody void updateTaskStatus(@RequestBody Task t) {
+    	Task task = this.taskService.findTaskById(t.getId());
+    	if (task == null) {
+    		throw new ResourceNotFoundException(t.getId());
+    	}
+    	int status = t.getStatus();
+    	task.setStatus(status);
+    	this.taskService.updateTask(task);
+    	if (status == 3) {
+    		this.emailService.send("kafaatli3-c@my.cityu.edu.hk", "Task Completed", "The task - "+task.getDescription()+ " has been completed");
+    	}
     }
 
 	@RequestMapping(value="task/updatedescription/", method=RequestMethod.POST)
