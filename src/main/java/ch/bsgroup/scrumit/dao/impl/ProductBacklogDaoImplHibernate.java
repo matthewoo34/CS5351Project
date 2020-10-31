@@ -87,7 +87,7 @@ public class ProductBacklogDaoImplHibernate implements IProductBacklogDao {
 
 		Transaction tx = sess.beginTransaction();
 		@SuppressWarnings("unchecked")
-		List<ProductBacklog> list = sess.createQuery("from ProductBacklog where projectId = "+projectId).list();
+		List<ProductBacklog> list = sess.createQuery("from ProductBacklog where projectId = :projectid").setParameter("projectid", projectId).list();
 		Set<ProductBacklog> productBacklogs = new HashSet<ProductBacklog>(list);
 		tx.commit();
 
