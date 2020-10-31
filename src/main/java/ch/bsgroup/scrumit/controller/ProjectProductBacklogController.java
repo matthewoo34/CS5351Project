@@ -75,15 +75,14 @@ public class ProjectProductBacklogController {
 	
 	@RequestMapping(value="productbacklog/add/{projectid}/", method=RequestMethod.POST)
 	public @ResponseBody Map<String, ? extends Object> addProductBacklog(@PathVariable int projectid, @RequestBody ProductBacklog p, HttpServletResponse response) {
+		p.setProjectId(projectid);
 		p.setName(p.getName().trim());
 		Set<ConstraintViolation<ProductBacklog>> failures = validator.validate(p);
 		if (!failures.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return validationMessagesProductBacklog(failures);
 		} else {
-			Project project = this.projectService.findProjectById(projectid);
 			ProductBacklog newProductBacklog = this.productBacklogService.addProductBacklog(p);
-			this.projectService.updateProject(project);
 			return Collections.singletonMap("productbacklog", newProductBacklog);
 		}
 	}
