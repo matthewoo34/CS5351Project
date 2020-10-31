@@ -14,4 +14,5 @@ public interface ITaskService {
 	public Set<Task> getAllTasks();
 	public Task findTaskById(int taskId);
 	public Set<Task> getAllTasksBySprintBacklogId(int sprintBacklogId);
+	public Set<Task> getAllTasksByProjectId(int projectId);
 }

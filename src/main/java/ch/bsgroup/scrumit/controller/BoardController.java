@@ -127,6 +127,24 @@ public class BoardController {
 		}
 		return serializedTasks;
 	}
+	
+	@RequestMapping(value="alltasks/{projectid}/", method=RequestMethod.GET)
+	public @ResponseBody List<SerializableTask> getAllTasksOfProject(@PathVariable int projectid) {
+		Set<Task> tasks = this.taskService.getAllTasksByProjectId(projectid);
+		List<SerializableTask> serializedTasks = new ArrayList<SerializableTask>();
+		for (Iterator<Task> iterator = tasks.iterator(); iterator.hasNext();) {
+			Task t = iterator.next();
+			String personName="";
+			if (t.getPerson()!=null) {
+				personName = t.getPerson().getLastName() + " " + t.getPerson().getFirstName();
+			}
+			SerializableTask st = new SerializableTask(t.getId(), t.getDescription(), t.getxCoord(), 
+					t.getyCoord(), t.getStatus(), t.getDuration(), t.getCreationDate(), t.getCommencement(),
+					t.getPosition(),personName,t.getAssignDate());
+			serializedTasks.add(st);
+		}
+		return serializedTasks;
+	}
 
 //	@RequestMapping(value="sprintbacklog/updatecoord/", method=RequestMethod.POST)
 //	public @ResponseBody void updateUserstoryCoord(@RequestBody SprintBacklog s) {

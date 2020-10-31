@@ -53,4 +53,9 @@ public class TaskServiceImpl implements ITaskService {
 	public Set<Task> getAllTasksBySprintBacklogId(int sprintBacklogId) {
 		return taskDao.getAllTasksBySprintBacklogId(sprintBacklogId);
 	}
+
+	@Override
+	public Set<Task> getAllTasksByProjectId(int projectId) {
+		return taskDao.getAllTasksByProjectId(projectId);
+	}
 }

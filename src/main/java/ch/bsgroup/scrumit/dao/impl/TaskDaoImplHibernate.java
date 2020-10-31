@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import ch.bsgroup.scrumit.domain.Person;
 import ch.bsgroup.scrumit.domain.Task;
 import ch.bsgroup.scrumit.dao.ITaskDao;
 import ch.bsgroup.scrumit.utils.HibernateUtil;
@@ -100,6 +101,20 @@ public class TaskDaoImplHibernate implements ITaskDao {
 		Transaction tx = sess.beginTransaction();
 		@SuppressWarnings("unchecked")
 		List<Task> list = sess.createQuery("from Task where sprintbacklog_id = :id").setParameter("id", sprintBacklogId).list();
+		Set<Task> tasks = new HashSet<Task>(list);
+		tx.commit();
+
+		return tasks;
+	}
+
+	@Override
+	public Set<Task> getAllTasksByProjectId(int projectId) {
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		Session sess = sessionFactory.getCurrentSession();
+
+		Transaction tx = sess.beginTransaction();
+		@SuppressWarnings("unchecked")
+		List<Task> list = sess.createQuery("select t from Task t,SprintBacklog b,Sprint s,Project p where t.sprintbacklog_id = b.id and b.sprint_id = s.id and s.project_id = p.id and p.id = :id").setParameter("id", projectId).list();
 		Set<Task> tasks = new HashSet<Task>(list);
 		tx.commit();
 
