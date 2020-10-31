@@ -5,6 +5,7 @@
 	<bean id="projectServiceImpl" class="ch.bsgroup.scrumit.service.impl.ProjectServiceImpl" />
 	<bean id="sprintServiceImpl" class="ch.bsgroup.scrumit.service.impl.SprintServiceImpl" />
 <!-- 	<bean id="userStoryServiceImpl" class="ch.bsgroup.scrumit.service.impl.UserStoryServiceImpl" /> -->
+	<bean id="sprintBacklogServiceImpl" class="ch.bsgroup.scrumit.service.impl.SprintBacklogServiceImpl" />
 	<bean id="taskServiceImpl" class="ch.bsgroup.scrumit.service.impl.TaskServiceImpl" />
 	<bean id="issueServiceImpl" class="ch.bsgroup.scrumit.service.impl.IssueServiceImpl" />
 	<bean id="productBacklogServiceImpl" class="ch.bsgroup.scrumit.service.impl.ProductBacklogServiceImpl" />
@@ -36,6 +37,7 @@
 	</bean>
 	<bean id="sprintService" class="ch.bsgroup.scrumit.service.impl.SprintServiceImpl" />
 <!-- 	<bean id="userStoryService" class="ch.bsgroup.scrumit.service.impl.UserStoryServiceImpl" /> -->
+	<bean id="sprintBacklogService" class="ch.bsgroup.scrumit.service.impl.SprintBacklogServiceImpl" />
 	<bean id="burnDownChartService" class="ch.bsgroup.scrumit.service.impl.BurnDownChartServiceImpl" />
 	<bean id="taskService" class="ch.bsgroup.scrumit.service.impl.TaskServiceImpl" />
 	<bean id="sprintUserstoryController" class="ch.bsgroup.scrumit.controller.SprintUserstoryController">
@@ -45,6 +47,9 @@
 <!-- 		<property name="userStoryService"> -->
 <!-- 			<ref local="userStoryService"/> -->
 <!-- 		</property> -->
+		<property name="sprintBacklogService">
+			<ref local="sprintBacklogService" />
+		</property>
 		<property name="projectService">
 			<ref local="projectService"/>
 		</property>
@@ -69,6 +74,9 @@
 <!-- 		<property name="userStoryService"> -->
 <!-- 			<ref local="userStoryService"/> -->
 <!-- 		</property> -->
+		<property name="sprintBacklogService">
+			<ref local="sprintBacklogService" />
+		</property>
 		<property name="taskService">
 			<ref local="taskService"/>
 		</property>
