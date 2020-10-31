@@ -2,6 +2,7 @@ package ch.bsgroup.scrumit.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -77,6 +78,7 @@ public class ProjectProductBacklogController {
 	public @ResponseBody Map<String, ? extends Object> addProductBacklog(@PathVariable int projectid, @RequestBody ProductBacklog p, HttpServletResponse response) {
 		p.setProjectId(projectid);
 		p.setName(p.getName().trim());
+		p.setCreationDate(new Date());
 		Set<ConstraintViolation<ProductBacklog>> failures = validator.validate(p);
 		if (!failures.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
