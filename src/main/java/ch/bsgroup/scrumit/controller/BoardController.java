@@ -23,15 +23,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import ch.bsgroup.scrumit.domain.BurnDown;
 import ch.bsgroup.scrumit.domain.BurnDownChart;
+import ch.bsgroup.scrumit.domain.Issue;
 import ch.bsgroup.scrumit.domain.Person;
 import ch.bsgroup.scrumit.domain.Project;
 import ch.bsgroup.scrumit.domain.Sprint;
 import ch.bsgroup.scrumit.domain.SprintBacklog;
 import ch.bsgroup.scrumit.domain.Task;
 import ch.bsgroup.scrumit.pojo.SerializableBurnDownChart;
+import ch.bsgroup.scrumit.pojo.SerializableIssue;
 import ch.bsgroup.scrumit.pojo.SerializableSprintBacklog;
 import ch.bsgroup.scrumit.pojo.SerializableTask;
 import ch.bsgroup.scrumit.service.IBurnDownChartService;
+import ch.bsgroup.scrumit.service.IIssueService;
 import ch.bsgroup.scrumit.service.IPersonService;
 import ch.bsgroup.scrumit.service.IProjectService;
 import ch.bsgroup.scrumit.service.ISprintBacklogService;
@@ -47,6 +50,7 @@ public class BoardController {
 	private ISprintService sprintService;
 	private ISprintBacklogService sprintBacklogService;
 	private ITaskService taskService;
+	private IIssueService issueService;
 	private IBurnDownChartService burnDownChartService;
 
 	public void setProjectService(IProjectService projectService) {
@@ -67,6 +71,10 @@ public class BoardController {
 
 	public void setTaskService(ITaskService taskService) {
 		this.taskService = taskService;
+	}
+	
+	public void setIssueService(IIssueService issueService) {
+		this.issueService = issueService;
 	}
 
 	public void setBurnDownChartService(IBurnDownChartService burnDownChartService) {
@@ -228,5 +236,111 @@ public class BoardController {
 	@RequestMapping(value="burndown/{sprintid}/", method=RequestMethod.GET)
 	public @ResponseBody List<BurnDown> getBurnDown(@PathVariable int sprintid) {
 		return this.burnDownChartService.getBurnDown(sprintid);
+	}
+	
+	@RequestMapping(value="add/issue/{taskId}", method=RequestMethod.POST)
+	public @ResponseBody SerializableIssue addIssue(@PathVariable int taskid,@RequestBody Issue i) {
+		Task t = this.taskService.findTaskById(taskid);
+		if (t == null) {
+			throw new ResourceNotFoundException(t.getId());
+		}
+		i.setTask(t);
+		i.setCreationDate(new Date());
+		Issue issue = this.issueService.addIssue(i);
+		return new SerializableIssue(issue.getId(),
+				issue.getCategory(),
+				issue.getDescription(),
+				issue.getExtraDuration(),
+				issue.getCreationDate(),
+				issue.getSprintBacklogID(),
+				issue.getProjectID(),
+				issue.getPersonID(),
+				issue.getCommencement(),
+				issue.getCost());
+	}
+	
+	@RequestMapping(value="issue/update/", method=RequestMethod.POST)
+	public @ResponseBody void updateIssue(@RequestBody Issue i) {
+		Issue issue = this.issueService.findIssueById(i.getId());
+		issue.setCategory(i.getCategory());
+		issue.setCommencement(i.getCommencement());
+		issue.setCost(i.getCost());
+		issue.setDescription(i.getDescription());
+		issue.setExtraDuration(i.getExtraDuration());
+		issue.setPersonID(i.getPersonID());
+		issue.setProjectID(i.getProjectID());
+		issue.setSprintBacklogID(i.getSprintBacklogID());
+		this.issueService.updateIssue(issue);
+	}
+	
+	@RequestMapping(value="issue/remove/{issueId}", method=RequestMethod.GET)
+	public @ResponseBody void removeIssue(@PathVariable int issueId) {
+		this.issueService.removeIssue(issueId);
+	}
+	
+	@RequestMapping(value="allIssues/task/{taskId}/", method=RequestMethod.GET)
+	public @ResponseBody List<SerializableIssue> getAllIssuesOftask(@PathVariable int taskId) {
+		Set<Issue> issues = this.issueService.getAllIssuesByTaskId(taskId);
+		List<SerializableIssue> serializedIssues = new ArrayList<SerializableIssue>();
+		for (Iterator<Issue> iterator = issues.iterator(); iterator.hasNext();) {
+			Issue i = iterator.next();
+			SerializableIssue si = new SerializableIssue(
+					i.getId(),
+					i.getCategory(),
+					i.getDescription(),
+					i.getExtraDuration(),
+					i.getCreationDate(),
+					i.getSprintBacklogID(),
+					i.getProjectID(),
+					i.getPersonID(),
+					i.getCommencement(),
+					i.getCost());
+			serializedIssues.add(si);
+		}
+		return serializedIssues;
+	}
+	
+	@RequestMapping(value="allIssues/project/{projectid}/", method=RequestMethod.GET)
+	public @ResponseBody List<SerializableIssue> getAllIssuesOfProject(@PathVariable int projectId) {
+		Set<Issue> issues = this.issueService.getAllIssuesByProjectId(projectId);
+		List<SerializableIssue> serializedIssues = new ArrayList<SerializableIssue>();
+		for (Iterator<Issue> iterator = issues.iterator(); iterator.hasNext();) {
+			Issue i = iterator.next();
+			SerializableIssue si = new SerializableIssue(
+					i.getId(),
+					i.getCategory(),
+					i.getDescription(),
+					i.getExtraDuration(),
+					i.getCreationDate(),
+					i.getSprintBacklogID(),
+					i.getProjectID(),
+					i.getPersonID(),
+					i.getCommencement(),
+					i.getCost());
+			serializedIssues.add(si);
+		}
+		return serializedIssues;
+	}
+	
+	@RequestMapping(value="allIssues/person/{personid}/", method=RequestMethod.GET)
+	public @ResponseBody List<SerializableIssue> getAllIssuesOfPerson(@PathVariable int personid) {
+		Set<Issue> issues = this.issueService.getAllIssueByPersonId(personid);
+		List<SerializableIssue> serializedIssues = new ArrayList<SerializableIssue>();
+		for (Iterator<Issue> iterator = issues.iterator(); iterator.hasNext();) {
+			Issue i = iterator.next();
+			SerializableIssue si = new SerializableIssue(
+					i.getId(),
+					i.getCategory(),
+					i.getDescription(),
+					i.getExtraDuration(),
+					i.getCreationDate(),
+					i.getSprintBacklogID(),
+					i.getProjectID(),
+					i.getPersonID(),
+					i.getCommencement(),
+					i.getCost());
+			serializedIssues.add(si);
+		}
+		return serializedIssues;
 	}
 }

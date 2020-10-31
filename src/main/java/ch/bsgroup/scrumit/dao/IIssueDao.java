@@ -9,9 +9,10 @@ import java.util.Set;
 public interface IIssueDao {
 	public Issue addIssue(Issue issue);
 	public void updateIssue(Issue issue);
-	public void removeIssue(Issue issue);
+	public void removeIssue(int issueId);
 	public Set<Issue> getAllIssues();
 	public Issue findIssueById(int issueId);
 	public Set<Issue> getAllIssuesByProjectId(int projectId);
 	public Set<Issue> getAllIssuesByTaskId(int taskId);
+	public Set<Issue> getAllIssuesByPersonId(int personId);
 }

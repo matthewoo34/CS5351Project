@@ -70,6 +70,9 @@
 		<property name="taskService">
 			<ref local="taskService"/>
 		</property>
+		<property name="issueService">
+			<ref local="issueService"/>
+		</property>
 		<property name="burnDownChartService">
 			<ref local="burnDownChartService"/>
 		</property>

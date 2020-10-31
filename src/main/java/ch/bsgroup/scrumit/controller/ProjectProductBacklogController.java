@@ -107,7 +107,6 @@ public class ProjectProductBacklogController {
 		this.productBacklogService.removeProductBacklog(productbacklogid);
 	}
 	
-	
 	private Map<String, String> validationMessagesProductBacklog(Set<ConstraintViolation<ProductBacklog>> failures) {
 		Map<String, String> failureMessages = new HashMap<String, String>();
 		for (ConstraintViolation<ProductBacklog> failure : failures) {

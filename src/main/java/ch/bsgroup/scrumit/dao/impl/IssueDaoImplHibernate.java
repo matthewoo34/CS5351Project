@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 
 import ch.bsgroup.scrumit.domain.Issue;
 import ch.bsgroup.scrumit.domain.Person;
+import ch.bsgroup.scrumit.domain.ProductBacklog;
 import ch.bsgroup.scrumit.domain.Project;
 import ch.bsgroup.scrumit.dao.IIssueDao;
 import ch.bsgroup.scrumit.dao.IPersonDao;
@@ -49,13 +50,19 @@ public class IssueDaoImplHibernate implements IIssueDao {
 	/**
 	 * Delete Issue
 	 */
-	public void removeIssue(Issue issue){		
+	public void removeIssue(int issueId){		
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session sess = sessionFactory.getCurrentSession();
 
 		Transaction tx = sess.beginTransaction();
-     	sess.delete(issue);
-		tx.commit();
+        try {
+            Issue i = (Issue)sess.createQuery("from Issue where id = "+issueId).list().get(0);
+            sess.delete(i);
+            tx.commit();
+        }
+        catch (IndexOutOfBoundsException ex) {
+            System.out.println("exception: "+ex);
+        }
 	}
 
 	/**
@@ -115,6 +122,20 @@ public class IssueDaoImplHibernate implements IIssueDao {
 		Transaction tx = sess.beginTransaction();
 		@SuppressWarnings("unchecked")
 		List<Issue> list = sess.createQuery("select i from Issue i join i.tasks task where task.id = :id").setParameter("id", taskId).list(); 
+		Set<Issue> issues = new HashSet<Issue>(list);
+		tx.commit();
+
+		return issues;
+	}
+
+	@Override
+	public Set<Issue> getAllIssuesByPersonId(int personID) {
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		Session sess = sessionFactory.getCurrentSession();
+
+		Transaction tx = sess.beginTransaction();
+		@SuppressWarnings("unchecked")
+		List<Issue> list = sess.createQuery("from Issue where personID = "+ personID).list();
 		Set<Issue> issues = new HashSet<Issue>(list);
 		tx.commit();
 

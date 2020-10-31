@@ -42,8 +42,8 @@ public class IssueServiceImpl implements IIssueService {
 		issueDao.updateIssue(issue);
 	}
 
-	public void removeIssue(Issue issue) {
-		issueDao.removeIssue(issue);
+	public void removeIssue(int issueId) {
+		issueDao.removeIssue(issueId);
 	}
 
 	public Set<Issue> getAllIssues() {
@@ -60,5 +60,10 @@ public class IssueServiceImpl implements IIssueService {
 	
 	public Set<Issue> getAllIssuesByTaskId(int taskId) {
 		return issueDao.getAllIssuesByTaskId(taskId);
+	}
+
+	@Override
+	public Set<Issue> getAllIssueByPersonId(int personId) {
+		return issueDao.getAllIssuesByPersonId(personId);
 	}
 }
