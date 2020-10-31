@@ -89,6 +89,8 @@ public class ProjectProductBacklogController {
 	
 	@RequestMapping(value="productbacklog/update/", method=RequestMethod.POST)
 	public @ResponseBody Map<String, ? extends Object> updateProductBacklog(@RequestBody ProductBacklog p, HttpServletResponse response) {
+		ProductBacklog pb = this.productBacklogService.findProductBacklogById(p.getId());
+		p.setProjectId(pb.getProjectId());
 		p.setName(p.getName().trim());
 		//TODO associate with project relationship
 		Set<ConstraintViolation<ProductBacklog>> failures = validator.validate(p);
