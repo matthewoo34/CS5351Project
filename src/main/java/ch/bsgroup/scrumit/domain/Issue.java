@@ -40,24 +40,9 @@ public class Issue {
 	private String description;
 
 	@NotNull
-	private int extraDuration;
-
-	@NotNull
-	@DateTimeFormat(pattern = "dd.MM.yyyy")
-	@Temporal(value=TemporalType.TIMESTAMP)
-	private Date creationDate;
+	private int duration;
 	
-	@NotNull
-	private int sprintBacklogID;
-	
-	@NotNull
-	private int projectID;
-	
-	@NotNull
-	private int personID;
-	
-	@NotNull
-	private int commencement;
+	private Integer commencement;
 	
 	@NotNull
 	private int cost;
@@ -71,15 +56,10 @@ public class Issue {
 		
 	}
 
-	public Issue(int category, String description, int extraDuration,  
-			Date creationDate,  int sprintBacklogID, int projectID, int personID, int commencement, int cost) {
+	public Issue(int category, String description, int duration, Integer commencement, int cost) {
 		this.setCategory(category);
 		this.setDescription(description);
-		this.setExtraDuration(extraDuration);
-		this.setCreationDate(creationDate);
-		this.setSprintBacklogID(sprintBacklogID);
-		this.setProjectID(projectID);
-		this.setPersonID(personID);
+		this.setDuration(duration);
 		this.setCommencement(commencement);
 		this.setCost(cost);
 	}
@@ -107,44 +87,12 @@ public class Issue {
 		this.description = description;
 	}
 	
-	public int getExtraDuration() {
-		return extraDuration;
+	public Integer getDuration() {
+		return duration;
 	}
 
-	public void setExtraDuration(int extraDuration) {
-		this.extraDuration = extraDuration;
-	}
-	
-	public Date getCreationDate() {
-		return creationDate;
-	}
-
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
-	}
-	
-	public int getSprintBacklogID() {
-		return sprintBacklogID;
-	}
-
-	public void setSprintBacklogID(int sprintBacklogID) {
-		this.sprintBacklogID = sprintBacklogID;
-	}
-	
-	public int getProjectID() {
-		return projectID;
-	}
-
-	public void setProjectID(int projectID) {
-		this.projectID = projectID;
-	}
-	
-	public int getPersonID() {
-		return personID;
-	}
-
-	public void setPersonID(int personID) {
-		this.personID = personID;
+	public void setDuration(Integer duration) {
+		this.duration = duration;
 	}
 	
 	public int getCommencement() {
