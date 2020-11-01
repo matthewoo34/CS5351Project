@@ -11,4 +11,5 @@ public interface IProductBacklogDao {
 	public Set<ProductBacklog> getAllProductBacklogs();
 	public ProductBacklog findProductBacklogById(int productBacklogId);
 	public Set<ProductBacklog> getAllProductBacklogsByProjectId(int projectId);
+	public Set<ProductBacklog> getAllUnassignedProductBacklogsByProjectId(int projectId);
 }

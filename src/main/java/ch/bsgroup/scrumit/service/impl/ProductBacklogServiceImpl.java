@@ -51,4 +51,9 @@ public class ProductBacklogServiceImpl implements IProductBacklogService {
 	public Set<ProductBacklog> getAllProductBacklogsByProjectId(int projectId) {
 		return productBacklogDao.getAllProductBacklogsByProjectId(projectId);
 	}
+
+	@Override
+	public Set<ProductBacklog> getAllUnassignedProductBacklogsByProjectId(int projectId) {
+		return productBacklogDao.getAllUnassignedProductBacklogsByProjectId(projectId);
+	}
 }

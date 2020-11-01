@@ -64,6 +64,19 @@ public class ProjectProductBacklogController {
 		return serializedProductBacklogs;
 	}
 	
+	@RequestMapping(value="allproductbacklog/unassigned/{projectid}/", method=RequestMethod.GET)
+	public @ResponseBody List<SerializableProductBacklog> getAllUnassignedProductBackLog(@PathVariable int projectid) {
+		Set<ProductBacklog> productBacklogs = this.productBacklogService.getAllProductBacklogsByProjectId(projectid);
+		List<SerializableProductBacklog> serializedProductBacklogs = new ArrayList<SerializableProductBacklog>();
+		for (Iterator<ProductBacklog> iterator = productBacklogs.iterator(); iterator.hasNext();) {
+			ProductBacklog p = iterator.next();
+			SerializableProductBacklog spb = new SerializableProductBacklog(p.getId(),p.getEstimatedDuration(),p.getPriority(),
+					p.getProjectId(),p.getName(),p.getDescription(),p.getCreationDate());
+			serializedProductBacklogs.add(spb);
+		}
+		return serializedProductBacklogs;
+	}
+	
 	@RequestMapping(value="productbacklog/{productbacklogid}/", method=RequestMethod.GET)
 	public @ResponseBody SerializableProductBacklog getProductBacklogById(@PathVariable int productbacklogid) {
 		ProductBacklog p = this.productBacklogService.findProductBacklogById(productbacklogid);

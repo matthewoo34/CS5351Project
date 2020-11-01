@@ -94,4 +94,18 @@ public class ProductBacklogDaoImplHibernate implements IProductBacklogDao {
 		return productBacklogs;
 	}
 
+	@Override
+	public Set<ProductBacklog> getAllUnassignedProductBacklogsByProjectId(int projectId) {
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		Session sess = sessionFactory.getCurrentSession();
+
+		Transaction tx = sess.beginTransaction();
+		@SuppressWarnings("unchecked")
+		List<ProductBacklog> list = sess.createQuery("select p from ProductBacklog p,SprintBacklog s where p.projectId = :projectid and p.id not in (s.productBacklogId)").setParameter("projectid", projectId).list();
+		Set<ProductBacklog> productBacklogs = new HashSet<ProductBacklog>(list);
+		tx.commit();
+
+		return productBacklogs;
+	}
+
 }
