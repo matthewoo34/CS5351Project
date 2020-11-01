@@ -66,7 +66,7 @@ public class ProjectProductBacklogController {
 	
 	@RequestMapping(value="allproductbacklog/unassigned/{projectid}/", method=RequestMethod.GET)
 	public @ResponseBody List<SerializableProductBacklog> getAllUnassignedProductBackLog(@PathVariable int projectid) {
-		Set<ProductBacklog> productBacklogs = this.productBacklogService.getAllProductBacklogsByProjectId(projectid);
+		Set<ProductBacklog> productBacklogs = this.productBacklogService.getAllUnassignedProductBacklogsByProjectId(projectid);
 		List<SerializableProductBacklog> serializedProductBacklogs = new ArrayList<SerializableProductBacklog>();
 		for (Iterator<ProductBacklog> iterator = productBacklogs.iterator(); iterator.hasNext();) {
 			ProductBacklog p = iterator.next();
