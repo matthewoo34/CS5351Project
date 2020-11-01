@@ -12,7 +12,7 @@ public interface IIssueDao {
 	public void removeIssue(int issueId);
 	public Set<Issue> getAllIssues();
 	public Issue findIssueById(int issueId);
-	public Set<Issue> getAllIssuesByProjectId(int projectId);
+	//public Set<Issue> getAllIssuesByProjectId(int projectId);
 	public Set<Issue> getAllIssuesByTaskId(int taskId);
-	public Set<Issue> getAllIssuesByPersonId(int personId);
+	//public Set<Issue> getAllIssuesByPersonId(int personId);
 }
