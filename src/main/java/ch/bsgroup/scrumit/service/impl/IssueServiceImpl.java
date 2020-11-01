@@ -54,16 +54,16 @@ public class IssueServiceImpl implements IIssueService {
 		return issueDao.findIssueById(issueId);
 	}
 
-	public Set<Issue> getAllIssuesByProjectId(int projectId) {
-		return issueDao.getAllIssuesByProjectId(projectId);
-	}
+//	public Set<Issue> getAllIssuesByProjectId(int projectId) {
+//		return issueDao.getAllIssuesByProjectId(projectId);
+//	}
 	
 	public Set<Issue> getAllIssuesByTaskId(int taskId) {
 		return issueDao.getAllIssuesByTaskId(taskId);
 	}
 
-	@Override
-	public Set<Issue> getAllIssueByPersonId(int personId) {
-		return issueDao.getAllIssuesByPersonId(personId);
-	}
+//	@Override
+//	public Set<Issue> getAllIssueByPersonId(int personId) {
+//		return issueDao.getAllIssuesByPersonId(personId);
+//	}
 }
