@@ -21,16 +21,6 @@ public class SerializableSprint {
 	private String slogan;
 
 	/**
-	 * Sprint has a StartDate
-	 */
-	private Date startDate;
-
-	/**
-	 * Sprint has an EndDate
-	 */
-	private Date endDate;
-
-	/**
 	 * Sprint is joined with a Project
 	 */
 	private SerializableProject project;
@@ -45,11 +35,9 @@ public class SerializableSprint {
 	/**
 	 * @desc Constructor
 	 */
-	public SerializableSprint(int id, String slogan, Date startDate, Date endDate, int endHour/*, SerializableProject project, Set<SerializableUserStory> userStories*/) {
+	public SerializableSprint(int id, String slogan, int endHour/*, SerializableProject project, Set<SerializableUserStory> userStories*/) {
 		this.setId(id);
 		this.setSlogan(slogan);
-		this.setStartDate(startDate);
-		this.setEndDate(endDate);
 		this.setEndHour(endHour);
 		//this.setProject(project);
 		//this.setUserStories(userStories);
@@ -81,34 +69,6 @@ public class SerializableSprint {
 	 */
 	public void setSlogan(String slogan) {
 		this.slogan = slogan;
-	}
-
-	/**
-	 * @return the startDate
-	 */
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	/**
-	 * @param startDate the startDate to set
-	 */
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
-	/**
-	 * @return the endDate
-	 */
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	/**
-	 * @param endDate the endDate to set
-	 */
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
 	}
 
 	/**
