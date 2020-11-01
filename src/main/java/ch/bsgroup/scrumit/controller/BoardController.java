@@ -278,16 +278,11 @@ public class BoardController {
 			throw new ResourceNotFoundException(t.getId());
 		}
 		i.setTask(t);
-		i.setCreationDate(new Date());
 		Issue issue = this.issueService.addIssue(i);
 		return new SerializableIssue(issue.getId(),
 				issue.getCategory(),
 				issue.getDescription(),
-				issue.getExtraDuration(),
-				issue.getCreationDate(),
-				issue.getSprintBacklogID(),
-				issue.getProjectID(),
-				issue.getPersonID(),
+				issue.getDuration(),
 				issue.getCommencement(),
 				issue.getCost());
 	}
@@ -299,10 +294,7 @@ public class BoardController {
 		issue.setCommencement(i.getCommencement());
 		issue.setCost(i.getCost());
 		issue.setDescription(i.getDescription());
-		issue.setExtraDuration(i.getExtraDuration());
-		issue.setPersonID(i.getPersonID());
-		issue.setProjectID(i.getProjectID());
-		issue.setSprintBacklogID(i.getSprintBacklogID());
+		issue.setDuration(i.getDuration());
 		this.issueService.updateIssue(issue);
 	}
 	
@@ -321,11 +313,7 @@ public class BoardController {
 					i.getId(),
 					i.getCategory(),
 					i.getDescription(),
-					i.getExtraDuration(),
-					i.getCreationDate(),
-					i.getSprintBacklogID(),
-					i.getProjectID(),
-					i.getPersonID(),
+					i.getDuration(),
 					i.getCommencement(),
 					i.getCost());
 			serializedIssues.add(si);
@@ -343,11 +331,7 @@ public class BoardController {
 					i.getId(),
 					i.getCategory(),
 					i.getDescription(),
-					i.getExtraDuration(),
-					i.getCreationDate(),
-					i.getSprintBacklogID(),
-					i.getProjectID(),
-					i.getPersonID(),
+					i.getDuration(),
 					i.getCommencement(),
 					i.getCost());
 			serializedIssues.add(si);
@@ -365,11 +349,7 @@ public class BoardController {
 					i.getId(),
 					i.getCategory(),
 					i.getDescription(),
-					i.getExtraDuration(),
-					i.getCreationDate(),
-					i.getSprintBacklogID(),
-					i.getProjectID(),
-					i.getPersonID(),
+					i.getDuration(),
 					i.getCommencement(),
 					i.getCost());
 			serializedIssues.add(si);

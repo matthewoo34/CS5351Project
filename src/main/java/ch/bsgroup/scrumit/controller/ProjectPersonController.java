@@ -112,7 +112,7 @@ public class ProjectPersonController {
 		serializedProject.setSprints(serializedSprints);
 
 		for (Sprint sprint:p.getSprints()) {
-			SerializableSprint serializedSprint = new SerializableSprint(sprint.getId(),sprint.getSlogan(),sprint.getStartDate(),sprint.getEndDate(),sprint.getEndHour());
+			SerializableSprint serializedSprint = new SerializableSprint(sprint.getId(),sprint.getSlogan(),sprint.getEndHour());
 			serializedSprints.add(serializedSprint);
 			
 			//sprint backlog
@@ -151,11 +151,7 @@ public class ProjectPersonController {
 						issue.getId(),
 						issue.getCategory(),
 						issue.getDescription(),
-						issue.getExtraDuration(),
-						issue.getCreationDate(),
-						issue.getSprintBacklogID(),
-						issue.getProjectID(),
-						issue.getPersonID(),
+						issue.getDuration(),
 						issue.getCommencement(),
 						issue.getCost());
 						serializedIssues.add(serializedIssue);
@@ -184,8 +180,7 @@ public class ProjectPersonController {
 		for (Iterator<Issue> iterator = issues.iterator(); iterator.hasNext();) {
 			Issue issue = iterator.next();
 			SerializableIssue serializableIssue = new SerializableIssue(issue.getId(), issue.getCategory(),
-					issue.getDescription(), issue.getExtraDuration(), issue.getCreationDate(), issue.getSprintBacklogID(), 
-					issue.getProjectID(), issue.getPersonID(), issue.getCommencement(), issue.getCost());
+					issue.getDescription(), issue.getDuration(), issue.getCommencement(), issue.getCost());
 			serializedIssues.add(serializableIssue);
 		}
 		return serializedIssues;
