@@ -44,8 +44,7 @@ public class Issue {
 	
 	private Integer commencement;
 	
-	@NotNull
-	private int cost;
+	private Integer cost;
 		
 	@JsonIgnore
 	@ManyToOne
@@ -56,7 +55,7 @@ public class Issue {
 		
 	}
 
-	public Issue(int category, String description, int duration, Integer commencement, int cost) {
+	public Issue(int category, String description, int duration, Integer commencement, Integer cost) {
 		this.setCategory(category);
 		this.setDescription(description);
 		this.setDuration(duration);
@@ -87,27 +86,27 @@ public class Issue {
 		this.description = description;
 	}
 	
-	public Integer getDuration() {
+	public int getDuration() {
 		return duration;
 	}
 
-	public void setDuration(Integer duration) {
+	public void setDuration(int duration) {
 		this.duration = duration;
 	}
 	
-	public int getCommencement() {
+	public Integer getCommencement() {
 		return commencement;
 	}
 
-	public void setCommencement(int commencement) {
+	public void setCommencement(Integer commencement) {
 		this.commencement = commencement;
 	}
 	
-	public int getCost() {
+	public Integer getCost() {
 		return cost;
 	}
 
-	public void setCost(int cost) {
+	public void setCost(Integer cost) {
 		this.cost = cost;
 	}
 	
