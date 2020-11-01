@@ -41,20 +41,6 @@ public class Sprint {
 	@NotNull
 	@Size(min = 1, max = 255)
 	private String slogan;
-
-	/**
-	 * Sprint has a StartDate
-	 */
-	@DateTimeFormat(pattern = "dd.MM.yyyy")
-	@Temporal(value=TemporalType.TIMESTAMP)
-	private Date startDate;
-
-	/**
-	 * Sprint has an EndDate
-	 */
-	@DateTimeFormat(pattern = "dd.MM.yyyy")
-	@Temporal(value=TemporalType.TIMESTAMP)
-	private Date endDate;
 	
 	@NotNull
 	private int endHour;
@@ -105,34 +91,6 @@ public class Sprint {
 	 */
 	public void setSlogan(String slogan) {
 		this.slogan = slogan;
-	}
-
-	/**
-	 * @return the startDate
-	 */
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	/**
-	 * @param startDate the startDate to set
-	 */
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
-	/**
-	 * @return the endDate
-	 */
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	/**
-	 * @param endDate the endDate to set
-	 */
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
 	}
 
 	/**
