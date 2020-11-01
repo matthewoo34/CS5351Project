@@ -116,37 +116,31 @@ public class BoardController {
 		return serializedSprintBacklogs;
 	}
 
-	@RequestMapping(value="alltasks/{sprintbacklogid}/", method=RequestMethod.GET)
+	@RequestMapping(value="alltasks/sprintbacklog/{sprintbacklogid}/", method=RequestMethod.GET)
 	public @ResponseBody List<SerializableTask> getAllTasksOfSprintBacklog(@PathVariable Integer sprintbacklogid) {
 		Set<Task> tasks = this.taskService.getAllTasksBySprintBacklogId(sprintbacklogid);
 		List<SerializableTask> serializedTasks = new ArrayList<SerializableTask>();
 		for (Iterator<Task> iterator = tasks.iterator(); iterator.hasNext();) {
 			Task t = iterator.next();
-			String personName="";
-			if (t.getPerson()!=null) {
-				personName = t.getPerson().getLastName() + " " + t.getPerson().getFirstName();
-			}
+			Integer personId = t.getPerson()!=null?t.getPerson().getId():null;
 			SerializableTask st = new SerializableTask(t.getId(), t.getDescription(), t.getxCoord(), 
 					t.getyCoord(), t.getStatus(), t.getDuration(), t.getCreationDate(), t.getCommencement(),
-					t.getPosition(),personName,t.getAssignDate());
+					t.getPosition(),personId,t.getAssignDate());
 			serializedTasks.add(st);
 		}
 		return serializedTasks;
 	}
 	
-	@RequestMapping(value="alltasks/{projectid}/", method=RequestMethod.GET)
+	@RequestMapping(value="alltasks/project/{projectid}/", method=RequestMethod.GET)
 	public @ResponseBody List<SerializableTask> getAllTasksOfProject(@PathVariable int projectid) {
 		Set<Task> tasks = this.taskService.getAllTasksByProjectId(projectid);
 		List<SerializableTask> serializedTasks = new ArrayList<SerializableTask>();
 		for (Iterator<Task> iterator = tasks.iterator(); iterator.hasNext();) {
 			Task t = iterator.next();
-			String personName="";
-			if (t.getPerson()!=null) {
-				personName = t.getPerson().getLastName() + " " + t.getPerson().getFirstName();
-			}
+			Integer personId = t.getPerson()!=null?t.getPerson().getId():null;
 			SerializableTask st = new SerializableTask(t.getId(), t.getDescription(), t.getxCoord(), 
 					t.getyCoord(), t.getStatus(), t.getDuration(), t.getCreationDate(), t.getCommencement(),
-					t.getPosition(),personName,t.getAssignDate());
+					t.getPosition(),personId,t.getAssignDate());
 			serializedTasks.add(st);
 		}
 		return serializedTasks;

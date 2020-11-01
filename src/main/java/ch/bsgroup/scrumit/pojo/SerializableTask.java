@@ -56,6 +56,8 @@ public class SerializableTask {
 	
 	private String personName;
 	
+	private Integer personId;
+	
 	private Date assignDate;
 	
 	private Set<SerializableIssue> issues = new HashSet<SerializableIssue>();
@@ -76,6 +78,21 @@ public class SerializableTask {
 		this.setPosition(position);
 		//this.setUserStory(userStory);
 		this.setPersonName(personName);
+		this.setAssignDate(assignDate);
+	}
+	
+	public SerializableTask(int id, String description, int xCoord, int yCoord, int status, int duration, 
+			Date creationDate, int commencement, int position/*, SerializableUserStory userStory*/,Integer personId,Date assignDate) {
+		this.setId(id);
+		this.setDescription(description);
+		this.setxCoord(xCoord);
+		this.setyCoord(yCoord);
+		this.setStatus(status);
+		this.setDuration(duration);
+		this.setCreationDate(creationDate);
+		this.setCommencement(commencement);
+		this.setPosition(position);
+		this.setPersonId(personId);
 		this.setAssignDate(assignDate);
 	}
 
@@ -219,6 +236,14 @@ public class SerializableTask {
 	
 	public void setPersonName(String personName) {
 		this.personName = personName;
+	}
+	
+	public Integer getPersonId() {
+		return personId;
+	}
+	
+	public void setPersonId(Integer personId) {
+		this.personId = personId;
 	}
 	
 	public Date getAssignDate() {
