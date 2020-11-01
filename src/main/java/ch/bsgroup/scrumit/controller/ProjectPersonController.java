@@ -173,18 +173,18 @@ public class ProjectPersonController {
 		return new SerializablePerson(p.getId(), p.getFirstName(), p.getLastName(), p.getEmail());
 	}
 	
-	@RequestMapping(value="{projectid}/cost/", method=RequestMethod.GET)
-	public @ResponseBody List<SerializableIssue> getAllIssuesOfProjectId(@PathVariable int projectid) {
-		Set<Issue> issues = this.issueService.getAllIssuesByProjectId(projectid);
-		List<SerializableIssue> serializedIssues = new ArrayList<SerializableIssue>();
-		for (Iterator<Issue> iterator = issues.iterator(); iterator.hasNext();) {
-			Issue issue = iterator.next();
-			SerializableIssue serializableIssue = new SerializableIssue(issue.getId(), issue.getCategory(),
-					issue.getDescription(), issue.getDuration(), issue.getCommencement(), issue.getCost());
-			serializedIssues.add(serializableIssue);
-		}
-		return serializedIssues;
-	}
+//	@RequestMapping(value="{projectid}/cost/", method=RequestMethod.GET)
+//	public @ResponseBody List<SerializableIssue> getAllIssuesOfProjectId(@PathVariable int projectid) {
+//		Set<Issue> issues = this.issueService.getAllIssuesByProjectId(projectid);
+//		List<SerializableIssue> serializedIssues = new ArrayList<SerializableIssue>();
+//		for (Iterator<Issue> iterator = issues.iterator(); iterator.hasNext();) {
+//			Issue issue = iterator.next();
+//			SerializableIssue serializableIssue = new SerializableIssue(issue.getId(), issue.getCategory(),
+//					issue.getDescription(), issue.getDuration(), issue.getCommencement(), issue.getCost());
+//			serializedIssues.add(serializableIssue);
+//		}
+//		return serializedIssues;
+//	}
 
 	@RequestMapping(value="update/", method=RequestMethod.POST)
 	public @ResponseBody Map<String, ? extends Object> updateProject(@RequestBody Project p, HttpServletResponse response) {

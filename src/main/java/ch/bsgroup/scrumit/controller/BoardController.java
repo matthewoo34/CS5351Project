@@ -321,39 +321,39 @@ public class BoardController {
 		return serializedIssues;
 	}
 	
-	@RequestMapping(value="allIssues/project/{projectid}/", method=RequestMethod.GET)
-	public @ResponseBody List<SerializableIssue> getAllIssuesOfProject(@PathVariable int projectId) {
-		Set<Issue> issues = this.issueService.getAllIssuesByProjectId(projectId);
-		List<SerializableIssue> serializedIssues = new ArrayList<SerializableIssue>();
-		for (Iterator<Issue> iterator = issues.iterator(); iterator.hasNext();) {
-			Issue i = iterator.next();
-			SerializableIssue si = new SerializableIssue(
-					i.getId(),
-					i.getCategory(),
-					i.getDescription(),
-					i.getDuration(),
-					i.getCommencement(),
-					i.getCost());
-			serializedIssues.add(si);
-		}
-		return serializedIssues;
-	}
-	
-	@RequestMapping(value="allIssues/person/{personid}/", method=RequestMethod.GET)
-	public @ResponseBody List<SerializableIssue> getAllIssuesOfPerson(@PathVariable int personid) {
-		Set<Issue> issues = this.issueService.getAllIssueByPersonId(personid);
-		List<SerializableIssue> serializedIssues = new ArrayList<SerializableIssue>();
-		for (Iterator<Issue> iterator = issues.iterator(); iterator.hasNext();) {
-			Issue i = iterator.next();
-			SerializableIssue si = new SerializableIssue(
-					i.getId(),
-					i.getCategory(),
-					i.getDescription(),
-					i.getDuration(),
-					i.getCommencement(),
-					i.getCost());
-			serializedIssues.add(si);
-		}
-		return serializedIssues;
-	}
+//	@RequestMapping(value="allIssues/project/{projectid}/", method=RequestMethod.GET)
+//	public @ResponseBody List<SerializableIssue> getAllIssuesOfProject(@PathVariable int projectId) {
+//		Set<Issue> issues = this.issueService.getAllIssuesByProjectId(projectId);
+//		List<SerializableIssue> serializedIssues = new ArrayList<SerializableIssue>();
+//		for (Iterator<Issue> iterator = issues.iterator(); iterator.hasNext();) {
+//			Issue i = iterator.next();
+//			SerializableIssue si = new SerializableIssue(
+//					i.getId(),
+//					i.getCategory(),
+//					i.getDescription(),
+//					i.getDuration(),
+//					i.getCommencement(),
+//					i.getCost());
+//			serializedIssues.add(si);
+//		}
+//		return serializedIssues;
+//	}
+//	
+//	@RequestMapping(value="allIssues/person/{personid}/", method=RequestMethod.GET)
+//	public @ResponseBody List<SerializableIssue> getAllIssuesOfPerson(@PathVariable int personid) {
+//		Set<Issue> issues = this.issueService.getAllIssueByPersonId(personid);
+//		List<SerializableIssue> serializedIssues = new ArrayList<SerializableIssue>();
+//		for (Iterator<Issue> iterator = issues.iterator(); iterator.hasNext();) {
+//			Issue i = iterator.next();
+//			SerializableIssue si = new SerializableIssue(
+//					i.getId(),
+//					i.getCategory(),
+//					i.getDescription(),
+//					i.getDuration(),
+//					i.getCommencement(),
+//					i.getCost());
+//			serializedIssues.add(si);
+//		}
+//		return serializedIssues;
+//	}
 }
