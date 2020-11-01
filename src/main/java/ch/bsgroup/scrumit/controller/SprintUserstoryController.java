@@ -91,7 +91,7 @@ public class SprintUserstoryController {
 		List<SerializableSprint> serializedSprints = new ArrayList<SerializableSprint>();
 		for (Iterator<Sprint> iterator = sprints.iterator(); iterator.hasNext();) {
 			Sprint s = iterator.next();
-			SerializableSprint ss = new SerializableSprint(s.getId(), s.getSlogan(), s.getStartDate(), s.getEndDate(), s.getEndHour());
+			SerializableSprint ss = new SerializableSprint(s.getId(), s.getSlogan(), s.getEndHour());
 			serializedSprints.add(ss);
 		}
 		return serializedSprints;
@@ -115,7 +115,7 @@ public class SprintUserstoryController {
 		if (s == null) {
 			throw new ResourceNotFoundException(sprintid);
 		}
-		return new SerializableSprint(s.getId(), s.getSlogan(), s.getStartDate(), s.getEndDate(), s.getEndHour());
+		return new SerializableSprint(s.getId(), s.getSlogan(), s.getEndHour());
 	}
 
 	@RequestMapping(value="update/", method=RequestMethod.POST)
@@ -123,8 +123,6 @@ public class SprintUserstoryController {
 		Set<ConstraintViolation<Sprint>> failures = validator.validate(s);
 		Sprint sprint = this.sprintService.findSprintById(s.getId());
 		sprint.setSlogan(s.getSlogan().trim());
-		sprint.setStartDate(s.getStartDate());
-		sprint.setEndDate(s.getEndDate());
 		if (!failures.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return validationMessagesSprint(failures);
@@ -134,8 +132,6 @@ public class SprintUserstoryController {
 				new SerializableSprint(
 					sprint.getId(), 
 					sprint.getSlogan(), 
-					sprint.getStartDate(), 
-					sprint.getEndDate(),
 					sprint.getEndHour()
 				
 			));
@@ -189,10 +185,8 @@ public class SprintUserstoryController {
 			List<BurnDown> bdList = new ArrayList<BurnDown>();
 
 			Calendar c = Calendar.getInstance();
-			c.setTime(sprint.getStartDate());
 			Calendar startCalendar = new GregorianCalendar(
 				c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE));
-			c.setTime(s.getEndDate());	
 			Calendar endCalendar = new GregorianCalendar(
 				c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE));
 			boolean writeBurnDown = false;
@@ -211,9 +205,7 @@ public class SprintUserstoryController {
 			return Collections.singletonMap("sprint", 
 					new SerializableSprint(
 							sprint.getId(), 
-							sprint.getSlogan(), 
-							sprint.getStartDate(), 
-							sprint.getEndDate(),
+							sprint.getSlogan(),
 							sprint.getEndHour()
 					)
 			);
