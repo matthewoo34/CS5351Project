@@ -33,12 +33,12 @@ public class SerializableIssue {
 	
 	private Integer commencement;
 	
-	private int cost;
+	private Integer cost;
 	
 	private SerializableTask task;
 
 	public SerializableIssue(int id, int category, String description, int duration,  
-			Integer commencement, int cost) {
+			Integer commencement, Integer cost) {
 		this.setId(id);
 		this.setCategory(category);
 		this.setDescription(description);
@@ -86,11 +86,11 @@ public class SerializableIssue {
 		this.commencement = commencement;
 	}
 	
-	public int getCost() {
+	public Integer getCost() {
 		return cost;
 	}
 
-	public void setCost(int cost) {
+	public void setCost(Integer cost) {
 		this.cost = cost;
 	}
 	
