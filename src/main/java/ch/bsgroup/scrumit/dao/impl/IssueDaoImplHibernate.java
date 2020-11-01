@@ -102,19 +102,19 @@ public class IssueDaoImplHibernate implements IIssueDao {
 	/**
 	 * Get all Persons which are associated to a given Project(Id)
 	 */
-	public Set<Issue> getAllIssuesByProjectId(int projectID) {
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session sess = sessionFactory.getCurrentSession();
+//	public Set<Issue> getAllIssuesByProjectId(int projectID) {
+//		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+//		Session sess = sessionFactory.getCurrentSession();
+//
+//		Transaction tx = sess.beginTransaction();
+//		@SuppressWarnings("unchecked")
+//		List<Issue> list = sess.createQuery("from Issue where projectID = "+ projectID).list();
+//		Set<Issue> issues = new HashSet<Issue>(list);
+//		tx.commit();
+//
+//		return issues;
+//	}
 
-		Transaction tx = sess.beginTransaction();
-		@SuppressWarnings("unchecked")
-		List<Issue> list = sess.createQuery("from Issue where projectID = "+ projectID).list();
-		Set<Issue> issues = new HashSet<Issue>(list);
-		tx.commit();
-
-		return issues;
-	}
-	
 	public Set<Issue> getAllIssuesByTaskId(int taskId) {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session sess = sessionFactory.getCurrentSession();
@@ -128,17 +128,17 @@ public class IssueDaoImplHibernate implements IIssueDao {
 		return issues;
 	}
 
-	@Override
-	public Set<Issue> getAllIssuesByPersonId(int personID) {
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session sess = sessionFactory.getCurrentSession();
-
-		Transaction tx = sess.beginTransaction();
-		@SuppressWarnings("unchecked")
-		List<Issue> list = sess.createQuery("from Issue where personID = "+ personID).list();
-		Set<Issue> issues = new HashSet<Issue>(list);
-		tx.commit();
-
-		return issues;
-	}
+//	@Override
+//	public Set<Issue> getAllIssuesByPersonId(int personID) {
+//		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+//		Session sess = sessionFactory.getCurrentSession();
+//
+//		Transaction tx = sess.beginTransaction();
+//		@SuppressWarnings("unchecked")
+//		List<Issue> list = sess.createQuery("from Issue where personID = "+ personID).list();
+//		Set<Issue> issues = new HashSet<Issue>(list);
+//		tx.commit();
+//
+//		return issues;
+//	}
 }
