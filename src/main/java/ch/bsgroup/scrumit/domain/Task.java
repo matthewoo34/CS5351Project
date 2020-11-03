@@ -89,6 +89,18 @@ public class Task {
 	@OneToMany(fetch=FetchType.EAGER)
 	@JoinColumn(name="issue_id", referencedColumnName="id")
 	private Set<Issue> issues = new HashSet<Issue>();
+    
+	@JsonIgnore
+	@ManyToMany
+		@JoinTable(name = "Task_Person",
+			joinColumns = {
+				@JoinColumn(name="task_id", referencedColumnName="id")
+			},
+			inverseJoinColumns = {
+				@JoinColumn(name="person_id", referencedColumnName="id")
+			}
+		)
+	private Set<Person> persons = new HashSet<Person>();
 
 	/**
 	 * @return the id
@@ -214,28 +226,28 @@ public class Task {
 	}
 
 	
-    /**
-     * Task has a list of Persons - mapping owner
-     */
-    @JsonIgnore
-    @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="person_id", referencedColumnName="id")
-    private Person person;
-    
-    /**
-     * @return the persons
-     */
-    public Person getPerson() {
-        return person;
-    }
-
-    /**
-     * @param persons the persons to set
-     */
-    public void setPerson(Person person) {
-        this.person = person;
-    }
-    
+//    /**
+//     * Task has a list of Persons - mapping owner
+//     */
+//    @JsonIgnore
+//    @ManyToOne(fetch=FetchType.EAGER)
+//    @JoinColumn(name="person_id", referencedColumnName="id")
+//    private Person person;
+//    
+//    /**
+//     * @return the persons
+//     */
+//    public Person getPerson() {
+//        return person;
+//    }
+//
+//    /**
+//     * @param persons the persons to set
+//     */
+//    public void setPerson(Person person) {
+//        this.person = person;
+//    }
+//    
     /**
      * @return the task assign date
      */
@@ -250,16 +262,16 @@ public class Task {
         this.assignDate = assignDate;
     }
 	
-    @Transient
-    private Integer personId;
-    
-    public void setPersonId(Integer personId) {
-        this.personId = personId;
-    }
-    
-    public Integer getPersonId() {
-		return this.personId;	
-    }
+//    @Transient
+//    private Integer personId;
+//    
+//    public void setPersonId(Integer personId) {
+//        this.personId = personId;
+//    }
+//    
+//    public Integer getPersonId() {
+//		return this.personId;	
+//    }
     
 	public Set<Issue> getIssues() {
 		return issues;
@@ -267,5 +279,13 @@ public class Task {
 	
 	public void setIssues(Set<Issue> issues) {
 		this.issues = issues;
+	}
+	
+	public Set<Person> getPersons() {
+		return persons;
+	}
+
+	public void setPersons(Set<Person> persons) {
+		this.persons = persons;
 	}
 }
