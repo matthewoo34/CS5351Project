@@ -31,6 +31,7 @@ import ch.bsgroup.scrumit.domain.SprintBacklog;
 import ch.bsgroup.scrumit.domain.Task;
 import ch.bsgroup.scrumit.pojo.SerializableBurnDownChart;
 import ch.bsgroup.scrumit.pojo.SerializableIssue;
+import ch.bsgroup.scrumit.pojo.SerializablePerson;
 import ch.bsgroup.scrumit.pojo.SerializableSprintBacklog;
 import ch.bsgroup.scrumit.pojo.SerializableTask;
 import ch.bsgroup.scrumit.service.IBurnDownChartService;
@@ -122,10 +123,10 @@ public class BoardController {
 		List<SerializableTask> serializedTasks = new ArrayList<SerializableTask>();
 		for (Iterator<Task> iterator = tasks.iterator(); iterator.hasNext();) {
 			Task t = iterator.next();
-			Integer personId = t.getPerson()!=null?t.getPerson().getId():null;
+			//Integer personId = t.getPerson()!=null?t.getPerson().getId():null;
 			SerializableTask st = new SerializableTask(t.getId(), t.getDescription(), t.getxCoord(), 
 					t.getyCoord(), t.getStatus(), t.getDuration(), t.getCreationDate(), t.getCommencement(),
-					t.getPosition(),personId,t.getAssignDate());
+					t.getPosition(),/*personId,*/t.getAssignDate());
 			serializedTasks.add(st);
 		}
 		return serializedTasks;
@@ -137,10 +138,10 @@ public class BoardController {
 		List<SerializableTask> serializedTasks = new ArrayList<SerializableTask>();
 		for (Iterator<Task> iterator = tasks.iterator(); iterator.hasNext();) {
 			Task t = iterator.next();
-			Integer personId = t.getPerson()!=null?t.getPerson().getId():null;
+			//Integer personId = t.getPerson()!=null?t.getPerson().getId():null;
 			SerializableTask st = new SerializableTask(t.getId(), t.getDescription(), t.getxCoord(), 
 					t.getyCoord(), t.getStatus(), t.getDuration(), t.getCreationDate(), t.getCommencement(),
-					t.getPosition(),personId,t.getAssignDate());
+					t.getPosition(),/*personId,*/t.getAssignDate());
 			serializedTasks.add(st);
 		}
 		return serializedTasks;
@@ -170,23 +171,23 @@ public class BoardController {
 		t.setSprintBacklog(s);
 		t.setCreationDate(new Date());
         //find related developer
-        if (t.getPersonId() != null) {
-            Person p = this.personService.findPersonById(t.getPersonId());
-            if (p!=null) {
-                t.setPerson(p);
-                t.setAssignDate(new Date());
-            }
-        }
+//        if (t.getPersonId() != null) {
+//            Person p = this.personService.findPersonById(t.getPersonId());
+//            if (p!=null) {
+//                t.setPerson(p);
+//                t.setAssignDate(new Date());
+//            }
+//        }
 		Task task = this.taskService.addTask(t);
 		String personName = "";
-		if (task.getPerson() != null) {
-			System.out.println("add task null person");
-			personName = task.getPerson().getLastName() + " " + task.getPerson().getFirstName();
-		}
+//		if (task.getPerson() != null) {
+//			System.out.println("add task null person");
+//			personName = task.getPerson().getLastName() + " " + task.getPerson().getFirstName();
+//		}
 		this.burnDownChartService.updateBurnDown(task.getDuration(), 0, sprintid);
 		return new SerializableTask(task.getId(), task.getDescription(), task.getxCoord(), task.getyCoord(), 
 				task.getStatus(), task.getDuration(), task.getCreationDate(), task.getCommencement(),
-				task.getPosition(),personName,task.getAssignDate());
+				task.getPosition(),/*personName,*/task.getAssignDate());
 	}
 
 	@RequestMapping(value="task/updatecoord/{sprintid}/", method=RequestMethod.POST)
@@ -212,24 +213,70 @@ public class BoardController {
 		this.taskService.updateTask(task);
 	}
 	
-    @RequestMapping(value="task/updateperson/", method=RequestMethod.POST)
-    public @ResponseBody void updateTaskPerson(@RequestBody Task t) {
-        Task task = this.taskService.findTaskById(t.getId());
+//    @RequestMapping(value="task/updateperson/", method=RequestMethod.POST)
+//    public @ResponseBody void updateTaskPerson(@RequestBody Task t) {
+//        Task task = this.taskService.findTaskById(t.getId());
+//        if (task == null) {
+//            throw new ResourceNotFoundException(t.getId());
+//        }
+//        
+//        Integer personId = t.getPersonId();
+//        if (personId != null) {
+//            Person p = this.personService.findPersonById(personId);
+//            if (p == null) {
+//                throw new ResourceNotFoundException(personId);
+//            }
+//            task.setPerson(p);
+//            task.setAssignDate(new Date());
+//            this.taskService.updateTask(task);
+//            this.emailService.send(p.getEmail(), "Task Assign", "New task is assigned to you, please check dashboard");
+//        }
+//    }
+	
+    @RequestMapping(value="task/addperson/{taskid}/{personid}/", method=RequestMethod.GET)
+    public @ResponseBody void addTaskPerson(@PathVariable int taskid, @PathVariable int personid) {
+        Task task = this.taskService.findTaskById(taskid);
         if (task == null) {
-            throw new ResourceNotFoundException(t.getId());
+            throw new ResourceNotFoundException(taskid);
         }
-        
-        Integer personId = t.getPersonId();
-        if (personId != null) {
-            Person p = this.personService.findPersonById(personId);
-            if (p == null) {
-                throw new ResourceNotFoundException(personId);
+      
+        Person p = this.personService.findPersonById(personid);
+        if (p == null) {
+            throw new ResourceNotFoundException(personid);
+        }
+        Set<Person> persons = this.personService.getAllPersonsByTaskId(taskid);
+        persons.add(p);
+        task.setPersons(persons);
+        this.taskService.updateTask(task);
+    }
+    
+    @RequestMapping(value="task/removeperson/{taskid}/{personid}/", method=RequestMethod.GET)
+    public @ResponseBody void removeTaskPerson(@PathVariable int taskid, @PathVariable int personid) {
+        Task task = this.taskService.findTaskById(taskid);
+        if (task == null) {
+            throw new ResourceNotFoundException(taskid);
+        }  
+        Set<Person> persons = this.personService.getAllPersonsByTaskId(taskid);
+		for (Iterator<Person> iterator = persons.iterator(); iterator.hasNext();) {
+			Person p = iterator.next();
+            if(p.getId() == personid) {
+            	iterator.remove();
             }
-            task.setPerson(p);
-            task.setAssignDate(new Date());
-            this.taskService.updateTask(task);
-            this.emailService.send(p.getEmail(), "Task Assign", "New task is assigned to you, please check dashboard");
-        }
+		}       
+        task.setPersons(persons);
+        this.taskService.updateTask(task);
+    }
+    
+    @RequestMapping(value="allpersons/{taskid}/", method=RequestMethod.GET)
+    public @ResponseBody List<SerializablePerson> getAllPersonsOfTask(@PathVariable int taskid) {
+        Set<Person> persons = this.personService.getAllPersonsByTaskId(taskid);
+        List<SerializablePerson> serializablePerson = new ArrayList<SerializablePerson>();
+		for (Iterator<Person> iterator = persons.iterator(); iterator.hasNext();) {
+			Person p = iterator.next();
+			SerializablePerson sp = new SerializablePerson(p.getId(), p.getFirstName(), p.getLastName());
+			serializablePerson.add(sp);
+		}       
+		return serializablePerson;
     }
     
     @RequestMapping(value="task/updatestatus/", method=RequestMethod.POST)

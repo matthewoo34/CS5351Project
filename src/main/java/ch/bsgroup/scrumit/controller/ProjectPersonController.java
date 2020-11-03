@@ -126,10 +126,10 @@ public class ProjectPersonController {
 				Set<SerializableTask> serializedTasks = new HashSet<SerializableTask>();
 				serializedBacklog.setTasks(serializedTasks);
 				for (Task task:backlog.getTasks()) {
-					String personName="";
-					if (task.getPerson()!=null) {
-						personName = task.getPerson().getLastName() + " " + task.getPerson().getFirstName();
-					}
+//					String personName="";
+//					if (task.getPerson()!=null) {
+//						personName = task.getPerson().getLastName() + " " + task.getPerson().getFirstName();
+//					}
 					SerializableTask serializedTask = new SerializableTask(		
 					task.getId(),
 					task.getDescription(),
@@ -140,7 +140,7 @@ public class ProjectPersonController {
 					task.getCreationDate(),
 					task.getCommencement(),
 					task.getPosition(),
-					personName,
+					//personName,
 					task.getAssignDate());
 					serializedTasks.add(serializedTask);
 					
