@@ -14,4 +14,5 @@ public interface IPersonService {
 	public Set<Person> getAllPersons();
 	public Person findPersonById(int personId);
 	public Set<Person> getAllPersonsByProjectId(int projectId);
+	public Set<Person> getAllPersonsByTaskId(int taskId);
 }
