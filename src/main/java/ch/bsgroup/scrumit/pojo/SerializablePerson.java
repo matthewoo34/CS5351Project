@@ -33,6 +33,8 @@ public class SerializablePerson {
 	 * Person has associated projects
 	 */
 	private Set<SerializableProject> projects = new HashSet<SerializableProject>();
+	
+	private Set<SerializableTask> tasks = new HashSet<SerializableTask>();
 
 	/**
 	 * @desc Constructor
@@ -129,5 +131,18 @@ public class SerializablePerson {
 	public void addProject(SerializableProject project) {
 		this.projects.add(project);			// weist Person dem Projekt-Set zu
 		project.getPersons().add(this);		// weist Projekt dem Person-Set zu
+	}
+	
+	public Set<SerializableTask> getTasks() {
+		return tasks;
+	}
+
+	public void setTask(Set<SerializableTask> tasks) {
+		this.tasks = tasks;
+	}
+
+	public void addTask(SerializableTask task) {
+		this.tasks.add(task);			
+		task.getPersons().add(this);
 	}
 }

@@ -54,19 +54,22 @@ public class SerializableTask {
 	
 	private int position;
 	
-	private String personName;
-	
-	private Integer personId;
+//	private String personName;
+//	
+//	private Integer personId;
 	
 	private Date assignDate;
 	
 	private Set<SerializableIssue> issues = new HashSet<SerializableIssue>();
+	
+	private Set<SerializablePerson> persons = new HashSet<SerializablePerson>();
 
 	/**
 	 * @desc Constructor
 	 */
 	public SerializableTask(int id, String description, int xCoord, int yCoord, int status, int duration, 
-			Date creationDate, int commencement, int position/*, SerializableUserStory userStory*/,String personName,Date assignDate) {
+			Date creationDate, int commencement, int position,
+			/*, SerializableUserStory userStory,String personName*/Date assignDate) {
 		this.setId(id);
 		this.setDescription(description);
 		this.setxCoord(xCoord);
@@ -77,24 +80,24 @@ public class SerializableTask {
 		this.setCommencement(commencement);
 		this.setPosition(position);
 		//this.setUserStory(userStory);
-		this.setPersonName(personName);
+		//this.setPersonName(personName);
 		this.setAssignDate(assignDate);
 	}
 	
-	public SerializableTask(int id, String description, int xCoord, int yCoord, int status, int duration, 
-			Date creationDate, int commencement, int position/*, SerializableUserStory userStory*/,Integer personId,Date assignDate) {
-		this.setId(id);
-		this.setDescription(description);
-		this.setxCoord(xCoord);
-		this.setyCoord(yCoord);
-		this.setStatus(status);
-		this.setDuration(duration);
-		this.setCreationDate(creationDate);
-		this.setCommencement(commencement);
-		this.setPosition(position);
-		this.setPersonId(personId);
-		this.setAssignDate(assignDate);
-	}
+//	public SerializableTask(int id, String description, int xCoord, int yCoord, int status, int duration, 
+//			Date creationDate, int commencement, int position/*, SerializableUserStory userStory*/,Integer personId,Date assignDate) {
+//		this.setId(id);
+//		this.setDescription(description);
+//		this.setxCoord(xCoord);
+//		this.setyCoord(yCoord);
+//		this.setStatus(status);
+//		this.setDuration(duration);
+//		this.setCreationDate(creationDate);
+//		this.setCommencement(commencement);
+//		this.setPosition(position);
+//		this.setPersonId(personId);
+//		this.setAssignDate(assignDate);
+//	}
 
 	public SerializableTask(int id, String description, int xCoord, int yCoord, int status, Date creationDate, 
 			int commencement, int position) {
@@ -229,22 +232,22 @@ public class SerializableTask {
 	public void setPosition(int position) {
 		this.position = position;
 	}
-
-	public String getPersonName() {
-		return personName;
-	}
-	
-	public void setPersonName(String personName) {
-		this.personName = personName;
-	}
-	
-	public Integer getPersonId() {
-		return personId;
-	}
-	
-	public void setPersonId(Integer personId) {
-		this.personId = personId;
-	}
+//
+//	public String getPersonName() {
+//		return personName;
+//	}
+//	
+//	public void setPersonName(String personName) {
+//		this.personName = personName;
+//	}
+//	
+//	public Integer getPersonId() {
+//		return personId;
+//	}
+//	
+//	public void setPersonId(Integer personId) {
+//		this.personId = personId;
+//	}
 	
 	public Date getAssignDate() {
 		return assignDate;
@@ -260,5 +263,13 @@ public class SerializableTask {
 
 	public void setIssues(Set<SerializableIssue> issues) {
 		this.issues = issues;
+	}
+	
+	public Set<SerializablePerson> getPersons() {
+		return persons;
+	}
+
+	public void setPersons(Set<SerializablePerson> persons) {
+		this.persons = persons;
 	}
 }
