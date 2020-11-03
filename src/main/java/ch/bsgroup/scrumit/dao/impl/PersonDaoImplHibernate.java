@@ -122,4 +122,16 @@ public class PersonDaoImplHibernate implements IPersonDao {
 		return persons;
 	}
 
+	public Set<Person> getAllPersonsByTaskId(int taskId) {
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		Session sess = sessionFactory.getCurrentSession();
+
+		Transaction tx = sess.beginTransaction();
+		@SuppressWarnings("unchecked")
+		List<Person> list = sess.createQuery("select p from Person p join p.tasks task where task.id = :id").setParameter("id", taskId).list();  
+		Set<Person> persons = new HashSet<Person>(list);
+		tx.commit();
+
+		return persons;
+	}
 }
