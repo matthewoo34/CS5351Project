@@ -88,4 +88,8 @@ public class PersonServiceImpl implements IPersonService {
 	public Set<Person> getAllPersonsByProjectId(int projectId) {
 		return personDao.getAllPersonsByProjectId(projectId);
 	}
+	
+	public Set<Person> getAllPersonsByTaskId(int taskId) {
+		return personDao.getAllPersonsByTaskId(taskId);
+	}
 }
