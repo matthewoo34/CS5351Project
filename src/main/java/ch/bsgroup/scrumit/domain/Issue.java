@@ -33,14 +33,13 @@ public class Issue {
 	private int id;
 
 	@NotNull
-	private int category;
+	private String category;
 
 	@NotNull
 	@Size(min = 1, max = 255)
 	private String description;
 
-	@NotNull
-	private int duration;
+	private Integer duration;
 	
 	private Integer commencement;
 	
@@ -55,7 +54,7 @@ public class Issue {
 		
 	}
 
-	public Issue(int category, String description, int duration, Integer commencement, Integer cost) {
+	public Issue(String category, String description, Integer duration, Integer commencement, Integer cost) {
 		this.setCategory(category);
 		this.setDescription(description);
 		this.setDuration(duration);
@@ -70,11 +69,11 @@ public class Issue {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getCategory() {
+	public String getCategory() {
 		return category;
 	}
 
-	public void setCategory(int category) {
+	public void setCategory(String category) {
 		this.category = category;
 	}
 	
@@ -86,11 +85,11 @@ public class Issue {
 		this.description = description;
 	}
 	
-	public int getDuration() {
+	public Integer getDuration() {
 		return duration;
 	}
 
-	public void setDuration(int duration) {
+	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
 	
