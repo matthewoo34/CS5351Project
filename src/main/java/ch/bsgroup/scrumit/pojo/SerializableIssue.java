@@ -25,11 +25,11 @@ import ch.bsgroup.scrumit.domain.Project;
 public class SerializableIssue {
 	private int id;
 
-	private int category;
+	private String category;
 
 	private String description;
 
-	private int duration;
+	private Integer duration;
 	
 	private Integer commencement;
 	
@@ -37,7 +37,7 @@ public class SerializableIssue {
 	
 	private SerializableTask task;
 
-	public SerializableIssue(int id, int category, String description, int duration,  
+	public SerializableIssue(int id, String category, String description, Integer duration,  
 			Integer commencement, Integer cost) {
 		this.setId(id);
 		this.setCategory(category);
@@ -54,11 +54,11 @@ public class SerializableIssue {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getCategory() {
+	public String getCategory() {
 		return category;
 	}
 
-	public void setCategory(int category) {
+	public void setCategory(String category) {
 		this.category = category;
 	}
 	
@@ -70,11 +70,11 @@ public class SerializableIssue {
 		this.description = description;
 	}
 	
-	public int getDuration() {
+	public Integer getDuration() {
 		return duration;
 	}
 
-	public void setDuration(int duration) {
+	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
 
