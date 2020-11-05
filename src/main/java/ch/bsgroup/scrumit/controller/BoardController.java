@@ -126,7 +126,7 @@ public class BoardController {
 			//Integer personId = t.getPerson()!=null?t.getPerson().getId():null;
 			SerializableTask st = new SerializableTask(t.getId(), t.getDescription(), t.getxCoord(), 
 					t.getyCoord(), t.getStatus(), t.getDuration(), t.getCreationDate(), t.getCommencement(),
-					t.getPosition(),/*personId,*/t.getAssignDate());
+					t.getPosition(),/*personId,*/t.getAssignDate(),t.getIsFromPreviousSprint());
 			serializedTasks.add(st);
 		}
 		return serializedTasks;
@@ -141,7 +141,7 @@ public class BoardController {
 			//Integer personId = t.getPerson()!=null?t.getPerson().getId():null;
 			SerializableTask st = new SerializableTask(t.getId(), t.getDescription(), t.getxCoord(), 
 					t.getyCoord(), t.getStatus(), t.getDuration(), t.getCreationDate(), t.getCommencement(),
-					t.getPosition(),/*personId,*/t.getAssignDate());
+					t.getPosition(),/*personId,*/t.getAssignDate(),t.getIsFromPreviousSprint());
 			serializedTasks.add(st);
 		}
 		return serializedTasks;
@@ -187,7 +187,7 @@ public class BoardController {
 		this.burnDownChartService.updateBurnDown(task.getDuration(), 0, sprintid);
 		return new SerializableTask(task.getId(), task.getDescription(), task.getxCoord(), task.getyCoord(), 
 				task.getStatus(), task.getDuration(), task.getCreationDate(), task.getCommencement(),
-				task.getPosition(),/*personName,*/task.getAssignDate());
+				task.getPosition(),/*personName,*/task.getAssignDate(),task.getIsFromPreviousSprint());
 	}
 
 	@RequestMapping(value="task/updatecoord/{sprintid}/", method=RequestMethod.POST)

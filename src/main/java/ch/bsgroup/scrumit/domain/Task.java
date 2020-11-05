@@ -78,6 +78,8 @@ public class Task {
 	@NotNull
 	private int position;
 	
+	private Integer isFromPreviousSprint;
+	
     /**
      * Task has assign date
      */
@@ -222,6 +224,14 @@ public class Task {
 
 	public void setPosition(int position) {
 		this.position = position;
+	}
+	
+	public Integer getIsFromPreviousSprint() {
+		return isFromPreviousSprint;
+	}
+	
+	public void  setIsFromPreviousSprint(Integer isFromPreviousSprint) {
+		this.isFromPreviousSprint = isFromPreviousSprint;
 	}
 
 	

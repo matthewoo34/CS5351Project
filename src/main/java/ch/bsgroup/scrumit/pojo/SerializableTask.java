@@ -54,6 +54,8 @@ public class SerializableTask {
 	
 	private int position;
 	
+	private Integer isFromPreviousSprint;
+	
 //	private String personName;
 //	
 //	private Integer personId;
@@ -69,7 +71,7 @@ public class SerializableTask {
 	 */
 	public SerializableTask(int id, String description, int xCoord, int yCoord, int status, int duration, 
 			Date creationDate, Integer commencement, int position,
-			/*, SerializableUserStory userStory,String personName*/Date assignDate) {
+			/*, SerializableUserStory userStory,String personName*/Date assignDate,Integer isFromPreviousSprint) {
 		this.setId(id);
 		this.setDescription(description);
 		this.setxCoord(xCoord);
@@ -82,6 +84,7 @@ public class SerializableTask {
 		//this.setUserStory(userStory);
 		//this.setPersonName(personName);
 		this.setAssignDate(assignDate);
+		this.setIsFromPreviousSprint(isFromPreviousSprint);
 	}
 	
 //	public SerializableTask(int id, String description, int xCoord, int yCoord, int status, int duration, 
@@ -231,6 +234,14 @@ public class SerializableTask {
 
 	public void setPosition(int position) {
 		this.position = position;
+	}
+	
+	public Integer getIsFromPreviousSprint() {
+		return isFromPreviousSprint;
+	}
+	
+	public void setIsFromPreviousSprint(Integer isFromPreviousSprint) {
+		this.isFromPreviousSprint = isFromPreviousSprint;
 	}
 //
 //	public String getPersonName() {
