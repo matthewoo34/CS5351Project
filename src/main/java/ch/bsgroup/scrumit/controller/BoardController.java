@@ -123,10 +123,14 @@ public class BoardController {
 		List<SerializableTask> serializedTasks = new ArrayList<SerializableTask>();
 		for (Iterator<Task> iterator = tasks.iterator(); iterator.hasNext();) {
 			Task t = iterator.next();
-			//Integer personId = t.getPerson()!=null?t.getPerson().getId():null;
+			Set<SerializablePerson> serializedPersons = new HashSet<SerializablePerson>();
+			Set<Person> persons = t.getPersons();
+			for (Person p:persons) {
+				serializedPersons.add(new SerializablePerson(p.getId(),p.getFirstName(),p.getLastName(),p.getEmail()));
+			}
 			SerializableTask st = new SerializableTask(t.getId(), t.getDescription(), t.getxCoord(), 
 					t.getyCoord(), t.getStatus(), t.getDuration(), t.getCreationDate(), t.getCommencement(),
-					t.getPosition(),/*personId,*/t.getAssignDate(),t.getIsFromPreviousSprint());
+					t.getPosition(),serializedPersons, t.getAssignDate(),t.getIsFromPreviousSprint());
 			serializedTasks.add(st);
 		}
 		return serializedTasks;
@@ -138,10 +142,14 @@ public class BoardController {
 		List<SerializableTask> serializedTasks = new ArrayList<SerializableTask>();
 		for (Iterator<Task> iterator = tasks.iterator(); iterator.hasNext();) {
 			Task t = iterator.next();
-			//Integer personId = t.getPerson()!=null?t.getPerson().getId():null;
+			Set<SerializablePerson> serializedPersons = new HashSet<SerializablePerson>();
+			Set<Person> persons = t.getPersons();
+			for (Person p:persons) {
+				serializedPersons.add(new SerializablePerson(p.getId(),p.getFirstName(),p.getLastName(),p.getEmail()));
+			}
 			SerializableTask st = new SerializableTask(t.getId(), t.getDescription(), t.getxCoord(), 
 					t.getyCoord(), t.getStatus(), t.getDuration(), t.getCreationDate(), t.getCommencement(),
-					t.getPosition(),/*personId,*/t.getAssignDate(),t.getIsFromPreviousSprint());
+					t.getPosition(),serializedPersons, t.getAssignDate(),t.getIsFromPreviousSprint());
 			serializedTasks.add(st);
 		}
 		return serializedTasks;
@@ -171,23 +179,16 @@ public class BoardController {
 		t.setSprintBacklog(s);
 		t.setCreationDate(new Date());
         //find related developer
-//        if (t.getPersonId() != null) {
-//            Person p = this.personService.findPersonById(t.getPersonId());
-//            if (p!=null) {
-//                t.setPerson(p);
-//                t.setAssignDate(new Date());
-//            }
-//        }
 		Task task = this.taskService.addTask(t);
-		String personName = "";
-//		if (task.getPerson() != null) {
-//			System.out.println("add task null person");
-//			personName = task.getPerson().getLastName() + " " + task.getPerson().getFirstName();
-//		}
+		Set<SerializablePerson> serializedPersons = new HashSet<SerializablePerson>();
+		Set<Person> persons = t.getPersons();
+		for (Person p:persons) {
+			serializedPersons.add(new SerializablePerson(p.getId(),p.getFirstName(),p.getLastName(),p.getEmail()));
+		}
 		this.burnDownChartService.updateBurnDown(task.getDuration(), 0, sprintid);
 		return new SerializableTask(task.getId(), task.getDescription(), task.getxCoord(), task.getyCoord(), 
 				task.getStatus(), task.getDuration(), task.getCreationDate(), task.getCommencement(),
-				task.getPosition(),/*personName,*/task.getAssignDate(),task.getIsFromPreviousSprint());
+				task.getPosition(),serializedPersons, task.getAssignDate(),task.getIsFromPreviousSprint());
 	}
 
 	@RequestMapping(value="task/updatecoord/{sprintid}/", method=RequestMethod.POST)

@@ -70,7 +70,7 @@ public class SerializableTask {
 	 * @desc Constructor
 	 */
 	public SerializableTask(int id, String description, int xCoord, int yCoord, int status, int duration, 
-			Date creationDate, Integer commencement, int position,
+			Date creationDate, Integer commencement, int position, Set<SerializablePerson> persons,
 			/*, SerializableUserStory userStory,String personName*/Date assignDate,Integer isFromPreviousSprint) {
 		this.setId(id);
 		this.setDescription(description);
@@ -81,6 +81,7 @@ public class SerializableTask {
 		this.setCreationDate(creationDate);
 		this.setCommencement(commencement);
 		this.setPosition(position);
+		this.setPersons(persons);
 		//this.setUserStory(userStory);
 		//this.setPersonName(personName);
 		this.setAssignDate(assignDate);

@@ -126,10 +126,11 @@ public class ProjectPersonController {
 				Set<SerializableTask> serializedTasks = new HashSet<SerializableTask>();
 				serializedBacklog.setTasks(serializedTasks);
 				for (Task task:backlog.getTasks()) {
-//					String personName="";
-//					if (task.getPerson()!=null) {
-//						personName = task.getPerson().getLastName() + " " + task.getPerson().getFirstName();
-//					}
+					Set<SerializablePerson> serializedPersons = new HashSet<SerializablePerson>();
+					Set<Person> persons = task.getPersons();
+					for (Person tp:persons) {
+						serializedPersons.add(new SerializablePerson(tp.getId(),tp.getFirstName(),tp.getLastName(),tp.getEmail()));
+					}
 					SerializableTask serializedTask = new SerializableTask(		
 					task.getId(),
 					task.getDescription(),
@@ -140,8 +141,9 @@ public class ProjectPersonController {
 					task.getCreationDate(),
 					task.getCommencement(),
 					task.getPosition(),
-					//personName,
-					task.getAssignDate());
+					serializedPersons,
+					task.getAssignDate(),
+					task.getIsFromPreviousSprint());
 					serializedTasks.add(serializedTask);
 					
 					Set<SerializableIssue> serializedIssues = new HashSet<SerializableIssue>();
