@@ -61,7 +61,7 @@ public class Task {
 	/**
 	 * Task has a Duration
 	 */
-	private int duration;
+	private int duration=8;
 
 	/**
 	 * Project has a CreationDate
@@ -73,8 +73,7 @@ public class Task {
 	@JoinColumn(name="sprintbacklog_id", referencedColumnName="id", nullable=true, updatable=false, insertable=true)
 	private SprintBacklog sprintBacklog;
 	
-	@NotNull
-	private int commencement;
+	private Integer commencement;
 	
 	@NotNull
 	private int position;
@@ -209,11 +208,11 @@ public class Task {
 		this.sprintBacklog = sprintBacklog;
 	}
 	
-	public int getCommencement() {
+	public Integer getCommencement() {
 		return commencement;
 	}
 
-	public void setCommencement(int commencement) {
+	public void setCommencement(Integer commencement) {
 		this.commencement = commencement;
 	}
 	

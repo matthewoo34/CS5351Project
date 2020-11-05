@@ -50,7 +50,7 @@ public class SerializableTask {
 	 */
 	private SerializableSprintBacklog sprintBacklog;
 	
-	private int commencement;
+	private Integer commencement;
 	
 	private int position;
 	
@@ -68,7 +68,7 @@ public class SerializableTask {
 	 * @desc Constructor
 	 */
 	public SerializableTask(int id, String description, int xCoord, int yCoord, int status, int duration, 
-			Date creationDate, int commencement, int position,
+			Date creationDate, Integer commencement, int position,
 			/*, SerializableUserStory userStory,String personName*/Date assignDate) {
 		this.setId(id);
 		this.setDescription(description);
@@ -100,7 +100,7 @@ public class SerializableTask {
 //	}
 
 	public SerializableTask(int id, String description, int xCoord, int yCoord, int status, Date creationDate, 
-			int commencement, int position) {
+			Integer commencement, int position) {
 		this.setId(id);
 		this.setDescription(description);
 		this.setxCoord(xCoord);
@@ -217,11 +217,11 @@ public class SerializableTask {
 		this.sprintBacklog = sprintBacklog;
 	}
 	
-	public int getCommencement() {
+	public Integer getCommencement() {
 		return commencement;
 	}
 
-	public void setCommencement(int commencement) {
+	public void setCommencement(Integer commencement) {
 		this.commencement = commencement;
 	}
 	
