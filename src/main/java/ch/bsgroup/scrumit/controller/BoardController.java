@@ -318,7 +318,7 @@ public class BoardController {
 		return this.burnDownChartService.getBurnDown(sprintid);
 	}
 	
-	@RequestMapping(value="add/issue/{taskId}", method=RequestMethod.POST)
+	@RequestMapping(value="add/issue/{taskid}", method=RequestMethod.POST)
 	public @ResponseBody SerializableIssue addIssue(@PathVariable int taskid,@RequestBody Issue i) {
 		Task t = this.taskService.findTaskById(taskid);
 		if (t == null) {
