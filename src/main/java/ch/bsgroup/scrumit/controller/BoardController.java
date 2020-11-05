@@ -285,10 +285,13 @@ public class BoardController {
     	if (task == null) {
     		throw new ResourceNotFoundException(t.getId());
     	}
-    	int status = t.getStatus();
-    	task.setStatus(status);
+    	int previousStatus = task.getStatus();
+    	int currentStatus = t.getStatus();
+    	task.setStatus(currentStatus);
+    	int position = t.getPosition();
+    	task.setPosition(position);
     	this.taskService.updateTask(task);
-    	if (status == 3) {
+    	if (previousStatus != currentStatus && currentStatus == 3) {
     		this.emailService.send("kafaatli3-c@my.cityu.edu.hk", "Task Completed", "The task - "+task.getDescription()+ " has been completed");
     	}
     }
@@ -297,6 +300,7 @@ public class BoardController {
 	public @ResponseBody void updateTaskDescription(@RequestBody Task t) {
 		Task task = this.taskService.findTaskById(t.getId());
 		task.setDescription(t.getDescription());
+		task.setCommencement(t.getCommencement());
 		this.taskService.updateTask(task);
 	}
 
