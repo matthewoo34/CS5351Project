@@ -92,7 +92,7 @@ public class Task {
 	private Set<Issue> issues = new HashSet<Issue>();
     
 	@JsonIgnore
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.EAGER)
 		@JoinTable(name = "Task_Person",
 			joinColumns = {
 				@JoinColumn(name="task_id", referencedColumnName="id")
