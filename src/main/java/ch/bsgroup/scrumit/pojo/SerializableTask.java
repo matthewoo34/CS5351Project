@@ -88,6 +88,26 @@ public class SerializableTask {
 		this.setIsFromPreviousSprint(isFromPreviousSprint);
 	}
 	
+	public SerializableTask(int id, String description, int xCoord, int yCoord, int status, int duration, 
+			Date creationDate, Integer commencement, int position, Set<SerializablePerson> persons,
+			Set<SerializableIssue> issues, Date assignDate,Integer isFromPreviousSprint) {
+		this.setId(id);
+		this.setDescription(description);
+		this.setxCoord(xCoord);
+		this.setyCoord(yCoord);
+		this.setStatus(status);
+		this.setDuration(duration);
+		this.setCreationDate(creationDate);
+		this.setCommencement(commencement);
+		this.setPosition(position);
+		this.setPersons(persons);
+		this.setIssues(issues);
+		//this.setUserStory(userStory);
+		//this.setPersonName(personName);
+		this.setAssignDate(assignDate);
+		this.setIsFromPreviousSprint(isFromPreviousSprint);
+	}
+	
 //	public SerializableTask(int id, String description, int xCoord, int yCoord, int status, int duration, 
 //			Date creationDate, int commencement, int position/*, SerializableUserStory userStory*/,Integer personId,Date assignDate) {
 //		this.setId(id);
