@@ -128,9 +128,19 @@ public class BoardController {
 			for (Person p:persons) {
 				serializedPersons.add(new SerializablePerson(p.getId(),p.getFirstName(),p.getLastName(),p.getEmail()));
 			}
+			Set<SerializableIssue> serializedIssues = new HashSet<SerializableIssue>();
+			Set<Issue> issues = t.getIssues();
+			for (Issue i:issues) {
+				serializedIssues.add(new SerializableIssue(i.getId(),
+						i.getCategory(),
+						i.getDescription(),
+						i.getDuration(),
+						i.getCommencement(),
+						i.getCost()));
+			}
 			SerializableTask st = new SerializableTask(t.getId(), t.getDescription(), t.getxCoord(), 
 					t.getyCoord(), t.getStatus(), t.getDuration(), t.getCreationDate(), t.getCommencement(),
-					t.getPosition(),serializedPersons, t.getAssignDate(),t.getIsFromPreviousSprint());
+					t.getPosition(),serializedPersons, serializedIssues, t.getAssignDate(),t.getIsFromPreviousSprint());
 			serializedTasks.add(st);
 		}
 		return serializedTasks;
