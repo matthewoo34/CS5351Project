@@ -121,7 +121,7 @@ public class IssueDaoImplHibernate implements IIssueDao {
 
 		Transaction tx = sess.beginTransaction();
 		@SuppressWarnings("unchecked")
-		List<Issue> list = sess.createQuery("select i from Issue i join i.tasks task where task.id = :id").setParameter("id", taskId).list(); 
+		List<Issue> list = sess.createQuery("from Issue where task_id = "+ taskId).list();
 		Set<Issue> issues = new HashSet<Issue>(list);
 		tx.commit();
 
