@@ -304,6 +304,13 @@ public class BoardController {
 		task.setCommencement(t.getCommencement());
 		this.taskService.updateTask(task);
 	}
+	
+	@RequestMapping(value="task/updateisfromprevioussprint/", method=RequestMethod.POST)
+	public @ResponseBody void updateIsFromPreviousSprint(@RequestBody Task t) {
+		Task task = this.taskService.findTaskById(t.getId());
+		task.setIsFromPreviousSprint(t.getIsFromPreviousSprint());
+		this.taskService.updateTask(task);
+	}
 
 	@RequestMapping(value="burndownchart/{sprintid}/", method=RequestMethod.GET)
 	public @ResponseBody List<SerializableBurnDownChart> getBurnDownChart(@PathVariable int sprintid) {
