@@ -129,7 +129,7 @@ public class BoardController {
 				serializedPersons.add(new SerializablePerson(p.getId(),p.getFirstName(),p.getLastName(),p.getEmail()));
 			}
 			Set<SerializableIssue> serializedIssues = new HashSet<SerializableIssue>();
-			Set<Issue> issues = t.getIssues();
+			Set<Issue> issues = this.issueService.getAllIssuesByTaskId(t.getId());
 			for (Issue i:issues) {
 				serializedIssues.add(new SerializableIssue(i.getId(),
 						i.getCategory(),
