@@ -147,8 +147,9 @@ public class ProjectPersonController {
 					serializedTasks.add(serializedTask);
 					
 					Set<SerializableIssue> serializedIssues = new HashSet<SerializableIssue>();
+					Set<Issue> issues = this.issueService.getAllIssuesByTaskId(task.getId());
 					serializedTask.setIssues(serializedIssues);
-					for (Issue issue:task.getIssues()) {
+					for (Issue issue:issues) {
 						SerializableIssue serializedIssue = new SerializableIssue(
 						issue.getId(),
 						issue.getCategory(),
