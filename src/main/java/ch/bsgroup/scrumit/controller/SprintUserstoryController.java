@@ -123,6 +123,7 @@ public class SprintUserstoryController {
 		Set<ConstraintViolation<Sprint>> failures = validator.validate(s);
 		Sprint sprint = this.sprintService.findSprintById(s.getId());
 		sprint.setSlogan(s.getSlogan().trim());
+		sprint.setEndHour(s.getEndHour());
 		if (!failures.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return validationMessagesSprint(failures);
