@@ -322,6 +322,7 @@ public class BoardController {
 		Task task = this.taskService.findTaskById(t.getId());
 		task.setDescription(t.getDescription());
 		task.setCommencement(t.getCommencement());
+		task.setDuration(t.getDuration());
 		this.taskService.updateTask(task);
 	}
 	
