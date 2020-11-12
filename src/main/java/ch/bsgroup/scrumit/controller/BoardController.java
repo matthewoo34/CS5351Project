@@ -269,6 +269,7 @@ public class BoardController {
         persons.add(p);
         task.setPersons(persons);
         this.taskService.updateTask(task);
+        this.emailService.send(p.getEmail(), "Task Assign", "New task is assigned to you, please check dashboard");
     }
     
     @RequestMapping(value="task/removeperson/{taskid}/{personid}/", method=RequestMethod.GET)
@@ -313,7 +314,7 @@ public class BoardController {
     	task.setPosition(position);
     	this.taskService.updateTask(task);
     	if (previousStatus != currentStatus && currentStatus == 3) {
-    		this.emailService.send("kafaatli3-c@my.cityu.edu.hk", "Task Completed", "The task - "+task.getDescription()+ " has been completed");
+    		this.emailService.send("mhwoo6-c@my.cityu.edu.hk,kityanho3-c@my.cityu.edu.hk,twchoi5@my.cityu.edu.hk,kafaatli3-c@my.cityu.edu.hk", "Task Completed", "The task - "+task.getDescription()+ " has been completed");
     	}
     }
 
@@ -359,6 +360,7 @@ public class BoardController {
 		}
 		i.setTask(t);
 		Issue issue = this.issueService.addIssue(i);
+		this.emailService.send("mhwoo6-c@my.cityu.edu.hk,kityanho3-c@my.cityu.edu.hk,twchoi5@my.cityu.edu.hk,kafaatli3-c@my.cityu.edu.hk", "Issue Created", "The Issue - "+issue.getDescription()+ " has been created, please check");
 		return new SerializableIssue(issue.getId(),
 				issue.getCategory(),
 				issue.getDescription(),
