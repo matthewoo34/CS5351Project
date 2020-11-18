@@ -251,18 +251,24 @@ public class SprintUserstoryController {
 	}
 
 	@RequestMapping(value="sprintbacklog/remove/{sprintbacklogid}/", method=RequestMethod.GET)
-	public @ResponseBody void removesprintbacklogById(@PathVariable int sprintbacklogid) {
+	public @ResponseBody boolean removesprintbacklogById(@PathVariable int sprintbacklogid) {
 		Set<Task> tasks = this.taskService.getAllTasksBySprintBacklogId(sprintbacklogid);
 		int taskDurationOfSprintBacklog = 0;
+		boolean isRemove = true;
 		for (Iterator<Task> iterator = tasks.iterator(); iterator.hasNext();) {
 			Task t = iterator.next();
+			isRemove = false;
 			taskDurationOfSprintBacklog += t.getDuration();
 		}
 		if (taskDurationOfSprintBacklog > 0) {
 			// Update BurnDownChart
 			
 		}
+		if (!isRemove) {
+			return false;
+		}
 		this.sprintBacklogService.removeSprintBacklog(sprintbacklogid);
+		return true;
 	}
 
 	// internal helper
