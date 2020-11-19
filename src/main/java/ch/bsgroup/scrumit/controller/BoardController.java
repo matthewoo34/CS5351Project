@@ -314,7 +314,7 @@ public class BoardController {
     	task.setPosition(position);
     	this.taskService.updateTask(task);
     	if (previousStatus != currentStatus && currentStatus == 3) {
-    		this.emailService.send("mhwoo6-c@my.cityu.edu.hk,kityanho3-c@my.cityu.edu.hk,twchoi5@my.cityu.edu.hk,kafaatli3-c@my.cityu.edu.hk", "Task Completed", "The task - "+task.getDescription()+ " has been completed");
+    		this.emailService.send("mhwoo6-c@my.cityu.edu.hk,kityanho3-c@my.cityu.edu.hk,twchoi5-c@my.cityu.edu.hk,kafaatli3-c@my.cityu.edu.hk", "Task Completed", "The task - "+task.getDescription()+ " has been completed");
     	}
     }
 
@@ -360,7 +360,7 @@ public class BoardController {
 		}
 		i.setTask(t);
 		Issue issue = this.issueService.addIssue(i);
-		this.emailService.send("mhwoo6-c@my.cityu.edu.hk,kityanho3-c@my.cityu.edu.hk,twchoi5@my.cityu.edu.hk,kafaatli3-c@my.cityu.edu.hk", "Issue Created", "The Issue - "+issue.getDescription()+ " has been created, please check");
+		this.emailService.send("mhwoo6-c@my.cityu.edu.hk,kityanho3-c@my.cityu.edu.hk,twchoi5-c@my.cityu.edu.hk,kafaatli3-c@my.cityu.edu.hk", "Issue Created", "The Issue - "+issue.getDescription()+ " has been created, please check");
 		return new SerializableIssue(issue.getId(),
 				issue.getCategory(),
 				issue.getDescription(),
