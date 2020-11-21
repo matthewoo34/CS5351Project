@@ -14,4 +14,5 @@ public interface ISprintDao {
 	public Set<Sprint> getAllSprints();
 	public Sprint findSprintById(int sprintId);
 	public Set<Sprint> getAllSprintsByProjectId(int projectId);
+	public Sprint findSprintByTaskId(int sprintId);
 }

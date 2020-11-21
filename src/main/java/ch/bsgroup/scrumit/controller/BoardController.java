@@ -269,11 +269,25 @@ public class BoardController {
         persons.add(p);
         task.setPersons(persons);
         this.taskService.updateTask(task);
-        this.emailService.send(p.getEmail(), "Task Assign", "New task is assigned to you, please check dashboard");
+        try {
+            //find sprintbacklog first and then sprint
+        	Sprint sprint = this.sprintService.findSprintByTaskId(task.getId());
+        	String personName = p.getFirstName();
+        	String taskDesc = task.getDescription();
+        	String sprintSlogan = sprint.getSlogan();
+            String subject = String.format("Task assigned on Sprint %s",sprintSlogan);
+            String content = String.format("Dear %s,\nA new task - %s on sprint - %s is assigned to you,\nplease check the taskboard", personName, taskDesc, sprintSlogan);
+            this.emailService.send(p.getEmail(), subject, content);
+        } catch(Exception ex) {
+        	System.out.println("Exception at task add person");
+        	ex.printStackTrace();
+        }
     }
     
     @RequestMapping(value="task/removeperson/{taskid}/{personid}/", method=RequestMethod.GET)
     public @ResponseBody void removeTaskPerson(@PathVariable int taskid, @PathVariable int personid) {
+    	String personName = "";
+    	String personEmail = "";
         Task task = this.taskService.findTaskById(taskid);
         if (task == null) {
             throw new ResourceNotFoundException(taskid);
@@ -282,11 +296,21 @@ public class BoardController {
 		for (Iterator<Person> iterator = persons.iterator(); iterator.hasNext();) {
 			Person p = iterator.next();
             if(p.getId() == personid) {
+            	personName = p.getFirstName();
+            	personEmail = p.getEmail();
             	iterator.remove();
             }
 		}       
         task.setPersons(persons);
         this.taskService.updateTask(task);
+        try {
+        	String subject = String.format("you have been removed from task - %s", task.getDescription());
+        	String content = String.format("Dear %s,\n You are no longer involved in %s.\n For further information, please check the taskboard.", personName,task.getDescription());
+        	this.emailService.send(personEmail, subject, content);
+        } catch (Exception ex) {
+        	System.out.println("Exception at task remove person");
+        	ex.printStackTrace();
+        }
     }
     
     @RequestMapping(value="allpersons/{taskid}/", method=RequestMethod.GET)
@@ -299,6 +323,23 @@ public class BoardController {
 			serializablePerson.add(sp);
 		}       
 		return serializablePerson;
+    }
+    
+    @RequestMapping(value="task/remove/{taskid}", method=RequestMethod.GET)
+    public @ResponseBody boolean removeTask(@PathVariable int taskid) {
+    	Task t = this.taskService.findTaskById(taskid);
+    	if (t == null) {
+    		return false;
+    	}
+    	if (t.getStatus() == 1 || t.getStatus() == 2) {
+    		return false;
+    	}
+    	Set<Issue> issues = this.issueService.getAllIssuesByTaskId(taskid);
+    	if (issues != null && issues.size()>0) {
+    		return false;
+    	}
+    	this.taskService.removeTask(taskid);
+    	return true;
     }
     
     @RequestMapping(value="task/updatestatus/", method=RequestMethod.POST)
@@ -314,7 +355,7 @@ public class BoardController {
     	task.setPosition(position);
     	this.taskService.updateTask(task);
     	if (previousStatus != currentStatus && currentStatus == 3) {
-    		this.emailService.send("mhwoo6-c@my.cityu.edu.hk,kityanho3-c@my.cityu.edu.hk,twchoi5-c@my.cityu.edu.hk,kafaatli3-c@my.cityu.edu.hk", "Task Completed", "The task - "+task.getDescription()+ " has been completed");
+    		this.emailService.send("tszwanchoi@gmail.com,mhwoo6-c@my.cityu.edu.hk,kityanho3-c@my.cityu.edu.hk,twchoi5-c@my.cityu.edu.hk,kafaatli3-c@my.cityu.edu.hk", "Task Completed", "The task - "+task.getDescription()+ " has been completed");
     	}
     }
 
@@ -360,7 +401,17 @@ public class BoardController {
 		}
 		i.setTask(t);
 		Issue issue = this.issueService.addIssue(i);
-		this.emailService.send("mhwoo6-c@my.cityu.edu.hk,kityanho3-c@my.cityu.edu.hk,twchoi5-c@my.cityu.edu.hk,kafaatli3-c@my.cityu.edu.hk", "Issue Created", "The Issue - "+issue.getDescription()+ " has been created, please check");
+		try {
+			Sprint sprint = this.sprintService.findSprintByTaskId(t.getId());
+			String sprintSlogan = sprint.getSlogan();
+			String subject = String.format("Issue reported on Task %s", t.getDescription());
+			String content = String.format("Dear Sir/Madam,\nA new issue - %s on task - %s has been reported in sprint - %s\nplease check taskboard", i.getDescription(),t.getDescription(),sprintSlogan);
+			this.emailService.send("tszwanchoi@gmail.com,mhwoo6-c@my.cityu.edu.hk,kityanho3-c@my.cityu.edu.hk,twchoi5-c@my.cityu.edu.hk,kafaatli3-c@my.cityu.edu.hk", "Issue Created", "The Issue - "+issue.getDescription()+ " has been created, please check");	
+	
+		} catch (Exception ex) {
+			System.out.println("Exception at add issue at task");
+			ex.printStackTrace();
+		}
 		return new SerializableIssue(issue.getId(),
 				issue.getCategory(),
 				issue.getDescription(),

@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import ch.bsgroup.scrumit.domain.Sprint;
+import ch.bsgroup.scrumit.domain.SprintBacklog;
 import ch.bsgroup.scrumit.dao.ISprintDao;
 import ch.bsgroup.scrumit.utils.HibernateUtil;
 
@@ -106,5 +107,25 @@ public class SprintDaoImplHibernate implements ISprintDao {
 		tx.commit();
 
 		return sprints;
+	}
+
+	/**
+	 * Get Sprint By Task ID
+	 */
+	@Override
+	public Sprint findSprintByTaskId(int sprintId) {
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		Session sess = sessionFactory.getCurrentSession();
+
+		Transaction tx = sess.beginTransaction();
+		try {
+			@SuppressWarnings("unchecked")
+			Sprint sprint = (Sprint)sess.createQuery("select s from Sprint s join s.sprintBacklog sb join sb.tasks t where t.id = :id").setParameter("id", sprintId).list().get(0);
+			tx.commit();
+			return sprint;
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return null;
+		}
 	}
 }

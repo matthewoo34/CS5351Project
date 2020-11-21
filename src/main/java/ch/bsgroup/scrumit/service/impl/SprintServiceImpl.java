@@ -53,4 +53,9 @@ public class SprintServiceImpl implements ISprintService {
 	public Set<Sprint> getAllSprintsByProjectId(int projectId) {
 		return sprintDao.getAllSprintsByProjectId(projectId);
 	}
+
+	@Override
+	public Sprint findSprintByTaskId(int taskId) {
+		return sprintDao.findSprintByTaskId(taskId);
+	}
 }
