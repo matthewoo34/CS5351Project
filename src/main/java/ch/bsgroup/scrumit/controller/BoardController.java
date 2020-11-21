@@ -401,11 +401,17 @@ public class BoardController {
 		}
 		i.setTask(t);
 		Issue issue = this.issueService.addIssue(i);
+		String personName = "";
+		Set<Person> persons = this.personService.getAllPersonsByTaskId(t.getId());
+		for (Iterator<Person> iterator = persons.iterator(); iterator.hasNext();) {
+			Person p = iterator.next();
+			personName = personName + p.getFirstName() + " " + p.getLastName() + ", ";		
+		}
 		try {
 			Sprint sprint = this.sprintService.findSprintByTaskId(t.getId());
 			String sprintSlogan = sprint.getSlogan();
 			String subject = String.format("Issue reported on Task %s", t.getDescription());
-			String content = String.format("Dear Sir/Madam,\n\nA new issue - %s on task - %s has been reported in sprint - %s\n\nplease check taskboard.\nhttps://jerryishere.github.io/ng-scrumit/", i.getDescription(),t.getDescription(),sprintSlogan);
+			String content = String.format("Dear %s,\n\nA new issue - %s on task - %s has been reported in sprint - %s\n\nplease check taskboard.\nhttps://jerryishere.github.io/ng-scrumit/", personName, i.getDescription(),t.getDescription(),sprintSlogan);
 			//this.emailService.send("tszwanchoi@gmail.com,mhwoo6-c@my.cityu.edu.hk,kityanho3-c@my.cityu.edu.hk,twchoi5-c@my.cityu.edu.hk,kafaatli3-c@my.cityu.edu.hk", "Issue Created", "The Issue - "+issue.getDescription()+ " has been created, please check");	
 			this.emailService.send("tszwanchoi@gmail.com,mhwoo6-c@my.cityu.edu.hk,kityanho3-c@my.cityu.edu.hk,twchoi5-c@my.cityu.edu.hk,kafaatli3-c@my.cityu.edu.hk", subject, content);
 		} catch (Exception ex) {
