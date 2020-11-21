@@ -276,7 +276,7 @@ public class BoardController {
         	String taskDesc = task.getDescription();
         	String sprintSlogan = sprint.getSlogan();
             String subject = String.format("Task assigned on Sprint %s",sprintSlogan);
-            String content = String.format("Dear %s,\nA new task - %s on sprint - %s is assigned to you,\nplease check the taskboard", personName, taskDesc, sprintSlogan);
+            String content = String.format("Dear %s,\n\nA new task - %s on sprint - %s is assigned to you,\n\nplease check the taskboard.\nhttps://jerryishere.github.io/ng-scrumit/", personName, taskDesc, sprintSlogan);
             this.emailService.send(p.getEmail(), subject, content);
         } catch(Exception ex) {
         	System.out.println("Exception at task add person");
@@ -305,7 +305,7 @@ public class BoardController {
         this.taskService.updateTask(task);
         try {
         	String subject = String.format("you have been removed from task - %s", task.getDescription());
-        	String content = String.format("Dear %s,\n You are no longer involved in %s.\n For further information, please check the taskboard.", personName,task.getDescription());
+        	String content = String.format("Dear %s,\n\nYou are no longer involved in %s.\n\nFor further information, please check the taskboard.\nhttps://jerryishere.github.io/ng-scrumit/", personName,task.getDescription());
         	this.emailService.send(personEmail, subject, content);
         } catch (Exception ex) {
         	System.out.println("Exception at task remove person");
@@ -331,7 +331,7 @@ public class BoardController {
     	if (t == null) {
     		return false;
     	}
-    	if (t.getStatus() == 1 || t.getStatus() == 2) {
+    	if (t.getStatus() == 2 || t.getStatus() == 4) {
     		return false;
     	}
     	Set<Issue> issues = this.issueService.getAllIssuesByTaskId(taskid);
@@ -354,7 +354,7 @@ public class BoardController {
     	int position = t.getPosition();
     	task.setPosition(position);
     	this.taskService.updateTask(task);
-    	if (previousStatus != currentStatus && currentStatus == 3) {
+    	if (previousStatus != currentStatus && currentStatus == 4) {
     		this.emailService.send("tszwanchoi@gmail.com,mhwoo6-c@my.cityu.edu.hk,kityanho3-c@my.cityu.edu.hk,twchoi5-c@my.cityu.edu.hk,kafaatli3-c@my.cityu.edu.hk", "Task Completed", "The task - "+task.getDescription()+ " has been completed");
     	}
     }
@@ -405,7 +405,7 @@ public class BoardController {
 			Sprint sprint = this.sprintService.findSprintByTaskId(t.getId());
 			String sprintSlogan = sprint.getSlogan();
 			String subject = String.format("Issue reported on Task %s", t.getDescription());
-			String content = String.format("Dear Sir/Madam,\nA new issue - %s on task - %s has been reported in sprint - %s\nplease check taskboard", i.getDescription(),t.getDescription(),sprintSlogan);
+			String content = String.format("Dear Sir/Madam,\n\nA new issue - %s on task - %s has been reported in sprint - %s\n\nplease check taskboard.\nhttps://jerryishere.github.io/ng-scrumit/", i.getDescription(),t.getDescription(),sprintSlogan);
 			this.emailService.send("tszwanchoi@gmail.com,mhwoo6-c@my.cityu.edu.hk,kityanho3-c@my.cityu.edu.hk,twchoi5-c@my.cityu.edu.hk,kafaatli3-c@my.cityu.edu.hk", "Issue Created", "The Issue - "+issue.getDescription()+ " has been created, please check");	
 	
 		} catch (Exception ex) {
