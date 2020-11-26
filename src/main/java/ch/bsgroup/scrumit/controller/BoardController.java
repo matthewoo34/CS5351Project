@@ -310,7 +310,7 @@ public class BoardController {
         	Project project = this.projectService.findProjectByTaskId(taskid);
         	String sprintSlogan = sprint.getSlogan();
         	String projectName = project.getName();
-        	String subject = String.format("you have been removed from task - %s", task.getDescription());
+        	String subject = String.format("You have been removed from task - %s", task.getDescription());
         	String content = String.format("Dear %s,\n\nYou are no longer involved in %s on sprint - %s of project - %s.\n\nFor further information, please check the taskboard.\nhttps://jerryishere.github.io/ng-scrumit/", personName,task.getDescription(),sprintSlogan,projectName);
         	this.emailService.send(personEmail, subject, content);
         } catch (Exception ex) {
@@ -417,7 +417,7 @@ public class BoardController {
 		try {
 			for (Iterator<Person> iterator = persons.iterator(); iterator.hasNext();) {
 				Person p = iterator.next();
-				personName = personName + p.getFirstName() + " " + p.getLastName() + ", ";
+				personName = personName + p.getFirstName() + " " + p.getLastName();
 				email = p.getEmail();
 	
 				String subject = String.format("Issue reported on Task %s", t.getDescription());
