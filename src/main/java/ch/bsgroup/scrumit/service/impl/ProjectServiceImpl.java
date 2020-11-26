@@ -49,4 +49,9 @@ public class ProjectServiceImpl implements IProjectService {
 	public Project findProjectById(int projectId) {
 		return projectDao.findProjectById(projectId);
 	}
+
+	@Override
+	public Project findProjectByTaskId(int taskid) {
+		return projectDao.findProjectByTaskId(taskid);
+	}
 }

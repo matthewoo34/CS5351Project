@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import ch.bsgroup.scrumit.domain.Project;
+import ch.bsgroup.scrumit.domain.Sprint;
 import ch.bsgroup.scrumit.dao.IProjectDao;
 import ch.bsgroup.scrumit.utils.HibernateUtil;
 
@@ -88,6 +89,23 @@ public class ProjectDaoImplHibernate implements IProjectDao {
 		Transaction tx = sess.beginTransaction();
 		try {
 			Project project = (Project)sess.createQuery("from Project where id = "+projectId).list().get(0);
+			tx.commit();
+			return project;
+		}
+		catch (IndexOutOfBoundsException ex) {
+			return null;
+		}
+	}
+
+	@Override
+	public Project findProjectByTaskId(int taskid) {
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		Session sess = sessionFactory.getCurrentSession();
+
+		Transaction tx = sess.beginTransaction();
+		try {
+			@SuppressWarnings("unchecked")
+			Project project = (Project)sess.createQuery("select p from Project p join p.sprints s join s.sprintBacklog sb join sb.tasks t where t.id = :id").setParameter("id", taskid).list().get(0);
 			tx.commit();
 			return project;
 		}

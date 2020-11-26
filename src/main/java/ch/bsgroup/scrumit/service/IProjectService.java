@@ -13,4 +13,5 @@ public interface IProjectService {
 	public void removeProject(int projectId);
 	public Set<Project> getAllProjects();
 	public Project findProjectById(int projectId);
+	public Project findProjectByTaskId(int taskid);
 }

@@ -272,11 +272,13 @@ public class BoardController {
         try {
             //find sprintbacklog first and then sprint
         	Sprint sprint = this.sprintService.findSprintByTaskId(task.getId());
+        	Project project = this.projectService.findProjectByTaskId(task.getId());
         	String personName = p.getFirstName();
         	String taskDesc = task.getDescription();
         	String sprintSlogan = sprint.getSlogan();
-            String subject = String.format("Task assigned on Sprint %s",sprintSlogan);
-            String content = String.format("Dear %s,\n\nA new task - %s on sprint - %s is assigned to you,\n\nplease check the taskboard.\nhttps://jerryishere.github.io/ng-scrumit/", personName, taskDesc, sprintSlogan);
+        	String projectName = project.getName();
+            String subject = String.format("Task assigned on Sprint %s of project - %s",sprintSlogan,projectName);
+            String content = String.format("Dear %s,\n\nA new task - %s on sprint - %s of project - %s is assigned to you,\n\nplease check the taskboard.\nhttps://jerryishere.github.io/ng-scrumit/", personName, taskDesc, sprintSlogan,projectName);
             this.emailService.send(p.getEmail(), subject, content);
         } catch(Exception ex) {
         	System.out.println("Exception at task add person");
@@ -304,8 +306,12 @@ public class BoardController {
         task.setPersons(persons);
         this.taskService.updateTask(task);
         try {
+        	Sprint sprint = this.sprintService.findSprintByTaskId(taskid);
+        	Project project = this.projectService.findProjectByTaskId(taskid);
+        	String sprintSlogan = sprint.getSlogan();
+        	String projectName = project.getName();
         	String subject = String.format("you have been removed from task - %s", task.getDescription());
-        	String content = String.format("Dear %s,\n\nYou are no longer involved in %s.\n\nFor further information, please check the taskboard.\nhttps://jerryishere.github.io/ng-scrumit/", personName,task.getDescription());
+        	String content = String.format("Dear %s,\n\nYou are no longer involved in %s on sprint - %s of project - %s.\n\nFor further information, please check the taskboard.\nhttps://jerryishere.github.io/ng-scrumit/", personName,task.getDescription(),sprintSlogan,projectName);
         	this.emailService.send(personEmail, subject, content);
         } catch (Exception ex) {
         	System.out.println("Exception at task remove person");
@@ -402,18 +408,23 @@ public class BoardController {
 		i.setTask(t);
 		Issue issue = this.issueService.addIssue(i);
 		String personName = "";
+		String email = "";
+		Sprint sprint = this.sprintService.findSprintByTaskId(t.getId());
+		String sprintSlogan = sprint.getSlogan();
+		Project project = this.projectService.findProjectByTaskId(t.getId());
+		String projectName = project.getName();
 		Set<Person> persons = this.personService.getAllPersonsByTaskId(t.getId());
-		for (Iterator<Person> iterator = persons.iterator(); iterator.hasNext();) {
-			Person p = iterator.next();
-			personName = personName + p.getFirstName() + " " + p.getLastName() + ", ";		
-		}
 		try {
-			Sprint sprint = this.sprintService.findSprintByTaskId(t.getId());
-			String sprintSlogan = sprint.getSlogan();
-			String subject = String.format("Issue reported on Task %s", t.getDescription());
-			String content = String.format("Dear %s,\n\nA new issue - %s on task - %s has been reported in sprint - %s\n\nplease check taskboard.\nhttps://jerryishere.github.io/ng-scrumit/", personName, i.getDescription(),t.getDescription(),sprintSlogan);
-			//this.emailService.send("tszwanchoi@gmail.com,mhwoo6-c@my.cityu.edu.hk,kityanho3-c@my.cityu.edu.hk,twchoi5-c@my.cityu.edu.hk,kafaatli3-c@my.cityu.edu.hk", "Issue Created", "The Issue - "+issue.getDescription()+ " has been created, please check");	
-			this.emailService.send("tszwanchoi@gmail.com,mhwoo6-c@my.cityu.edu.hk,kityanho3-c@my.cityu.edu.hk,twchoi5-c@my.cityu.edu.hk,kafaatli3-c@my.cityu.edu.hk", subject, content);
+			for (Iterator<Person> iterator = persons.iterator(); iterator.hasNext();) {
+				Person p = iterator.next();
+				personName = personName + p.getFirstName() + " " + p.getLastName() + ", ";
+				email = p.getEmail();
+	
+				String subject = String.format("Issue reported on Task %s", t.getDescription());
+				String content = String.format("Dear %s,\n\nA new issue - %s on task - %s has been reported in sprint - %s of project - %s\n\nplease check taskboard.\nhttps://jerryishere.github.io/ng-scrumit/", personName, i.getDescription(),t.getDescription(),sprintSlogan,projectName);
+				//this.emailService.send("tszwanchoi@gmail.com,mhwoo6-c@my.cityu.edu.hk,kityanho3-c@my.cityu.edu.hk,twchoi5-c@my.cityu.edu.hk,kafaatli3-c@my.cityu.edu.hk", "Issue Created", "The Issue - "+issue.getDescription()+ " has been created, please check");	
+				this.emailService.send(email, subject, content);
+			}
 		} catch (Exception ex) {
 			System.out.println("Exception at add issue at task");
 			ex.printStackTrace();
